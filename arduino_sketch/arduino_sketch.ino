@@ -1,9 +1,9 @@
 // Current placeholder sketchbook
 
-int setup() {
+void setup() {
   
 }
 
-int loop() {
+void loop() {
   
 }
