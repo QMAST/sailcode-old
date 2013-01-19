@@ -11,3 +11,7 @@ Most code, for interfacing with hardware should be placed in a Library, see
 [this tutorial](http://arduino.cc/en/Hacking/LibraryTutorial) for information
 about writing a library for Arduino.
 
+Please check out the [GitHub hosted wiki on this respository][1] if there is any information
+you think that everyone else should know about.
+
+[1]: https://github.com/QMAST/sailcode/wiki
