@@ -16,3 +16,5 @@
 *.out
 *.app
 *.swp
+*.swp
+*.o
