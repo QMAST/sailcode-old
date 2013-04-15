@@ -10,15 +10,18 @@ class ashcon {
     private:
         static const int SUCCESS = 0;
         static const int BUFFER_LENGTH = 128;
+        static const int ECHO = 1;
         Stream* line_in;
 
         char* internal_buffer;
         int internal_buffer_len;
     public:
+        ashcon(Stream* new_line_in);
+
         int printf(char* fmt, ... );
         int get_line();
 
-        ashcon(Stream* new_line_in);
+        char* get_internal_buffer();
 
         int prompt();
 };
