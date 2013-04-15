@@ -1,15 +1,21 @@
+#include "sketch.h"
 
-#define LED_PIN 13
+void setup() {
+    Serial.begin(9600);
 
-void setup()
-{
+    testk = new kstring( 100 );
+    mycon = new ashcon(&Serial);
     pinMode(LED_PIN, OUTPUT);
 }
 
-void loop()
-{
-    digitalWrite(LED_PIN, HIGH);
-    delay(100);
-    digitalWrite(LED_PIN, LOW);
-    delay(900);
+void loop() {
+    Serial.println("Testing console");
+
+    mycon->printf("This is a %s\n\r", (char*) "test");
+
+
+    mycon->printf("Shutdown. \n\r");
+    delete mycon;
+    delete testk;
+    while( true ) delay( 100 );
 }
