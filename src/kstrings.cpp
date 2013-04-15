@@ -10,3 +10,9 @@ kstring::kstring( int length ) {
 kstring::~kstring() {
     free(this->str);
 }
+
+int kstring::compare(kstring* alien_string) {
+    int max = this->len > alien_string->len ? 
+        alien_string->len : this->len;
+    return strncmp(this->str, alien_string->str, max);
+}

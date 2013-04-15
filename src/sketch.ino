@@ -1,5 +1,9 @@
 #include "sketch.h"
 
+void test_kcompare() {
+    // Nothing yet
+}
+
 void setup() {
     Serial.begin(9600);
 
@@ -22,3 +26,4 @@ void loop() {
     /*delete testk;*/
     /*while( true ) delay( 100 );*/
 }
+

@@ -11,5 +11,7 @@ class kstring {
 
         kstring( int length );
         ~kstring();
+
+        int compare(kstring* alien_string);
 };
 #endif
