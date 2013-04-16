@@ -83,6 +83,25 @@ int ashcon::get_line() {
     return this->SUCCESS;
 }
 
+/** Split the command_buffer by spaces, store them in the argument list
+ */
+int ashcon::get_line_splitline() {
+    // A huge amount of memory, but whatever
+    char current_word[COMMAND_BUFFER_LENGTH] = { '\0' }; 
+    char buffer_copy[COMMAND_BUFFER_LENGTH] = { '\0' };
+
+    strncpy(buffer_copy, this->command_buffer, COMMAND_BUFFER_LENGTH);
+
+    // Isolate each word
+    while ( strncmp(buffer_copy, current_word, COMMAND_BUFFER_LENGTH) ) {
+        sscanf(buffer_copy, "%s %[^\n\t]", current_word, buffer_copy);
+        
+        this->command_arg_append(current_word);
+    }
+
+    return this->SUCCESS;
+}
+
 /** Debugging showed that even statically allocated string pointers
  * contain garbage, need to initialise them. I don't like having this
  * function here, maybe make a part of the constructor.

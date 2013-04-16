@@ -15,6 +15,7 @@ class ashcon {
 
         int printf(char* fmt, ... );
         int get_line();
+        int get_line_splitline();
 
         int user_function_register( char* id, int (*func)(char* args) );
         int user_function_call( char* id );
@@ -37,10 +38,10 @@ class ashcon {
         char* command_arg_list[COMMAND_ARG_NUM_MAX];
         int command_arg_num; // Acts as index to arg list
 
-        int command_arg_append(char*);
         void command_arg_init();
-        int command_arg_clear();
+        int command_arg_append(char*);
         void command_arg_dump_debug();
+        int command_arg_clear();
 
         // Function list, register functions to be called with the
         // internal command list
