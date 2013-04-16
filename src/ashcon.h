@@ -9,19 +9,20 @@
 class ashcon {
     private:
         static const int SUCCESS = 0;
-        static const int BUFFER_LENGTH = 128;
+        static const int COMMAND_BUFFER_LENGTH = 128;
         static const int ECHO = 1;
         Stream* line_in;
 
-        char* internal_buffer;
-        int internal_buffer_len;
+        char* command_buffer;
+
     public:
         ashcon(Stream* new_line_in);
 
         int printf(char* fmt, ... );
         int get_line();
 
-        char* get_internal_buffer();
+        // Debugging purposes
+        char* get_command_buffer();
 
         int prompt();
 };

@@ -10,10 +10,9 @@ ashcon::ashcon(Stream* new_line_in) {
         this->line_in = new_line_in;
     }
 
-    this->internal_buffer = (char*)
-                            malloc( sizeof(char) * (BUFFER_LENGTH + 1) );
-    this->internal_buffer[BUFFER_LENGTH] = '\0';
-    this->internal_buffer_len = BUFFER_LENGTH;
+    this->command_buffer = (char*)
+                            malloc( sizeof(char) * (COMMAND_BUFFER_LENGTH + 1) );
+    this->command_buffer[COMMAND_BUFFER_LENGTH] = '\0';
 }
 
 /** Emulated printf
@@ -48,7 +47,7 @@ int ashcon::get_line() {
 
     // Sit and wait until the line ends or the buffer fills,
     // Danger, it could wait forever without a timer.
-    while( i < this->internal_buffer_len ) {
+    while( i < this->COMMAND_BUFFER_LENGTH ) {
         if( this->line_in->available() > 0 ) {
             // A character is ready, grab it
             char_in = this->line_in->read();
@@ -62,7 +61,7 @@ int ashcon::get_line() {
                 break;
             }
 
-            this->internal_buffer[i] = char_in;
+            this->command_buffer[i] = char_in;
 
             if( this->ECHO ) {
                 this->line_in->print(char_in);
@@ -71,7 +70,7 @@ int ashcon::get_line() {
         }
     }
 
-    this->internal_buffer[i] = '\0';
+    this->command_buffer[i] = '\0';
 
     if( this->ECHO ) {
         this->line_in->print("\n\r");
@@ -80,6 +79,6 @@ int ashcon::get_line() {
     return this->SUCCESS;
 }
 
-char* ashcon::get_internal_buffer() {
-    return this->internal_buffer;
+char* ashcon::get_command_buffer() {
+    return this->command_buffer;
 }

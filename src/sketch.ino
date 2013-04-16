@@ -19,7 +19,7 @@ void loop() {
 
     mycon->printf("> ");
     mycon->get_line();
-    mycon->printf("%s\n\r", mycon->get_internal_buffer() );
+    mycon->printf("%s\n\r", mycon->get_command_buffer() );
 
     /*mycon->printf("Shutdown. \n\r");*/
     /*delete mycon;*/
