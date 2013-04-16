@@ -13,6 +13,10 @@ ashcon::ashcon(Stream* new_line_in) {
     this->command_buffer = (char*) 
         malloc( sizeof(char) * (COMMAND_BUFFER_LENGTH + 1) );
     this->command_buffer[COMMAND_BUFFER_LENGTH] = '\0';
+
+    // NOTE THIS!! Forget to do this and everything goes wrong!
+    this->command_arg_num = 0;
+    this->command_arg_init();
 }
 
 /** Emulated printf
@@ -35,11 +39,11 @@ int ashcon::printf( char* fmt, ... ) {
 
 /** get_line
  *
- * Sit and wait for the user to type a command line into the arduino.
+ * Sit and wait for the user to type a command line into the Arduino.
  * Expects to wait until either the buffer has filled or the user has
- * enetered a newline character.
+ * entered a newline character.
  *
- * Currently newline character is hardcoded.
+ * Currently newline character is hard coded.
  */
 int ashcon::get_line() {
     int i = 0; // how many characters we've pulled
@@ -75,6 +79,73 @@ int ashcon::get_line() {
     if( this->ECHO ) {
         this->line_in->print("\n\r");
     }
+
+    return this->SUCCESS;
+}
+
+/** Debugging showed that even statically allocated string pointers
+ * contain garbage, need to initialise them. I don't like having this
+ * function here, maybe make a part of the constructor.
+ */
+void ashcon::command_arg_init() {
+    for( int i = 0; i < this->COMMAND_ARG_NUM_MAX; i++ ) {
+        command_arg_list[i] = NULL;
+    }
+
+    return;
+}
+
+// Given a string, determine its length and copy the string to new memory
+int ashcon::command_arg_append( char* new_command ) {
+    int new_command_length;
+
+    if( this->command_arg_num >= this->COMMAND_ARG_NUM_MAX ) {
+        return 1;
+    }
+
+    // Should never get above the length of the buffer
+    new_command_length = strnlen(new_command, this->COMMAND_BUFFER_LENGTH );
+    
+    command_arg_list[command_arg_num] = (char*) 
+        malloc( sizeof(char) * (new_command_length + 1) );
+    command_arg_list[command_arg_num][new_command_length] = '\0';
+
+    strncpy(command_arg_list[command_arg_num], new_command, 
+            new_command_length);
+
+    // NOTE THIS!! Forget to do this and everything goes wrong!
+    command_arg_num++;
+
+    return this->SUCCESS;
+}
+
+/** Dump the contents of the argument list to console yo
+ */
+void ashcon::command_arg_dump_debug() {
+    this->printf("DEBUG: Drop command arg list\n\r");
+    for( int i = 0; i < COMMAND_ARG_NUM_MAX; i++ ) {
+        if( command_arg_list[i] ) {
+            this->printf("%d. %s\n\r", i, command_arg_list[i]);
+        }
+    }
+
+    return;
+}
+
+/** Dealloc all the string pointers. Forget to call this? You got a
+ * memory leak bro.
+ *
+ * Checks up to the maximum, doesn't honor the current command_num_args
+ */
+int ashcon::command_arg_clear() {
+    for( int i = 0; i < COMMAND_ARG_NUM_MAX; i++ ) {
+        if( command_arg_list[i] ) {
+            free(command_arg_list[i]);
+            command_arg_list[i] = NULL;
+        }
+    }
+
+    this->command_arg_num = 0;
 
     return this->SUCCESS;
 }

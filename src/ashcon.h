@@ -9,6 +9,7 @@
 class ashcon {
     public:
         static const int SUCCESS = 0;
+        static const int FAILURE = 1;
         static const int ECHO = 1;
         ashcon(Stream* new_line_in);
 
@@ -21,7 +22,7 @@ class ashcon {
         // Debugging purposes
         char* get_command_buffer();
 
-    private:
+    //private:
         // Serial port used for communication
         Stream* line_in;
 
@@ -36,8 +37,10 @@ class ashcon {
         char* command_arg_list[COMMAND_ARG_NUM_MAX];
         int command_arg_num; // Acts as index to arg list
 
-        int command_arg_append();
+        int command_arg_append(char*);
+        void command_arg_init();
         int command_arg_clear();
+        void command_arg_dump_debug();
 
         // Function list, register functions to be called with the
         // internal command list

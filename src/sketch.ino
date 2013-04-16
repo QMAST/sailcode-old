@@ -18,12 +18,14 @@ void setup() {
 void loop() {
 
     mycon->printf("> ");
-    mycon->get_line();
-    mycon->printf("%s\n\r", mycon->get_command_buffer() );
+    mycon->command_arg_append("This is a test");
+    mycon->command_arg_append("Another string");
 
-    /*mycon->printf("Shutdown. \n\r");*/
-    /*delete mycon;*/
-    /*delete testk;*/
-    /*while( true ) delay( 100 );*/
+    mycon->command_arg_dump_debug();
+
+    mycon->printf("Shutdown. \n\r");
+    delete mycon;
+    delete testk;
+    while( true ) delay( 100 );
 }
 
