@@ -26,13 +26,21 @@ class ashcon {
         int command_arg_append();
         int command_arg_clear();
 
-
+        // Function list, register functions to be called with the
+        // internal command list
+        typedef struct {
+            char* id;
+            int (*func)(char* args[]);
+        } user_function;
 
     public:
         ashcon(Stream* new_line_in);
 
         int printf(char* fmt, ... );
         int get_line();
+
+        int user_function_register( char* id, int (*func)(char* args) );
+        int user_function_call( char* id );
 
         // Debugging purposes
         char* get_command_buffer();

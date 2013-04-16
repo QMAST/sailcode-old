@@ -10,8 +10,8 @@ ashcon::ashcon(Stream* new_line_in) {
         this->line_in = new_line_in;
     }
 
-    this->command_buffer = (char*)
-                            malloc( sizeof(char) * (COMMAND_BUFFER_LENGTH + 1) );
+    this->command_buffer = (char*) 
+        malloc( sizeof(char) * (COMMAND_BUFFER_LENGTH + 1) );
     this->command_buffer[COMMAND_BUFFER_LENGTH] = '\0';
 }
 

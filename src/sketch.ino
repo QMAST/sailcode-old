@@ -5,7 +5,7 @@ void test_kcompare() {
 }
 
 void setup() {
-    Serial.begin(9600);
+    Serial.begin(115200);
 
     testk = new kstring( 100 );
     mycon = new ashcon(&Serial);
