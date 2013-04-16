@@ -79,6 +79,8 @@ int ashcon::get_line() {
     return this->SUCCESS;
 }
 
+// Allows other functions to mess with the internals, definitely not
+// ideal. Use for debugging only
 char* ashcon::get_command_buffer() {
     return this->command_buffer;
 }

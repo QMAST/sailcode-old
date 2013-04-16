@@ -7,9 +7,22 @@
 #include <stdarg.h>
 
 class ashcon {
-    private:
+    public:
         static const int SUCCESS = 0;
         static const int ECHO = 1;
+        ashcon(Stream* new_line_in);
+
+        int printf(char* fmt, ... );
+        int get_line();
+
+        int user_function_register( char* id, int (*func)(char* args) );
+        int user_function_call( char* id );
+
+        // Debugging purposes
+        char* get_command_buffer();
+
+    private:
+        // Serial port used for communication
         Stream* line_in;
 
         // The internal command buffer, think get_line and where it puts
@@ -33,19 +46,6 @@ class ashcon {
             int (*func)(char* args[]);
         } user_function;
 
-    public:
-        ashcon(Stream* new_line_in);
-
-        int printf(char* fmt, ... );
-        int get_line();
-
-        int user_function_register( char* id, int (*func)(char* args) );
-        int user_function_call( char* id );
-
-        // Debugging purposes
-        char* get_command_buffer();
-
-        int prompt();
 };
 
 #endif

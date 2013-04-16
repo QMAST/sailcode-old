@@ -9,13 +9,13 @@ void setup() {
 
     testk = new kstring( 100 );
     mycon = new ashcon(&Serial);
+
     pinMode(LED_PIN, OUTPUT);
 
     Serial.println("Testing console");
 }
 
 void loop() {
-
 
     mycon->printf("> ");
     mycon->get_line();
