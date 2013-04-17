@@ -17,6 +17,13 @@ ashcon::ashcon(Stream* new_line_in) {
     // NOTE THIS!! Forget to do this and everything goes wrong!
     this->command_arg_num = 0;
     this->command_arg_init();
+
+    // Initialisation for user functions
+    ufunc_list_idx = 0;
+    for( int i = 0; i < FUNCTION_LIST_MAX; i++ ) {
+        ufunc_list[i].id = NULL;
+        ufunc_list[i].func = NULL;
+    }
 }
 
 /** Emulated printf
@@ -173,4 +180,34 @@ int ashcon::command_arg_clear() {
 // ideal. Use for debugging only
 char* ashcon::get_command_buffer() {
     return this->command_buffer;
+}
+
+int ashcon::user_function_register( char* id, int (*func)(char* args[]) ) {
+    int new_id_length;
+
+    if( ufunc_list_idx >= FUNCTION_LIST_MAX ) {
+        return this->FAILURE;
+    }
+
+    new_id_length = strnlen( id, FUNCTION_LIST_ID_MAX );
+
+    this->ufunc_list[ufunc_list_idx].id = (char*) 
+        malloc( sizeof(char) * (new_id_length + 1) );
+    strncpy((this->ufunc_list[ufunc_list_idx]).id, id, FUNCTION_LIST_ID_MAX );
+
+    ufunc_list[ufunc_list_idx].id[new_id_length] = '\0';
+    ufunc_list[ufunc_list_idx].func = func;
+
+    ufunc_list_idx++;
+
+    return this->SUCCESS;
+}
+
+void ashcon::ufunc_dump() {
+    for( int i = 0; i < FUNCTION_LIST_MAX; i++ ) {
+        if( ufunc_list[i].id != NULL ) {
+            this->printf("ID: %s = %x \n\r", ufunc_list[i].id, 
+                    ufunc_list[i].func );
+        }
+    }
 }
