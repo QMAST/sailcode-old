@@ -7,6 +7,7 @@
 
 #include "ashcon.h"
 #include "kstrings.h"
+#include "MemoryFree.h"
 
 #define LED_PIN 13
 

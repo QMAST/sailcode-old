@@ -203,6 +203,15 @@ int ashcon::user_function_register( char* id, int (*func)(char* args[]) ) {
     return this->SUCCESS;
 }
 
+int ashcon::user_function_call(char* id) {
+    for( int i = 0; i < ufunc_list_idx; i++ ) {
+        if( strncmp(ufunc_list[i].id, id, FUNCTION_LIST_ID_MAX) == 0 ) {
+            // Make the call
+            (*ufunc_list[i].func)(this->command_arg_list);
+        }
+    }        
+}
+
 void ashcon::ufunc_dump() {
     for( int i = 0; i < FUNCTION_LIST_MAX; i++ ) {
         if( ufunc_list[i].id != NULL ) {
@@ -210,4 +219,13 @@ void ashcon::ufunc_dump() {
                     ufunc_list[i].func );
         }
     }
+}
+
+int ashcon::command_prompt() {
+    this->printf("> ");
+    this->get_line();
+    this->get_line_splitline();
+    this->user_function_call(this->command_arg_list[0]);
+    this->command_arg_clear();
+    return this->SUCCESS;
 }

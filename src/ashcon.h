@@ -13,6 +13,8 @@ class ashcon {
         static const int ECHO = 1;
         ashcon(Stream* new_line_in);
 
+        int command_prompt();
+
         int printf(char* fmt, ... );
         int get_line();
         int get_line_splitline();
