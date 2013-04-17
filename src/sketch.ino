@@ -2,6 +2,7 @@
 
 int test_function(char* argv[]);
 int check_mem(char* argv[]);
+int uhelp(char* argv[]);
 
 void setup() {
     Serial.begin(115200);
@@ -10,6 +11,7 @@ void setup() {
     mycon = new ashcon(&Serial);
     mycon->user_function_register("test", &test_function);
     mycon->user_function_register("checkmem", &check_mem);
+    mycon->user_function_register("help", &uhelp);
 
     pinMode(LED_PIN, OUTPUT);
 
@@ -50,6 +52,17 @@ int test_function(char* argv[]) {
 
 int check_mem(char* argv[]) {
     mycon->printf("Memory Free: %d\n\r", freeMemory());
+
+    return 0;
+}
+
+int uhelp(char* argv[]) {
+    mycon->printf(
+"  ___|    \\    ____| |     ____| _ \\   _ \\   ___| ____| \\ \\  / |     \n\r"
+" |       _ \\   __|   |     |    |   | |   | |     __|    \\  /  |     \n\r"
+" |   |  ___ \\  |     |     __|  |   | __ <  |     |         \\  |     \n\r"
+"\\____|_/    _\\_____|_____|_|   \\___/ _| \\_\\\\____|_____|  _/\\_\\_____| \n\r"
+    );
 
     return 0;
 }

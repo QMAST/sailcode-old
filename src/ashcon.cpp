@@ -34,10 +34,10 @@ ashcon::ashcon(Stream* new_line_in) {
  */
 int ashcon::printf( char* fmt, ... ) {
     // Taken from http://playground.arduino.cc/Main/Printf
-    char tmp[128]; // resulting string limited to 128 chars
+    char tmp[512]; // resulting string limited to 128 chars
     va_list args;
     va_start (args, fmt );
-    vsnprintf(tmp, 128, fmt, args);
+    vsnprintf(tmp, 512, fmt, args);
     va_end (args);
     this->line_in->print(tmp);
 
