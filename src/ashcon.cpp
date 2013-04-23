@@ -54,6 +54,7 @@ int ashcon::printf( char* fmt, ... ) {
  */
 int ashcon::get_line() {
     int i = 0; // how many characters we've pulled
+    uint8_t bs_flag = false;
     char char_in = '\0';
 
     // Sit and wait until the line ends or the buffer fills,
@@ -67,9 +68,12 @@ int ashcon::get_line() {
             if( char_in == '\r' ) {
                 //this->printf("Found an \\r \n\r");
                 break;
-            } else if ( char_in == '\n' ) {
+            } else if( char_in == '\n' ) {
                 //this->printf("Found a \\n \n\r");
                 break;
+            } else if( char_in == 0x8 || char_in == 0x7F ) {
+                char_in = 0x8;
+                bs_flag = true;
             }
 
             this->command_buffer[i] = char_in;
@@ -77,7 +81,14 @@ int ashcon::get_line() {
             if( this->ECHO ) {
                 this->line_in->print(char_in);
             }
-            i++;
+
+            // If there was a backspace, move index back
+            if( i > 0 && bs_flag ) {
+                i--;
+                bs_flag = false;
+            } else {
+                i++;
+            }
         }
     }
 

@@ -3,15 +3,18 @@
 int test_function(char* argv[]);
 int check_mem(char* argv[]);
 int uhelp(char* argv[]);
+int usmon(char* argv[]);
 
 void setup() {
     Serial.begin(115200);
+    Serial1.begin(9600);
 
     testk = new kstring( 100 );
     mycon = new ashcon(&Serial);
     mycon->user_function_register("test", &test_function);
     mycon->user_function_register("checkmem", &check_mem);
     mycon->user_function_register("help", &uhelp);
+    mycon->user_function_register("smon", &usmon);
 
     pinMode(LED_PIN, OUTPUT);
 
@@ -65,4 +68,19 @@ int uhelp(char* argv[]) {
     );
 
     return 0;
+}
+
+// Really hack serial terminal
+int usmon(char* argv[]) {
+    while( Serial.peek() != '-' ) {
+        if( Serial.available() ) {
+            Serial.print((char)Serial.peek());
+            Serial1.print((char)Serial.read());
+        }
+        if( Serial1.available() ) {
+            Serial.print((char)Serial1.read());
+        }
+    }
+
+    Serial.println();
 }
