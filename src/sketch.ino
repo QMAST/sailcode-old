@@ -4,10 +4,12 @@ int test_function(char* argv[]);
 int check_mem(char* argv[]);
 int uhelp(char* argv[]);
 int usmon(char* argv[]);
+int uservo(char* argv[]);
 
 void setup() {
     Serial.begin(115200);
     Serial1.begin(9600);
+    Serial2.begin(9600);
 
     testk = new kstring( 100 );
     mycon = new ashcon(&Serial);
@@ -15,6 +17,10 @@ void setup() {
     mycon->user_function_register("checkmem", &check_mem);
     mycon->user_function_register("help", &uhelp);
     mycon->user_function_register("smon", &usmon);
+    mycon->user_function_register("servo", &uservo);
+
+    pinMode(3, OUTPUT);
+    tservo = new PololuMSC(&Serial2, 3);
 
     pinMode(LED_PIN, OUTPUT);
 
@@ -72,6 +78,7 @@ int uhelp(char* argv[]) {
 
 // Really hack serial terminal
 int usmon(char* argv[]) {
+    mycon->printf("SERIAL MONITOR ENGAGE\n\r");
     while( Serial.peek() != '-' ) {
         if( Serial.available() ) {
             Serial.print((char)Serial.peek());
@@ -81,6 +88,14 @@ int usmon(char* argv[]) {
             Serial.print((char)Serial1.read());
         }
     }
+    mycon->printf("SERIAL MONITOR DISENGAGE\n\r");
 
     Serial.println();
+}
+
+int uservo(char* argv[]) {
+    tservo->setPosition(7, 10);
+    delay(500);
+    tservo->setPosition(7, 240);
+    delay(500);
 }
