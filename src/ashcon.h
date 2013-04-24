@@ -13,6 +13,7 @@ class ashcon {
         static const int ECHO = 1;
         ashcon(Stream* new_line_in);
 
+        void repeat();
         int command_prompt();
 
         int printf(char* fmt, ... );

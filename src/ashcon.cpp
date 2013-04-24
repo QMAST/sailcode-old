@@ -232,6 +232,13 @@ void ashcon::ufunc_dump() {
     }
 }
 
+void ashcon::repeat() {
+    this->get_line_splitline();
+    this->user_function_call(this->command_arg_list[0]);
+
+    return;
+}
+
 int ashcon::command_prompt() {
     this->printf("> ");
     this->get_line();

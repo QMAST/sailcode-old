@@ -5,6 +5,7 @@ int check_mem(char* argv[]);
 int uhelp(char* argv[]);
 int usmon(char* argv[]);
 int uservo(char* argv[]);
+int urep(char* argv[]);
 
 void setup() {
     Serial.begin(115200);
@@ -18,6 +19,7 @@ void setup() {
     mycon->user_function_register("help", &uhelp);
     mycon->user_function_register("smon", &usmon);
     mycon->user_function_register("servo", &uservo);
+    mycon->user_function_register("r", &urep);
 
     pinMode(3, OUTPUT);
     tservo = new PololuMSC(&Serial2, 3);
@@ -91,6 +93,11 @@ int usmon(char* argv[]) {
     mycon->printf("SERIAL MONITOR DISENGAGE\n\r");
 
     Serial.println();
+}
+
+int urep(char* argv[]) {
+    mycon->repeat();
+    return 0;
 }
 
 int uservo(char* argv[]) {
