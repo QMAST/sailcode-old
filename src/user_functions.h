@@ -31,8 +31,16 @@ extern PololuMSC* tservo;
 int test_function(char* argv[]);
 int check_mem(char* argv[]);
 int uhelp(char* argv[]);
-int usmon(char* argv[]);
-int uservo(char* argv[]);
 int urep(char* argv[]);
+
+/** Both of these require Serial ports available only on the mega
+ * This behaviour will need to be changed for flexibility later on.
+ */
+#ifdef BOARD_MEGA
+    int usmon(char* argv[]);
+    int uservo(char* argv[]);
+#endif
+
+int uabout(char* argv[]);
 
 #endif

@@ -1,7 +1,7 @@
 #ifndef sketch_h
 #define sketch_h
 
-#define BOARD_MEGA true
+//#define BOARD_MEGA
 
 #include <stdio.h>
 #include <stdlib.h>
