@@ -1,8 +1,6 @@
 #ifndef sketch_h
 #define sketch_h
 
-//#define BOARD_MEGA
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -15,10 +13,6 @@
 #include "user_functions.h"
 
 #define LED_PIN 13
-
-kstring* testk;
-ashcon* mycon;
-PololuMSC* tservo;
 
 #endif
 

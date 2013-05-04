@@ -25,38 +25,10 @@ int uhelp(char* argv[]) {
     return 0;
 }
 
-// Really hack serial terminal, mega only, yo
-#ifdef BOARD_MEGA
-int usmon(char* argv[]) {
-    mycon->printf("SERIAL MONITOR ENGAGE\n\r");
-    while( Serial.peek() != '-' ) {
-        if( Serial.available() ) {
-            Serial.print((char)Serial.peek());
-            Serial1.print((char)Serial.read());
-        }
-        if( Serial1.available() ) {
-            Serial.print((char)Serial1.read());
-        }
-    }
-    mycon->printf("SERIAL MONITOR DISENGAGE\n\r");
-
-    Serial.println();
-}
-#endif
-
 int urep(char* argv[]) {
     mycon->repeat();
     return 0;
 }
-
-#ifdef BOARD_MEGA
-int uservo(char* argv[]) {
-    tservo->setPosition(7, 10);
-    delay(500);
-    tservo->setPosition(7, 240);
-    delay(500);
-}
-#endif
 
 int uabout(char* argv[]) {
     // Cool little ascii art made with a program called figlet, gotta
