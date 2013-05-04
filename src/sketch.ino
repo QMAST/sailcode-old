@@ -4,13 +4,16 @@
 
 void setup() {
     Serial.begin(115200);
+    Console = new ashcon(&Serial);
 
-    mycon = new ashcon(&Serial);
-    mycon->user_function_register("test", &test_function);
+    Console->user_function_register("about", &uabout);
+    Console->user_function_register("help",  &uhelp);
+    Console->user_function_register("mem",   &ucheck_mem);
+    Console->user_function_register("test",  &utest_function);
 }
 
 void loop() {
-    mycon->command_prompt();
+    Console->command_prompt();
 
 }
 

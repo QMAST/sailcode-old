@@ -11,15 +11,15 @@ int utest_function(char* argv[]) {
 }
 
 int ucheck_mem(char* argv[]) {
-    mycon->printf("Memory Free: %d\n\r", freeMemory());
+    Console->printf("Memory Free: %d\n\r", freeMemory());
 
     return 0;
 }
 
 int uhelp(char* argv[]) {
-    mycon->printf("Command prompt: Type stuff in, yo \n\r\n\r"
+    Console->printf("Command prompt: Type stuff in, yo \n\r\n\r"
             "- checkmem\n\r");
-    mycon->printf("- test \n\r"
+    Console->printf("- test \n\r"
             "- help \n\r"
             "- about\n\r");
     return 0;
@@ -30,12 +30,12 @@ int uabout(char* argv[]) {
     // escape the special characters though
 
     // Remember, printf has a 128 char limit at a time
-    mycon->printf("  ___|    \\    ____| |     ____| _ \\   _ \\   ___| ____| \\ \\  / |     \n\r");
-    mycon->printf(" |       _ \\   __|   |     |    |   | |   | |     __|    \\  /  |     \n\r");
-    mycon->printf(" |   |  ___ \\  |     |     __|  |   | __ <  |     |         \\  |     \n\r");
-    mycon->printf("\\____|_/    _\\_____|_____|_|   \\___/ _| \\_\\\\____|_____|  _/\\_\\_____| \n\r\n\r\n\r");
+    Console->printf("  ___|    \\    ____| |     ____| _ \\   _ \\   ___| ____| \\ \\  / |     \n\r");
+    Console->printf(" |       _ \\   __|   |     |    |   | |   | |     __|    \\  /  |     \n\r");
+    Console->printf(" |   |  ___ \\  |     |     __|  |   | __ <  |     |         \\  |     \n\r");
+    Console->printf("\\____|_/    _\\_____|_____|_|   \\___/ _| \\_\\\\____|_____|  _/\\_\\_____| \n\r\n\r\n\r");
 
-    mycon->printf("AshCon Version 0.01 \n\r");
+    Console->printf("AshCon Version 0.01 \n\r");
 
     return 0;
 }

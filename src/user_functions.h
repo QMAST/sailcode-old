@@ -24,7 +24,7 @@
 #include <MemoryFree.h>
 #include <pololu_servo.h>
 
-extern ashcon* mycon;
+extern ashcon* Console;
 
 int utest_function(char* argv[]);
 int ucheck_mem(char* argv[]);

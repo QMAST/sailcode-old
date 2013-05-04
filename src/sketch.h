@@ -16,7 +16,7 @@
 #include "user_functions.h"
 
 // You may place globals here
-ashcon* mycon;
+ashcon* Console;
 
 #endif
 
