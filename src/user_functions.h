@@ -20,27 +20,15 @@
 #include <Arduino.h>
 
 #include "ashcon.h"
-#include "kstrings.h"
-#include "MemoryFree.h"
-#include "pololu_servo.h"
+#include <kstrings.h>
+#include <MemoryFree.h>
+#include <pololu_servo.h>
 
-extern kstring* testk;
 extern ashcon* mycon;
-extern PololuMSC* tservo;
 
-int test_function(char* argv[]);
-int check_mem(char* argv[]);
+int utest_function(char* argv[]);
+int ucheck_mem(char* argv[]);
 int uhelp(char* argv[]);
-int urep(char* argv[]);
-
-/** Both of these require Serial ports available only on the mega
- * This behaviour will need to be changed for flexibility later on.
- */
-#ifdef BOARD_MEGA
-    int usmon(char* argv[]);
-    int uservo(char* argv[]);
-#endif
-
 int uabout(char* argv[]);
 
 #endif

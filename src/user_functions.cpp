@@ -1,7 +1,7 @@
 #include "user_functions.h"
 
 // Ugh, its using Serial directly
-int test_function(char* argv[]) {
+int utest_function(char* argv[]) {
     Serial.print("The test function has been activated,\n\r"
     "I have just been handed this: ");
     Serial.println(argv[1]);
@@ -10,7 +10,7 @@ int test_function(char* argv[]) {
 
 }
 
-int check_mem(char* argv[]) {
+int ucheck_mem(char* argv[]) {
     mycon->printf("Memory Free: %d\n\r", freeMemory());
 
     return 0;
