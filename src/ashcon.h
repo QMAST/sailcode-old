@@ -13,7 +13,6 @@ class ashcon {
         static const int ECHO = 1;
         ashcon(Stream* new_line_in);
 
-        void repeat();
         int command_prompt();
 
         int printf(char* fmt, ... );
@@ -24,9 +23,9 @@ class ashcon {
         int user_function_call( char* id );
 
         // Debugging purposes
-        char* get_command_buffer();
+        //char* get_command_buffer();
 
-    //private:
+    private:
         // Serial port used for communication
         Stream* line_in;
 
@@ -41,9 +40,12 @@ class ashcon {
         char* command_arg_list[COMMAND_ARG_NUM_MAX];
         int command_arg_num; // Acts as index to arg list
 
+        // Functions to deal with the list of arguments
         void command_arg_init();
         int command_arg_append(char*);
+#ifdef DEBUG
         void command_arg_dump_debug();
+#endif
         int command_arg_clear();
 
         // Function list, register functions to be called with the

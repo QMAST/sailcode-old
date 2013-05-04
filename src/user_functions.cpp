@@ -25,11 +25,6 @@ int uhelp(char* argv[]) {
     return 0;
 }
 
-int urep(char* argv[]) {
-    mycon->repeat();
-    return 0;
-}
-
 int uabout(char* argv[]) {
     // Cool little ascii art made with a program called figlet, gotta
     // escape the special characters though

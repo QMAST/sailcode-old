@@ -3,7 +3,10 @@
 /** Initialize a console
  *
  * Pass a serial line to be used as the command console. Initialise the
- * internal buffer off the heap.
+ * internal buffer off the heap. Use the command_arg functions to
+ * initialise/prepare argument related functions
+ *
+ * Manually initialise the user function indexes
  */
 ashcon::ashcon(Stream* new_line_in) {
     if( new_line_in != NULL ) {
@@ -31,10 +34,13 @@ ashcon::ashcon(Stream* new_line_in) {
  * Taken from arduino forum, emulates printf without having to
  * include the true version which requires a FILE handle and a lot more
  * memory.
+ *
+ * needs to allocate a string every time its called to store the
+ * formatted buffer before actually printing to console
  */
 int ashcon::printf( char* fmt, ... ) {
     // Taken from http://playground.arduino.cc/Main/Printf
-    char tmp[128]; // resulting string limited to 512 chars
+    char tmp[128]; // resulting string limited to 128 chars
     va_list args;
     va_start (args, fmt );
     vsnprintf(tmp, 128, fmt, args);
@@ -72,6 +78,8 @@ int ashcon::get_line() {
                 //this->printf("Found a \\n \n\r");
                 break;
             } else if( char_in == 0x8 || char_in == 0x7F ) {
+                // This is a backspace character, which we do want to
+                // print to the screen
                 char_in = 0x8;
                 bs_flag = true;
             }
@@ -158,6 +166,7 @@ int ashcon::command_arg_append( char* new_command ) {
 
 /** Dump the contents of the argument list to console yo
  */
+#ifdef DEBUG
 void ashcon::command_arg_dump_debug() {
     this->printf("DEBUG: Drop command arg list\n\r");
     for( int i = 0; i < COMMAND_ARG_NUM_MAX; i++ ) {
@@ -168,6 +177,7 @@ void ashcon::command_arg_dump_debug() {
 
     return;
 }
+#endif
 
 /** Dealloc all the string pointers. Forget to call this? You got a
  * memory leak bro.
@@ -189,9 +199,9 @@ int ashcon::command_arg_clear() {
 
 // Allows other functions to mess with the internals, definitely not
 // ideal. Use for debugging only
-char* ashcon::get_command_buffer() {
-    return this->command_buffer;
-}
+//char* ashcon::get_command_buffer() {
+    //return this->command_buffer;
+//}
 
 int ashcon::user_function_register( char* id, int (*func)(char* args[]) ) {
     int new_id_length;
@@ -230,13 +240,6 @@ void ashcon::ufunc_dump() {
                     ufunc_list[i].func );
         }
     }
-}
-
-void ashcon::repeat() {
-    this->get_line_splitline();
-    this->user_function_call(this->command_arg_list[0]);
-
-    return;
 }
 
 int ashcon::command_prompt() {
