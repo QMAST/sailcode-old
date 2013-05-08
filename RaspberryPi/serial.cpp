@@ -1,4 +1,4 @@
-int open_serial_port(char* path) {
+int openSerialPort(char* path) {
 	int fd, stat;
 	struct termios tio;
 
