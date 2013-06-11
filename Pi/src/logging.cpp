@@ -96,7 +96,7 @@ int Logging::log() {
 	//Loop through the entire list of data sources
 	std::list<DataSource>::iterator it;
 	std::list<DataSource>::iterator end;
-	fs<<this->getTimeStamp()<<":";
+	fs<<Logging::getTimeStamp()<<":";
 	for(it=this->sources.begin(), end=this->sources.end(); it != end; it++) 
 	{ 
 		if(it!=this->sources.begin())
@@ -141,7 +141,7 @@ void Logging::error(const char* src, const std::string &msg) {
 		return;
 	}
 
-	fs<<this->getTimeStamp()<<":"<<src<<"-"<<msg<<std::endl;
+	fs<<Logging::getTimeStamp()<<":"<<src<<"-"<<msg<<std::endl;
 
 	fs.close();
 	return;

@@ -32,16 +32,19 @@ int addDataSource(DataType type, const std::string &label, void* data);
 int log();//write line to file.
 
 private:
-std::string dataPath;//Path for the data log
-std::list<DataSource> sources;//List of data sources to print to file.
-std::string getTimeStamp();
-int addDataSource(DataSource* src);
 
 typedef struct {
 	DataType type;
 	std::string label;
 	void* data;
 } DataSource;
+
+std::string dataPath;//Path for the data log
+std::list<DataSource> sources;//List of data sources to print to file.
+static std::string getTimeStamp();
+int addDataSource(DataSource* src);
+
+
 
 };
 

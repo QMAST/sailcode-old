@@ -1,3 +1,5 @@
+volatile void* GPIO::gpio = NULL;
+
 int GPIO::init() {
   if(gpio==NULL) {
     //Already initialized. Not really an error, but should avoid calling multiple times
@@ -32,7 +34,7 @@ int GPIO::init() {
     	return -1;
     }
 
-    gpio = (volatile unsigned *)gpio_map;//convert to a volatile pointer.
+    gpio = (volatile *)gpio_map;//convert to a volatile pointer.
 }
 
 int GPIO::setPin(int pin, int status) {

@@ -1,3 +1,5 @@
+#include "arduinoCom.h"
+
 ArduinoCom::ArduinoCom(const std::string &path, int pin){
 	//Takes as an argument the pin 
 	//which the arduino interrupt is connected to, 
@@ -5,7 +7,7 @@ ArduinoCom::ArduinoCom(const std::string &path, int pin){
 
 
 	GPIO::init();
-	GPIO::setPin(pin);
+	GPIO::setPin(pin, OUTPUT);
 	this->interruptPin = pin;
 
 	this->openPort(path);
