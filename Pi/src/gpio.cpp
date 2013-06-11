@@ -1,3 +1,5 @@
+volatile void* GPIO::gpio = NULL;
+
 int GPIO::init() {
   if(gpio==NULL) {
     //Already initialized. Not really an error, but should avoid calling multiple times

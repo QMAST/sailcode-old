@@ -41,7 +41,7 @@ typedef struct {
 
 std::string dataPath;//Path for the data log
 std::list<DataSource> sources;//List of data sources to print to file.
-std::string getTimeStamp();
+static std::string getTimeStamp();
 int addDataSource(DataSource* src);
 
 
