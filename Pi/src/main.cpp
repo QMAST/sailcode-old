@@ -16,17 +16,17 @@ int main(int argc, char* argv[]) {
 	std::string resp;
 	int stat=0;
 	int pin= 0;
-	Logging log ();
+	Logging* log = new Logging();
 	ArduinoCom ard("/dev/ttyACM0",pin);
-	log.addDataSource(DOUBLE, "lat", &lat);
-	log.addDataSource(DOUBLE, "lon", &lon);
-	log.addDataSource(DOUBLE, "heading", &heading);
-	log.addDataSource(DOUBLE, "var", &var);
-	log.addDataSource(DOUBLE, "dev", &dev);
-	log.addDataSource(DOUBLE, "windSpeed", &windSpeed);
-	log.addDataSource(DOUBLE, "windHeading", &windHeading);
-	log.addDataSource(DOUBLE, "courseOG", &courseOverGround);
-	log.addDataSource(DOUBLE, "speedOG", &speedOverGround);
+	log->addDataSource(DOUBLE, "lat", &lat);
+	log->addDataSource(DOUBLE, "lon", &lon);
+	log->addDataSource(DOUBLE, "heading", &heading);
+	log->addDataSource(DOUBLE, "var", &var);
+	log->addDataSource(DOUBLE, "dev", &dev);
+	log->addDataSource(DOUBLE, "windSpeed", &windSpeed);
+	log->addDataSource(DOUBLE, "windHeading", &windHeading);
+	log->addDataSource(DOUBLE, "courseOG", &courseOverGround);
+	log->addDataSource(DOUBLE, "speedOG", &speedOverGround);
 	
 	while(true) {
 		stat = ard.requestVariables("airmar","lat lon", resp);
@@ -48,7 +48,7 @@ int main(int argc, char* argv[]) {
 			courseOverGround = atof(strtok(NULL, ","));
 			speedOverGround = atof(strtok(NULL, ","));
 		}
-		log.log();
+		log->log();
 	}
 }
 
