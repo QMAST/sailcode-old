@@ -32,10 +32,11 @@
 
 class GPIO {
 public:
-	static volatile unsigned void *gpio = NULL;
 	static int init();
-	static int setPin(int pin); 
+	static int setPin(int pin, int status); 
 	static int digitalWrite(int pin, int level);
+private:
+	static volatile unsigned void *gpio = NULL;
 };
 
 #endif

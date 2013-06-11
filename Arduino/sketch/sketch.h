@@ -1,6 +1,7 @@
 #ifndef _sketch_h
 #define _sketch_h
 
+#include <Arduino.h>
 #include <sensor.h>
 #include <ashcon.h>
 #include <airmar.h>
