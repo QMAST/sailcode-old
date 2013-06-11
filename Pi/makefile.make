@@ -15,10 +15,10 @@ SHELL = /bin/sh
 all: main
 
 main: main.o logging.o arduinoCom.o
-	$(CXX) main.o -o $@
+	$(CXX) $< -o $@
 
 testing: testing.o logging.o arduinoCom.o
-	$(CXX) testing.o -o testing 
+	$(CXX) $< -o $@ 
 
 testing.o: testing.cpp logging.h arduinoCom.h
 	$(CXX) $(CFLAGS) $< -o $@
