@@ -11,10 +11,11 @@
 class ArduinoCom : public Serial {
 public:
 	ArduinoCom(const std::string &path, int pin);
-private:
-int requestVariables(const std::string &source, 
+	int requestVariables(const std::string &source, 
 					const std::string &labels, 
 					std::string &vars);
+private:
+
 
 int interruptPin;
 };

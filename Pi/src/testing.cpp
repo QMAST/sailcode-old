@@ -4,6 +4,8 @@
 #include "logging.h"
 #include "arduinoCom.h"
 
+using namespace std;
+
 ArduinoCom* ac;
 
 int main(int argc, char* argv[]) {

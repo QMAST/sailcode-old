@@ -36,7 +36,7 @@ public:
 	static int setPin(int pin, int status); 
 	static int digitalWrite(int pin, int level);
 private:
-	static volatile unsigned void *gpio = NULL;
+	static volatile void *gpio = NULL;
 };
 
 #endif

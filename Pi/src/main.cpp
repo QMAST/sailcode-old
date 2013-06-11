@@ -16,7 +16,7 @@ int main(int argc, char* argv[]) {
 	std::string resp;
 	int stat=0;
 	int pin= 0;
-	Logging log();
+	Logging log ();
 	ArduinoCom ard("/dev/ttyACM0",pin);
 	log.addDataSource(DOUBLE, "lat", &lat);
 	log.addDataSource(DOUBLE, "lon", &lon);
@@ -26,24 +26,24 @@ int main(int argc, char* argv[]) {
 	log.addDataSource(DOUBLE, "windSpeed", &windSpeed);
 	log.addDataSource(DOUBLE, "windHeading", &windHeading);
 	log.addDataSource(DOUBLE, "courseOG", &courseOverGround);
-	log.addDataSource(DOUBLE, "speedOG", &speedOG);
+	log.addDataSource(DOUBLE, "speedOG", &speedOverGround);
 	
 	while(true) {
 		stat = ard.requestVariables("airmar","lat lon", resp);
 		if(stat==0){ 
 			//need to parse the variables string into the appropriate slots.
-			lat = atof(strtok(resp, ","));
+			lat = atof(strtok(resp.c_str(), ","));
 			lon = atof(strtok(NULL, ","));
 		}
 		stat = ard.requestVariables("airmar", "heading var dev", resp);
 		if(stat==0) {
-			heading = atof(strtok(resp, ","));
+			heading = atof(strtok(resp.c_str(), ","));
 			var = atof(strtok(NULL, ","));
 			dev = atof(strtok(NULL, ","));
 		}
 		stat = ard.requestVariables("airmar", "windSpeed windHeading courseOverGround speedOverGround", resp);
 		if(stat==0) {
-			windSpeed = atof(strtok(resp, ","));
+			windSpeed = atof(strtok(resp.c_str(), ","));
 			windHeading = atof(strtok(NULL, ","));
 			courseOverGround = atof(strtok(NULL, ","));
 			speedOverGround = atof(strtok(NULL, ","));
