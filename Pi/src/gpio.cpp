@@ -1,3 +1,5 @@
+#include "gpio.h"
+
 volatile void* GPIO::gpio = NULL;
 
 int GPIO::init() {
@@ -35,6 +37,8 @@ int GPIO::init() {
     }
 
     gpio = (volatile *)gpio_map;//convert to a volatile pointer.
+
+    return 0;
 }
 
 int GPIO::setPin(int pin, int status) {
@@ -42,7 +46,7 @@ int GPIO::setPin(int pin, int status) {
     Logging::error(__func__, "Invalid pin status attempted");
     return -1;
   }
-  if(this->gpio==NULL) {
+  if(GPIO::gpio==NULL) {
     Logging::error(__func__, "GPIO not initialized - invalid attempted write");
     return -1;
   }
@@ -53,8 +57,8 @@ int GPIO::setPin(int pin, int status) {
 
   
   //First, set the 3 function select bits to 0, then set them appropriately
-  *(this->gpio+offset) &= ~(7<<(shift));
-  *(this->gpio+offset) |= (status<<(shift));
+  *(GPIO::gpio+offset) &= ~(7<<(shift));
+  *(GPIO::gpio+offset) |= (status<<(shift));
   return 0;
 }
 
@@ -73,6 +77,6 @@ int GPIO::digitalWrite(int pin, int level){
     pin -=31;
   }
 
-  *(gpio+offset) &= (1<<pin); 
+  *(GPIO::gpio+offset) &= (1<<pin); 
   return 0;
 }
