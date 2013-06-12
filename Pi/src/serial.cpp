@@ -13,7 +13,7 @@ int Serial::openPort(const std::string &path) {
 
 	if(tcgetattr(fd, &tio) < 0) {
 		//An error
-		Logging::error(__func__, "Unable to get serial port attributes.")
+		Logging::error(__func__, "Unable to get serial port attributes.");
 		return -1;
 	}
 
@@ -45,7 +45,7 @@ int Serial::openPort(const std::string &path) {
     stat |= tcsetattr(fd, TCSANOW, &tio);
     if(stat!=0) {
     	//One last error.
-    	Logging::error(__func__, "Unable to set serial port properties")
+    	Logging::error(__func__, "Unable to set serial port properties");
     	return -1;
     }
     this->fildes = fd;
@@ -55,17 +55,15 @@ int Serial::openPort(const std::string &path) {
 }
 
 int Serial::readBlock(std::string &msg) {
-	char* buf = (char*) malloc(sizeof(char)*256);
+	char* buf = (char*) malloc(sizeof(char)*2);
 	int num;
 	msg ="";
-	int size = 8;
 
-	err=0;
 	buf[0]='\0';
 	num=1;
 
 	while((num>0) && buf[0]!='\n' && buf[0]!='\r' && buf[0]!='>') {
-		num = read(this->fildes, buf, 255);
+		num = read(this->fildes, buf, 1);
 		buf[num] = '\0';
 
 		if(num>0) {
@@ -75,7 +73,7 @@ int Serial::readBlock(std::string &msg) {
 
 	if(num<=0) {
 		//Error while reading.
-		Logging::error(__func__, "Problem while reading from serial port")
+		Logging::error(__func__, "Problem while reading from serial port");
 		return -1;
 	}
 	else if(buf[num-1]!='\n' && buf[num-1]!='r' && buf[num-2]!='>') {
@@ -92,17 +90,17 @@ int Serial::sendCommand(const std::string &cmd, std::string &resp) {
 
 	if(num<0) {
 		//Log an error
-		Logging::error(__func__, "Could not write command.")
+		Logging::error(__func__, "Could not write command.");
 		return -1;
 	}
 
 	if(num<cmd.length()) {
 		//Entire command wasn't written, an error occured.
-		Logging::error(__func__, "Command not written completely.")
+		Logging::error(__func__, "Command not written completely.");
 		return -1;
 	}
 
-	num = readBlock(this->fildes, resp);
+	num = readBlock(resp);
 	
 	return num;
 }
