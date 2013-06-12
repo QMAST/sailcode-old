@@ -14,10 +14,10 @@ SHELL = /bin/sh
 
 all: main
 
-main: main.o logging.o arduinoCom.o
+main: main.o logging.o arduinoCom.o gpio.o serial.o
 	$(CXX) $^ -o $@
 
-testing: testing.o logging.o arduinoCom.o
+testing: testing.o logging.o arduinoCom.o gpio.o serial.o
 	$(CXX) $^ -o $@ 
 
 testing.o: testing.cpp logging.h arduinoCom.h
@@ -41,4 +41,4 @@ logging.o: logging.cpp logging.h
 #Clean up everything.
 .PHONY: clean
 clean: 
-	rm *.o temp
+	rm *.o
