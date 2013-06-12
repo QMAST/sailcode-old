@@ -160,3 +160,4 @@ std::string Logging::getTimeStamp() {
 		+ ":" + std::to_string(ptm->tm_sec);
 	return timeStamp;
 }
+

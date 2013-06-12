@@ -3,7 +3,7 @@
 CXX = g++
 LIB = lib
 SRC = src
-CFLAGS = -c -I$(LIB)
+CFLAGS = -c -std=c++11 -Wall -I$(LIB)
 
 #system stuff to setup properly. 
 VPATH = $(SRC):$(LIB)
