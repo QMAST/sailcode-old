@@ -7,11 +7,10 @@
 
 using namespace std;
 
-ArduinoCom* ac;
+//ArduinoCom* ac;
 
 int main(int argc, char* argv[]) {
 
-	/*
 	//Simple place to test individual features.
 	ac = new ArduinoCom("/dev/ttyACM0", 2);
 	std::string str = "";
@@ -22,7 +21,7 @@ int main(int argc, char* argv[]) {
 	}
 	cout<<"End test"<<endl;
 
-	*/
+	/*
 	int stat;
 	stat = GPIO::init();
 	if(stat!=0) {
@@ -45,5 +44,5 @@ int main(int argc, char* argv[]) {
 		std::cout<<"Pin raised"<<endl;
 		usleep(1000*5000);
 	}
-
+	*/
 }

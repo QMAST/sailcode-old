@@ -8,7 +8,7 @@ ArduinoCom::ArduinoCom(const std::string &path, int pin){
 
 	stat = GPIO::init();
 	if(stat!=0) {
-		Logging::error(__func__, "Error Setting up the Arduino.")
+		Logging::error(__func__, "Error Setting up the Arduino.");
 		return;
 	}
 	GPIO::setPin(pin, OUTPUT);
