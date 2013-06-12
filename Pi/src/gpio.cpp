@@ -3,7 +3,7 @@
 volatile int* GPIO::gpio = NULL;
 
 int GPIO::init() {
-  if(gpio==NULL) {
+  if(gpio!=NULL) {
     //Already initialized. Not really an error, but should avoid calling multiple times
     Logging::error(__func__, "GPIO attempted to initialize twice");
     return 0;
