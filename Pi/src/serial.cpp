@@ -73,12 +73,12 @@ int Serial::readBlock(std::string &msg) {
 
 	if(num<=0) {
 		//Error while reading.
-		Logging::error(__func__, "Problem while reading from serial port");
+		Logging::error(__func__, "Problem while reading from serial port: "+msg);
 		return -1;
 	}
 	else if(buf[num-1]!='\n' && buf[num-1]!='r' && buf[num-2]!='>') {
 		//Timeout before reading full line, be cautious
-		Logging::error(__func__, "Full line not read.");
+		Logging::error(__func__, "Full line not read :"+msg);
 		return -1;
 	}
 	return 0;

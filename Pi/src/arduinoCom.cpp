@@ -4,9 +4,13 @@ ArduinoCom::ArduinoCom(const std::string &path, int pin){
 	//Takes as an argument the pin 
 	//which the arduino interrupt is connected to, 
 	//and the path of the usb port which that same arduino is hooked up to.
+	int stat;
 
-
-	GPIO::init();
+	stat = GPIO::init();
+	if(stat!=0) {
+		Logging::error(__func__, "Error Setting up the Arduino.")
+		return;
+	}
 	GPIO::setPin(pin, OUTPUT);
 	this->interruptPin = pin;
 
@@ -27,7 +31,7 @@ int ArduinoCom::requestVariables(const std::string &source ,
 
 	std::string resp = "";
 	//First, raise an interrupt, and wait for a '>' from the arduino.
-	GPIO::digitalWrite(this->interruptPin, HIGH);
+	GPIO::digitalWrite(this->interruptPin, LOW);
 	int stat = this->readBlock(resp);
 	if(stat!=0) {
 		//Request failed.
@@ -42,6 +46,6 @@ int ArduinoCom::requestVariables(const std::string &source ,
 		Logging::error(__func__,"Variables not returned. Response: "+vars);
 		return -1;
 	}
-	GPIO::digitalWrite(this->interruptPin, LOW);
+	GPIO::digitalWrite(this->interruptPin, HIGH);
 	return 0;
 }
