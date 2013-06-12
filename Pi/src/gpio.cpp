@@ -1,6 +1,6 @@
 #include "gpio.h"
 
-volatile void* GPIO::gpio = NULL;
+volatile int* GPIO::gpio = NULL;
 
 int GPIO::init() {
   if(gpio==NULL) {
@@ -36,7 +36,7 @@ int GPIO::init() {
     	return -1;
     }
 
-    gpio = (volatile *)gpio_map;//convert to a volatile pointer.
+    gpio = (volatile int*) gpio_map;//convert to a volatile pointer.
 
     return 0;
 }
