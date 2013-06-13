@@ -31,6 +31,7 @@ int ArduinoCom::requestVariables(const std::string &source ,
 
 	std::string resp = "";
 	//First, raise an interrupt, and wait for a '>' from the arduino.
+	GPIO::digitalWrite(this->interruptPin, HIGH);
 	GPIO::digitalWrite(this->interruptPin, LOW);
 	int stat = this->readBlock(resp);
 	if(stat!=0) {

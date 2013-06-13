@@ -2,12 +2,12 @@
 #include <iostream>
 #include <unistd.h>
 #include "logging.h"
-//#include "arduinoCom.h"
+#include "arduinoCom.h"
 #include "gpio.h"
 
 using namespace std;
 
-//ArduinoCom* ac;
+ArduinoCom* ac;
 
 int main(int argc, char* argv[]) {
 
@@ -16,6 +16,7 @@ int main(int argc, char* argv[]) {
 	std::string str = "";
 
 	for(int i=0;i<10;i++) {
+		
 		ac->requestVariables("test","test1 test2", str);
 		cout<<str<<endl;
 	}

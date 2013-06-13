@@ -62,7 +62,7 @@ int Serial::readBlock(std::string &msg) {
 	buf[0]='\0';
 	num=1;
 
-	while((num>0) && buf[0]!='\n' && buf[0]!='\r' && buf[0]!='>') {
+	while((num>0) && buf[0]!='\n' && buf[0]!='\r') {
 		num = read(this->fildes, buf, 1);
 		buf[num] = '\0';
 
@@ -76,7 +76,7 @@ int Serial::readBlock(std::string &msg) {
 		Logging::error(__func__, "Problem while reading from serial port: "+msg);
 		return -1;
 	}
-	else if(buf[num-1]!='\n' && buf[num-1]!='r' && buf[num-2]!='>') {
+	else if(buf[0]!='\n' && buf[0]!='\r') {
 		//Timeout before reading full line, be cautious
 		Logging::error(__func__, "Full line not read :"+msg);
 		return -1;

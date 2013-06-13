@@ -9,7 +9,7 @@ void setup() {
 	Console = new ashcon(&Serial);
 	Console->user_function_register("req", &returnGarbage);
         pinMode(13, OUTPUT);
-        attachInterrupt(0, piInterrupt, LOW);
+        attachInterrupt(0, piInterrupt, FALLING);
 }
 
 void loop() {
