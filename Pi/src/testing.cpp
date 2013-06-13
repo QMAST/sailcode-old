@@ -16,9 +16,10 @@ int main(int argc, char* argv[]) {
 	std::string str = "";
 
 	for(int i=0;i<10;i++) {
-		
+		cout<<"Request no. "<<i<<endl;
 		ac->requestVariables("test","test1 test2", str);
 		cout<<str<<endl;
+		
 	}
 	cout<<"End test"<<endl;
 

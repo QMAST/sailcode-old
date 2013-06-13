@@ -39,7 +39,7 @@ int ArduinoCom::requestVariables(const std::string &source ,
 		Logging::error(__func__, "Variable request failed. Arduino not responsive: "+resp);
 		return -1; //Error getting info from arduino.
 	}
-	if(resp.find("> ")==-1) {//Arduino is not responding.
+	if(resp.find(">")==-1) {//Arduino is not responding.
 	
 	}
 	stat = this->sendCommand("req "+source+" "+labels, vars);
