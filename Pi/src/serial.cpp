@@ -86,7 +86,7 @@ int Serial::readBlock(std::string &msg) {
 
 int Serial::sendCommand(const std::string &cmd, std::string &resp) {
 	int num;
-	readBlock(resp);
+	
 	num = write(this->fildes, cmd.c_str(), cmd.length());
 
 	if(num<0) {
