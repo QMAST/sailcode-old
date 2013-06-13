@@ -46,11 +46,11 @@ int ArduinoCom::requestVariables(const std::string &source ,
 		return -1; //Error getting info from arduino.
 	}
 	if(resp.find(">")==-1) {//Arduino is not responding.
-		Logging::error(__func__, "Didn't find a > to indicate proper response.");
+		Logging::error(__func__, "Didn't find a > to indicate proper response: "+resp);
 	}
-	stat = this->sendCommand("req "+source+" "+labels+"\n\r",vars);
+	stat = this->sendCommand("req "+source+" "+labels+"\n",vars);
 	if(stat!=0) {
-		Logging::error(__func__,"Variables not returned. Response: "+vars);
+		Logging::error(__func__,"Variables not returned. Response: "+resp+", Variables:"+vars);
 		return -1;
 	}
 	
