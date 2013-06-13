@@ -58,6 +58,9 @@ int ashcon::get_line() {
 
     // Sit and wait until the line ends or the buffer fills,
     // Danger, it could wait forever without a timer.
+    //Now has a timeout! 3 seconds since last input
+    unsigned long start = millis();
+
     while( i < this->COMMAND_BUFFER_LENGTH ) {
         if( this->line_in->available() > 0 ) {
             // A character is ready, grab it
@@ -78,6 +81,9 @@ int ashcon::get_line() {
                 this->line_in->print(char_in);
             }
             i++;
+            start=millis();
+        } else if((millis()-start) > 1000 || millis()<start) {
+            return this->FAILURE;
         }
     }
 
@@ -222,10 +228,12 @@ void ashcon::ufunc_dump() {
 }
 
 int ashcon::command_prompt() {
-    this->printf("> ");
-    this->get_line();
-    this->get_line_splitline();
-    this->user_function_call(this->command_arg_list[0]);
-    this->command_arg_clear();
-    return this->SUCCESS;
+    this->printf(">\n");
+    if(this->get_line() == this->SUCCESS) {
+        this->get_line_splitline();
+        this->user_function_call(this->command_arg_list[0]);
+        this->command_arg_clear();
+        return this->SUCCESS;
+    }
+    return this->FAILURE;
 }
