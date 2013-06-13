@@ -17,11 +17,14 @@ void loop() {
 		case 0:
 		//Figure out something to do here
                     delay(200);
+                    digitalWrite(13, LOW);
 		break;
 		case 1:
-			Console->command_prompt();
+			if(Console->command_prompt() !=0) {
+                            digitalWrite(13, HIGH);
+                        }
 			mode=0;
-                        digitalWrite(13, LOW);
+                        //digitalWrite(13, LOW);
 		break;
 
 	}
@@ -29,13 +32,15 @@ void loop() {
 
 void piInterrupt() {
 	mode =1;
-        digitalWrite(13, HIGH);
+        //digitalWrite(13, HIGH);
 }
 
 int returnGarbage(int argc, char* argv[]) {
 	Serial.print("Interrupt number ");
 	Serial.print(counter);
 	Serial.print(": ");
+        Serial.print(argc);
+        Serial.print(" arguments - ");
 	counter++;
 	for(int i=0; i<argc; i++){
 		Serial.print(argv[i]);

@@ -82,7 +82,7 @@ int ashcon::get_line() {
             }
             i++;
             start=millis();
-        }else if(millis()-start > 1000 || millis()<start) {
+        } else if((millis()-start) > 1000 || millis()<start) {
             return this->FAILURE;
         }
     }
@@ -229,9 +229,11 @@ void ashcon::ufunc_dump() {
 
 int ashcon::command_prompt() {
     this->printf(">\n");
-    this->get_line();
-    this->get_line_splitline();
-    this->user_function_call(this->command_arg_list[0]);
-    this->command_arg_clear();
-    return this->SUCCESS;
+    if(this->get_line() == this->SUCCESS) {
+        this->get_line_splitline();
+        this->user_function_call(this->command_arg_list[0]);
+        this->command_arg_clear();
+        return this->SUCCESS;
+    }
+    return this->FAILURE;
 }

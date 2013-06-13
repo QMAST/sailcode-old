@@ -32,7 +32,9 @@ int ArduinoCom::requestVariables(const std::string &source ,
 	std::string resp = "";
 	//First, raise an interrupt, and wait for a '>' from the arduino.
 	GPIO::digitalWrite(this->interruptPin, HIGH);
+	usleep(10*1000);
 	GPIO::digitalWrite(this->interruptPin, LOW);
+	GPIO::digitalWrite(this->interruptPin, HIGH);
 	int stat = this->readBlock(resp);
 	if(stat!=0) {
 		//Request failed.
@@ -40,13 +42,14 @@ int ArduinoCom::requestVariables(const std::string &source ,
 		return -1; //Error getting info from arduino.
 	}
 	if(resp.find(">")==-1) {//Arduino is not responding.
-	
+		Logging::error(__func__, "Didn't find a > to indicate proper response.");
+
 	}
-	stat = this->sendCommand("req "+source+" "+labels, vars);
+	stat = this->sendCommand("req "+source+" "+labels+"\n\r",vars);
 	if(stat!=0) {
 		Logging::error(__func__,"Variables not returned. Response: "+vars);
 		return -1;
 	}
-	GPIO::digitalWrite(this->interruptPin, HIGH);
+	
 	return 0;
 }
