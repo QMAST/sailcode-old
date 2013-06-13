@@ -35,7 +35,11 @@ int ArduinoCom::requestVariables(const std::string &source ,
 	usleep(10*1000);
 	GPIO::digitalWrite(this->interruptPin, LOW);
 	GPIO::digitalWrite(this->interruptPin, HIGH);
-	int stat = this->readBlock(resp);
+	int stat;
+	while(resp.find_first_not_of("\n\r ")==std::string::npos) {
+		stat = this->readBlock(resp);//Read first non-empty line.
+	}
+
 	if(stat!=0) {
 		//Request failed.
 		Logging::error(__func__, "Variable request failed. Arduino not responsive: "+resp);
