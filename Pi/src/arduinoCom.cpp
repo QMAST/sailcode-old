@@ -43,7 +43,6 @@ int ArduinoCom::requestVariables(const std::string &source ,
 	}
 	if(resp.find(">")==-1) {//Arduino is not responding.
 		Logging::error(__func__, "Didn't find a > to indicate proper response.");
-
 	}
 	stat = this->sendCommand("req "+source+" "+labels+"\n\r",vars);
 	if(stat!=0) {
