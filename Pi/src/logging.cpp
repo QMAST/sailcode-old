@@ -2,7 +2,7 @@
 
 std::string Logging::errPath = "error00.log";
 std::string Logging::dataPath = "data00.log";
-std::list<DataSource> sources = NULL;
+std::list<DataSource> Logging::sources = std::list<DataSource>();
 
 void Logging::init() {
 	//Generate the paths for the logfiles.
