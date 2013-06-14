@@ -2,8 +2,9 @@
 
 std::string Logging::errPath = "error00.log";
 std::string Logging::dataPath = "data00.log";
+std::list<DataSource> sources = NULL;
 
-Logging::init() {
+void Logging::init() {
 	//Generate the paths for the logfiles.
 	char dPath [] = "data00.log";
 	char ePath [] = "error00.log";
@@ -35,7 +36,7 @@ Logging::init() {
 	return;
 }
 
-Logging::clean() {
+void Logging::clean() {
 	//Loop through the entire list of data sources
 	std::list<DataSource>::iterator it;
 	std::list<DataSource>::iterator end;
