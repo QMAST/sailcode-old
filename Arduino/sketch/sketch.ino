@@ -1,7 +1,30 @@
-#include "sketch.h"
+#include <Arduino.h>
+#include <ashcon.h>
+#include <airmar.h>
+#include <sensor.h>
+
+#define RCPIN 8
+
+typedef struct SensorLink {
+	struct SensorLink* next;
+	Sensor* s;
+} SensorLink;
+
+int mode = 0;
+int spd;
+Airmar* airmar;
+ashcon* Console;
+SensorLink* sensorList;
+
+void addToList(Sensor* item);
+int dispatchRequest(int argc, char* argv[]);
+Sensor* getHottestSensor();
+void piInterrupt();
+
 
 void setup() {
 	//Initialize console
+    Serial.begin(115200);
     Console = new ashcon(&Serial);
     Console->user_function_register("req", &dispatchRequest);
     
@@ -10,18 +33,26 @@ void setup() {
     addToList(airmar);
 
     //Setup interrupts
-    attachInterrupt(0, piInterrupt, RISING);
+    attachInterrupt(0, piInterrupt, FALLING);
 }
 
 void loop() {
     switch(mode) {
-        case 0: //Default mode, polling sensors.
+        case 0: //Default mode, polling sensors, handling RC.
+        {
+            spd = getPWM_Value(RCPIN);
+            if(spd!=-10000) setMotorSpeed(spd);
             Sensor* sens = getHottestSensor();
             sens->update();
+            spd = getPWM_Value(RCPIN);
+            if(spd!=-10000) setMotorSpeed(spd);
+        }
         break;
         case 1: //Responding to request for variables.
+        {
             Console->command_prompt();
             mode=0;
+        }
         break;   
     }
 }
@@ -43,13 +74,13 @@ int dispatchRequest(int argc, char* argv[]) {
 	//All following args are variables that are requested.
 	SensorLink* link = sensorList;
 	while(link!=NULL) {
-		if(strcmp(link->sens->id, argv[1])==0){
+		if(strcmp(link->s->id, argv[1])==0){
 			break;
 		}
 		link = link->next;
 	}
 
-	char** variables = link->sens->getVariables(argc-2, &(argv[2]));
+	char** variables = link->s->getVariables(argc-2, &(argv[2]));
 	for(int i=0; i<argc-2; i++) {//Print out all the variables.
 		if(variables[i]!=NULL) {
 			Serial.print(variables[i]);
@@ -64,10 +95,10 @@ int dispatchRequest(int argc, char* argv[]) {
 }
 
 Sensor* getHottestSensor() {
-	if(sensorLink==NULL || sensorLink->s==NULL) {
+	if(sensorList==NULL || sensorList->s==NULL) {
 		return NULL;
 	}
-    SensorLink* link = sensorLink;
+    SensorLink* link = sensorList;
     Sensor* hottest;
     int maxTemp=0;
     unsigned long t = millis();
@@ -85,4 +116,33 @@ Sensor* getHottestSensor() {
 
 void piInterrupt() {
 	mode =1;
+}
+
+int getPWM_Value(int pinIn)
+{
+
+  int RCVal = pulseIn(pinIn, HIGH, 20000);
+  if(RCVal == 0)
+  {
+    RCVal = -10000;
+  }
+
+  RCVal = map(RCVal, 1000, 2000, -3200, 3200);
+  return RCVal;
+
+}
+
+void setMotorSpeed(int speed)
+{
+  if (speed < 0)
+  {
+    Serial2.write(0x86);  // motor reverse command
+    speed = -speed;  // make speed positive
+  }
+  else
+  {
+    Serial2.write(0x85);  // motor forward command
+  }
+  Serial2.write(speed & 0x1F);
+  Serial2.write(speed >> 5);
 }

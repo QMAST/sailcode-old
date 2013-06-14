@@ -1,8 +1,9 @@
 #include "logging.h"
 
 std::string Logging::errPath = "error00.log";
+std::string Logging::dataPath = "data00.log";
 
-Logging::Logging() {
+Logging::init() {
 	//Generate the paths for the logfiles.
 	char dPath [] = "data00.log";
 	char ePath [] = "error00.log";
@@ -28,17 +29,17 @@ Logging::Logging() {
 	}
 
 	Logging::errPath = std::string(ePath);
-	this->dataPath = std::string(dPath);
+	Logging::dataPath = std::string(dPath);
 
-	this->sources = std::list<DataSource>();
+	Logging::sources = std::list<DataSource>();
 	return;
 }
 
-Logging::~Logging() {
+Logging::clean() {
 	//Loop through the entire list of data sources
 	std::list<DataSource>::iterator it;
 	std::list<DataSource>::iterator end;
-	for(it=this->sources.begin(), end=this->sources.end(); it != end; it++) 
+	for(it=Logging::sources.begin(), end=Logging::sources.end(); it != end; it++) 
 	{ 
 		switch(it->type) {
 			case INT:
@@ -67,7 +68,7 @@ int Logging::addDataSource(DataSource* src) {
 		return -1;
 	}
 
-	this->sources.push_back(*src);
+	Logging::sources.push_back(*src);
 	return 0;
 }
 
@@ -81,13 +82,13 @@ int Logging::addDataSource(DataType type, const std::string &label, void* data) 
 
 int Logging::log() {
 	//Open file, if possible.
-	if(this->dataPath.empty()) {
+	if(Logging::dataPath.empty()) {
 		Logging::error(__func__, "File path not initialized properly");
 		return -1;
 	}
 
 	std::fstream fs;
-	fs.open(this->dataPath.c_str(), std::fstream::out | std::fstream::app);
+	fs.open(Logging::dataPath.c_str(), std::fstream::out | std::fstream::app);
 	if(!fs.is_open()) {
 		Logging::error(__func__, "File failed to open.");
 		return -1;
@@ -97,9 +98,9 @@ int Logging::log() {
 	std::list<DataSource>::iterator it;
 	std::list<DataSource>::iterator end;
 	fs<<Logging::getTimeStamp()<<":";
-	for(it=this->sources.begin(), end=this->sources.end(); it != end; it++) 
+	for(it=Logging::sources.begin(), end=Logging::sources.end(); it != end; it++) 
 	{ 
-		if(it!=this->sources.begin())
+		if(it!=Logging::sources.begin())
 		{
 			fs<<",";
 		}
@@ -160,4 +161,3 @@ std::string Logging::getTimeStamp() {
 		+ ":" + std::to_string(ptm->tm_sec);
 	return timeStamp;
 }
-

@@ -61,8 +61,8 @@ int Sensor::addVar(DataType type, const char* id, void* data) {
 	int len = strlen(id);
 	link->type = type;
 	link->data = data;
-	link->label = (char*) malloc(sizeof(char)*len);
-	strcpy(link->label, id);
+	link->id = (char*) malloc(sizeof(char)*len);
+	strcpy(link->id, id);
 
 	//Might as well just prepend, not worry about appending.
 	link->next = this->varList;

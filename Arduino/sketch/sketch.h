@@ -2,9 +2,11 @@
 #define _sketch_h
 
 #include <Arduino.h>
-#include <sensor.h>
 #include <ashcon.h>
 #include <airmar.h>
+#include <sensor.h>
+
+#define RCPIN 8
 
 typedef struct SensorLink {
 	struct SensorLink* next;
@@ -12,6 +14,7 @@ typedef struct SensorLink {
 } SensorLink;
 
 int mode = 0;
+int spd;
 Airmar* airmar;
 ashcon* Console;
 SensorLink* sensorList;

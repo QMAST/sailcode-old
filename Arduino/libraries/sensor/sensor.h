@@ -4,6 +4,7 @@
 #ifndef _SENSOR_H_
 #define _SENSOR_H_
 
+#include <Arduino.h>
 #include <string.h>
 #include <stdio.h>
 /*
@@ -23,10 +24,10 @@ class Sensor {
 public: 
 	char** getVariables(int argc, char* argv[]);
 	virtual int update() = 0;
-	virtual int getTemp() = 0;
+	virtual int getTemp(unsigned long temp) = 0;
 	char* id;
 protected:
-	typedef struct {
+	typedef struct DataSource{
 		DataType type;
 		char* id;
 		void* data;
@@ -34,7 +35,7 @@ protected:
 	} DataSource;
 
 	DataSource* varList;
-	int addVar(DataType type, char* id, void* data);
+	int addVar(DataType type, const char* id, void* data);
 	Stream* lineIn;
 };
 

@@ -17,17 +17,17 @@ int main(int argc, char* argv[]) {
 	int stat=0;
 	int pin= 0;
 	char* buf;
-	Logging* log = new Logging();
+	Logging::init();
 	ArduinoCom ard("/dev/ttyACM0",pin);
-	log->addDataSource(DOUBLE, "lat", &lat);
-	log->addDataSource(DOUBLE, "lon", &lon);
-	log->addDataSource(DOUBLE, "heading", &heading);
-	log->addDataSource(DOUBLE, "var", &var);
-	log->addDataSource(DOUBLE, "dev", &dev);
-	log->addDataSource(DOUBLE, "windSpeed", &windSpeed);
-	log->addDataSource(DOUBLE, "windHeading", &windHeading);
-	log->addDataSource(DOUBLE, "courseOG", &courseOverGround);
-	log->addDataSource(DOUBLE, "speedOG", &speedOverGround);
+	Logging::addDataSource(DOUBLE, "lat", &lat);
+	Logging::addDataSource(DOUBLE, "lon", &lon);
+	Logging::addDataSource(DOUBLE, "heading", &heading);
+	Logging::addDataSource(DOUBLE, "var", &var);
+	Logging::addDataSource(DOUBLE, "dev", &dev);
+	Logging::addDataSource(DOUBLE, "windSpeed", &windSpeed);
+	Logging::addDataSource(DOUBLE, "windHeading", &windHeading);
+	Logging::addDataSource(DOUBLE, "courseOG", &courseOverGround);
+	Logging::addDataSource(DOUBLE, "speedOG", &speedOverGround);
 	
 	while(true) {
 		stat = ard.requestVariables("airmar","lat lon", resp);
@@ -62,7 +62,9 @@ int main(int argc, char* argv[]) {
 
 			delete[] buf;
 		}
-		log->log();
+		Logging::log();
+
+		usleep(1000*5000);
 	}
 }
 
