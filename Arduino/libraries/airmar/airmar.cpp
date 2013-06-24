@@ -38,6 +38,8 @@ int Airmar::update() {
 	char charIn ='\0';
 	int i=0;
 
+	//Need a timeout here, to prevent a hang.
+	unsigned long st = millis();
 	while(i<255) {
 		if(this->lineIn->available() >0) {
 			charIn = this->lineIn->read();//Read a single character;
@@ -48,6 +50,9 @@ int Airmar::update() {
 
 			buf[i] = charIn;
 			i++;//Should never reach a 255 character line, especially from the airmar.
+		}
+		if(abs(millis()-st) > 500) {
+			return -1;//Timeout
 		}
 	}
 

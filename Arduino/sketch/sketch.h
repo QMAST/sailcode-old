@@ -7,7 +7,7 @@
 #include <sensor.h>
 
 #define RCPIN 8
-
+#define KILLPIN 10
 typedef struct SensorLink {
 	struct SensorLink* next;
 	Sensor* s;

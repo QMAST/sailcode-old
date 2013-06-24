@@ -17,7 +17,7 @@ void setup() {
 void loop() {
     spd = getPWM_Value(RCPIN);
     Serial.println(spd);
-    setMotorSpeed(spd);
+    //setMotorSpeed(spd);
     delay(200);
 }
 

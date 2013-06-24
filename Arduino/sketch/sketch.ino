@@ -4,7 +4,7 @@
 #include <sensor.h>
 
 #define RCPIN 8
-
+#define KILLPIN 10
 typedef struct SensorLink {
 	struct SensorLink* next;
 	Sensor* s;
@@ -20,7 +20,7 @@ void addToList(Sensor* item);
 int dispatchRequest(int argc, char* argv[]);
 Sensor* getHottestSensor();
 void piInterrupt();
-
+boolean isKillswitchEngaged();
 
 void setup() {
 	//Initialize console
@@ -28,6 +28,13 @@ void setup() {
     Console = new ashcon(&Serial);
     Console->user_function_register("req", &dispatchRequest);
     
+//Initialize Pololu
+    Serial2.begin(38400);
+    pinMode(RCPIN, INPUT);
+    delay(5);
+    Serial2.write(0xAA);
+    Serial2.write(0x83);
+
     //Initialize sensors
     airmar = new Airmar("airmar",&Serial1);
     addToList(airmar);
@@ -40,12 +47,24 @@ void loop() {
     switch(mode) {
         case 0: //Default mode, polling sensors, handling RC.
         {
-            spd = getPWM_Value(RCPIN);
-            if(spd!=-10000) setMotorSpeed(spd);
+            if(isKillswitchEngaged() ==false)
+            {
+                spd = getPWM_Value(RCPIN);
+                if(spd > -3200 && spd <3200){
+                    setMotorSpeed(spd);
+                }
+                else
+                {
+                    setMotorSpeed(0);
+                }
+            } else {
+                 setMotorSpeed(0);   
+            }
             Sensor* sens = getHottestSensor();
+            //Serial.print("Hottest sensor is ");
+            //Serial.println(sens->id);
             sens->update();
-            spd = getPWM_Value(RCPIN);
-            if(spd!=-10000) setMotorSpeed(spd);
+            //Serial.write(0); //Just to see if the light blinks.
         }
         break;
         case 1: //Responding to request for variables.
@@ -53,7 +72,7 @@ void loop() {
             Console->command_prompt();
             mode=0;
         }
-        break;   
+        break;
     }
 }
 
@@ -120,7 +139,7 @@ void piInterrupt() {
 
 int getPWM_Value(int pinIn)
 {
-
+    
   int RCVal = pulseIn(pinIn, HIGH, 20000);
   if(RCVal == 0)
   {
@@ -128,6 +147,9 @@ int getPWM_Value(int pinIn)
   }
 
   RCVal = map(RCVal, 1000, 2000, -3200, 3200);
+  //Serial.print(pinIn);
+  //Serial.print("-");
+  //Serial.println(RCVal);
   return RCVal;
 
 }
@@ -145,4 +167,12 @@ void setMotorSpeed(int speed)
   }
   Serial2.write(speed & 0x1F);
   Serial2.write(speed >> 5);
+}
+
+boolean isKillswitchEngaged()
+{
+     int num = getPWM_Value(KILLPIN);
+     if(num>0) return false;
+      return true;   
+    
 }

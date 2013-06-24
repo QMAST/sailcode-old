@@ -15,7 +15,7 @@ int main(int argc, char* argv[]) {
 	double courseOverGround, speedOverGround;
 	std::string resp;
 	int stat=0;
-	int pin= 0;
+	int pin= 2;
 	char* buf;
 	Logging::init();
 	ArduinoCom ard("/dev/ttyACM0",pin);
