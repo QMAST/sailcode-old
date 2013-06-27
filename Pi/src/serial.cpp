@@ -14,7 +14,7 @@ int Serial::openPort(const std::string &path) {
 	if(tcgetattr(fd, &tio) < 0) {
 		//An error
 		std::string errString = strerror(errno);
-		Logging::error(__func__, "Unable to get serial port attributes. Errno:" errString);
+		Logging::error(__func__, "Unable to get serial port attributes. Errno:" +errString);
 		return -1;
 	}
 

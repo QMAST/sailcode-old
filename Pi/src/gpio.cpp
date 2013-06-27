@@ -53,9 +53,6 @@ int GPIO::setPin(int pin, int status) {
   int offset = pin/10;//Which function set select register to set.
 	int shift = (pin%10)*3;//bits to set in the register.
 	
-
-
-  
   //First, set the 3 function select bits to 0, then set them appropriately
   *(GPIO::gpio+offset) &= ~(7<<(shift));
   *(GPIO::gpio+offset) |= (status<<(shift));

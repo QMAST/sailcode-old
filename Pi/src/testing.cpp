@@ -21,19 +21,23 @@ int main(int argc, char* argv[]) {
 	Logging::addDataSource(DOUBLE, "test2", &test2);
 
 	char* buf;
-
+	int stat;
 	for(int i=0;i<10;i++) {
 		cout<<"Request no. "<<i<<endl;
-		ac->requestVariables("test","test1 test2", str);
-		buf = new char[str.length()];
-		strcpy(buf, str.c_str());
-		test1 = atof(strtok(buf, ","));
-		test2 = atof(strtok(NULL, ","));
+		stat = ac->requestVariables("test","test1 test2", str);
+		if(stat==0) {
+			buf = new char[str.length()];
+			strcpy(buf, str.c_str());
+			test1 = atof(strtok(buf, ","));
+			test2 = atof(strtok(NULL, ","));
 
-		delete[] buf;
-
-		cout<<str<<endl;
-		Logging::log();
+			delete[] buf;
+			cout<<str<<endl;
+			Logging::log();
+		} else {
+			cout<<"Request failed"<<endl;
+		}
+		
 	}
 	cout<<"End test"<<endl;
 	return 0;
