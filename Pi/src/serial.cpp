@@ -13,14 +13,16 @@ int Serial::openPort(const std::string &path) {
 
 	if(tcgetattr(fd, &tio) < 0) {
 		//An error
-		Logging::error(__func__, "Unable to get serial port attributes. Errno:" + strerror(errno));
+		std::string errString = strerror(errno);
+		Logging::error(__func__, "Unable to get serial port attributes. Errno:" errString);
 		return -1;
 	}
 
 	stat = cfsetspeed(&tio, BAUDRATE);
 	if(stat!=0) {
 		//Another error!
-		Logging::error(__func__, "Unable to set baudrate. Errno:" + strerror(errno));
+		std::string errString = strerror(errno);
+		Logging::error(__func__, "Unable to set baudrate. Errno:" + errString);
 		return -1;
 	}
 
@@ -45,7 +47,8 @@ int Serial::openPort(const std::string &path) {
     stat |= tcsetattr(fd, TCSANOW, &tio);
     if(stat!=0) {
     	//One last error.
-    	Logging::error(__func__, "Unable to set serial port properties. Errno:" + strerror(errno));
+    	std::string errString = strerror(errno);
+    	Logging::error(__func__, "Unable to set serial port properties. Errno:" + errString);
     	return -1;
     }
     this->fildes = fd;
@@ -91,7 +94,8 @@ int Serial::sendCommand(const std::string &cmd, std::string &resp) {
 
 	if(num<0) {
 		//Log an error
-		Logging::error(__func__, "Could not write command. Errno:" + strerror(errno));
+		std::string errString = strerror(errno);
+		Logging::error(__func__, "Could not write command. Errno:" + errString);
 		return -1;
 	}
 

@@ -25,8 +25,8 @@ int main(int argc, char* argv[]) {
 	for(int i=0;i<10;i++) {
 		cout<<"Request no. "<<i<<endl;
 		ac->requestVariables("test","test1 test2", str);
-		buf = new char[resp.length()];
-		strcpy(buf, resp.c_str());
+		buf = new char[str.length()];
+		strcpy(buf, str.c_str());
 		test1 = atof(strtok(buf, ","));
 		test2 = atof(strtok(NULL, ","));
 
