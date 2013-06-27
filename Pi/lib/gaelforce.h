@@ -6,16 +6,13 @@
 
 class Gaelforce {
 public:
-	Gaelforce(ArduinoCom* lineIn);
-	int updateGPS();//Update Lat/Lon with most recent arduino data.
-	int updateCompass();//Update heading/dev/var with most recent arduino data.
-	int updateOG();//Update courseOG/speedOG
+	Gaelforce(Airmar* am);
 
 	double heading, dev, var;
 	double courseOG, speedOG;
 	double lat, lon;
 private:
-	ArduinoCom* lineIn;
+	Airmar* airmar;
 };
 
 #endif

@@ -88,8 +88,9 @@ int Logging::log() {
 		return -1;
 	}
 
+	std::string path = Logging::logFolder + Logging::dataPath;
 	std::fstream fs;
-	fs.open(Logging::dataPath.c_str(), std::fstream::out | std::fstream::app);
+	fs.open(path.c_str(), std::fstream::out | std::fstream::app);
 	if(!fs.is_open()) {
 		Logging::error(__func__, "File failed to open.");
 		return -1;
@@ -137,8 +138,9 @@ void Logging::error(const char* src, const std::string &msg) {
 		return;
 	}
 
+	std::string path = Logging::logFolder + Logging::errorPath;
 	std::fstream fs;
-	fs.open(Logging::errPath.c_str(), std::fstream::out | std::fstream::app);
+	fs.open(path.c_str(), std::fstream::out | std::fstream::app);
 	if(!fs.is_open()) {
 		return;
 	}

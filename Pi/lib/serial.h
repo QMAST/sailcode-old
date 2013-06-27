@@ -11,7 +11,7 @@
 
 #include <errno.h>
 #include <string>
-
+#include <string.h>
 #include "logging.h"
 
 
