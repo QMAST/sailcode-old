@@ -3,6 +3,8 @@
 std::string Logging::errPath = "error00.log";
 std::string Logging::dataPath = "data00.log";
 std::list<DataSource> Logging::sources = std::list<DataSource>();
+std::fstream lfs ();
+std::fstream efs ();
 
 void Logging::init() {
 	//Generate the paths for the logfiles.
@@ -88,9 +90,11 @@ int Logging::log() {
 		return -1;
 	}
 
-	std::fstream fs();
-	fs.open(Logging::dataPath.c_str(), std::fstream::out | std::fstream::app);
-	if(!fs.is_open()) {
+	if(!Logging::lfs.is_open()) {
+		Logging::lfs.open(Logging::dataPath.c_str(), 
+			std::fstream::out | std::fstream::app);
+	}
+	if(!Logging::lfs.is_open()) {
 		Logging::error(__func__, "File failed to open.");
 		return -1;
 	}
@@ -98,36 +102,36 @@ int Logging::log() {
 	//Loop through the entire list of data sources
 	std::list<DataSource>::iterator it;
 	std::list<DataSource>::iterator end;
-	fs<<Logging::getTimeStamp()<<":";
+	Logging::lfs<<Logging::getTimeStamp()<<":";
 	for(it=Logging::sources.begin(), end=Logging::sources.end(); it != end; it++) 
 	{ 
 		if(it!=Logging::sources.begin())
 		{
-			fs<<",";
+			Logging::lfs<<",";
 		}
-		fs<< it->label <<" - ";
+		Logging::lfs<< it->label <<" - ";
 
 		switch(it->type) {
 			case INT:
-				fs<< *((int*) it->data);
+				Logging::lfs<< *((int*) it->data);
 			break;
 			case DOUBLE:
-				fs<< *((double*) it->data);
+				Logging::lfs<< *((double*) it->data);
 			break;
 			case FLOAT:
-				fs<< *((float*) it->data);
+				Logging::lfs<< *((float*) it->data);
 			break;
 			case CHAR:
-				fs<< *((char*) it->data);
+				Logging::lfs<< *((char*) it->data);
 			break;
 			case STRING:
-				fs<< *((std::string *)it->data);
+				Logging::lfs<< *((std::string *)it->data);
 			break;
 		}
 
 	}
-	fs<<"###"<<std::endl;
-	fs.close();
+	Logging::lfs<<"###"<<std::endl;
+	Logging::lfs.close();
 	return 0;
 }
 
@@ -137,15 +141,16 @@ void Logging::error(const char* src, const std::string &msg) {
 		return;
 	}
 
-	std::fstream fs;
-	fs.open(Logging::errPath.c_str(), std::fstream::out | std::fstream::app);
-	if(!fs.is_open()) {
+	if(!Logging::efs.is_open()) {
+		Logging::efs.open(Logging::errPath.c_str(), std::fstream::out | std::fstream::app);
+	}
+	if(!Logging::efs.is_open()) {
 		return;
 	}
 
-	fs<<Logging::getTimeStamp()<<":"<<src<<"-"<<msg<<std::endl;
+	Logging::efs<<Logging::getTimeStamp()<<":"<<src<<"-"<<msg<<std::endl;
 
-	fs.close();
+	Logging::efs.close();
 	return;
 }
 
