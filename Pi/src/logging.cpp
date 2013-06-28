@@ -88,7 +88,7 @@ int Logging::log() {
 		return -1;
 	}
 
-	std::fstream fs;
+	std::fstream fs();
 	fs.open(Logging::dataPath.c_str(), std::fstream::out | std::fstream::app);
 	if(!fs.is_open()) {
 		Logging::error(__func__, "File failed to open.");
