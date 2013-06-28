@@ -3,6 +3,8 @@
 
 using namespace std;
 
+void testFcn();
+
 int main(int argc, char* argv[]) {
 
 	Logging::init();
@@ -10,8 +12,8 @@ int main(int argc, char* argv[]) {
 	double* test1 = new double;
 	double* test2 = new double;
 
-	Logging::addDataSource(DOUBLE, "test1", &test1);
-	Logging::addDataSource(DOUBLE, "test2", &test2);
+	Logging::addDataSource(DOUBLE, "test1", test1);
+	Logging::addDataSource(DOUBLE, "test2", test2);
 
 	for(int i=0;i<10; i++) {
 		//Generate some weird numbers to log.
@@ -19,5 +21,11 @@ int main(int argc, char* argv[]) {
 		*test2 = i*2.718;
 		cout<<"Write "<<i<<endl;
 		Logging::log();
+		Logging::error(__func__,"Calling an error from the main function.");
 	}
+}
+
+void testFcn() {
+
+	Logging::error(__func__,"Calling an error from in a function");
 }

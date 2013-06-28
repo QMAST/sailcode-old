@@ -20,6 +20,18 @@ main: main.o logging.o arduinoCom.o gpio.o serial.o
 testing: testing.o logging.o arduinoCom.o gpio.o serial.o
 	$(CXX) $^ -o $@ 
 
+logtest: logtest.o logging.o
+	$(CXX) $^ -o $@
+
+comtest: comtest.o arduinoCom.o gpio.o serial.o
+	$(CXX) $^ -o $@
+
+comtest.o: comTest.cpp logging.h
+	$(CXX) $(CFLAGS) $< -o $@
+
+logtest.o: logTest.cpp logging.h
+	$(CXX) $(CFLAGS) $< -o $@
+
 testing.o: testing.cpp logging.h arduinoCom.h
 	$(CXX) $(CFLAGS) $< -o $@
 
