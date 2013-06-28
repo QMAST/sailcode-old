@@ -90,11 +90,11 @@ int Logging::log() {
 		return -1;
 	}
 
-	if(!Logging::lfs.is_open()) {
-		Logging::lfs.open(Logging::dataPath.c_str(), 
+	std::fstream lfs;
+	lfs.open(Logging::dataPath.c_str(), 
 			std::fstream::out | std::fstream::app);
-	}
-	if(!Logging::lfs.is_open()) {
+	
+	if(!lfs.is_open()) {
 		Logging::error(__func__, "File failed to open.");
 		return -1;
 	}
@@ -102,36 +102,36 @@ int Logging::log() {
 	//Loop through the entire list of data sources
 	std::list<DataSource>::iterator it;
 	std::list<DataSource>::iterator end;
-	Logging::lfs<<Logging::getTimeStamp()<<":";
+	lfs<<Logging::getTimeStamp()<<":";
 	for(it=Logging::sources.begin(), end=Logging::sources.end(); it != end; it++) 
 	{ 
 		if(it!=Logging::sources.begin())
 		{
-			Logging::lfs<<",";
+			lfs<<",";
 		}
-		Logging::lfs<< it->label <<" - ";
+		lfs<< it->label <<" - ";
 
 		switch(it->type) {
 			case INT:
-				Logging::lfs<< *((int*) it->data);
+				lfs<< *((int*) it->data);
 			break;
 			case DOUBLE:
-				Logging::lfs<< *((double*) it->data);
+				lfs<< *((double*) it->data);
 			break;
 			case FLOAT:
-				Logging::lfs<< *((float*) it->data);
+				lfs<< *((float*) it->data);
 			break;
 			case CHAR:
-				Logging::lfs<< *((char*) it->data);
+				lfs<< *((char*) it->data);
 			break;
 			case STRING:
-				Logging::lfs<< *((std::string *)it->data);
+				lfs<< *((std::string *)it->data);
 			break;
 		}
 
 	}
-	Logging::lfs<<"###"<<std::endl;
-	Logging::lfs.close();
+	lfs<<"###"<<std::endl;
+	lfs.close();
 	return 0;
 }
 
@@ -141,16 +141,16 @@ void Logging::error(const char* src, const std::string &msg) {
 		return;
 	}
 
-	if(!Logging::efs.is_open()) {
-		Logging::efs.open(Logging::errPath.c_str(), std::fstream::out | std::fstream::app);
-	}
-	if(!Logging::efs.is_open()) {
+	std::fstream efs;
+	efs.open(Logging::errPath.c_str(), std::fstream::out | std::fstream::app);
+	
+	if(!efs.is_open()) {
 		return;
 	}
 
-	Logging::efs<<Logging::getTimeStamp()<<":"<<src<<"-"<<msg<<std::endl;
+	efs<<Logging::getTimeStamp()<<":"<<src<<"-"<<msg<<std::endl;
 
-	Logging::efs.close();
+	efs.close();
 	return;
 }
 

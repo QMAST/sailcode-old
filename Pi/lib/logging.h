@@ -40,7 +40,6 @@ static int log();//write line to file.
 static std::list<DataSource> sources;//List of data sources to print to file.
 static std::string getTimeStamp();
 static int addDataSource(DataSource* src);
-
 };
 
 #endif
