@@ -33,7 +33,10 @@ int main(int argc, char* argv[]) {
 
 			delete[] buf;
 			cout<<str<<endl;
-			Logging::log();
+			stat=Logging::log();
+			if(stat!=0) {
+				cout<<"Log failed to close"<<endl;
+			}
 		} else {
 			cout<<"Request failed"<<endl;
 		}

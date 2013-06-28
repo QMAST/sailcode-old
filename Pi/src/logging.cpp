@@ -3,8 +3,6 @@
 std::string Logging::errPath = "error00.log";
 std::string Logging::dataPath = "data00.log";
 std::list<DataSource> Logging::sources = std::list<DataSource>();
-std::fstream lfs ();
-std::fstream efs ();
 
 void Logging::init() {
 	//Generate the paths for the logfiles.
@@ -46,19 +44,19 @@ void Logging::clean() {
 	{ 
 		switch(it->type) {
 			case INT:
-				delete ((int*) it->data);
+				delete (reinterpret_cast<int*>(it->data));
 			break;
 			case DOUBLE:
-				delete ((double*) it->data);
+				delete (reinterpret_cast<double*>(it->data));
 			break;
 			case FLOAT:
-				delete ((float*) it->data);
+				delete (reinterpret_cast<float*>(it->data));
 			break;
 			case CHAR:
-				delete ((char*) it->data);
+				delete (reinterpret_cast<char*>(it->data));
 			break;
 			case STRING:
-				delete ((std::string *)it->data);
+				delete (reinterpret_cast<std::string*>(it->data));
 			break;
 		}
 	}
@@ -113,25 +111,32 @@ int Logging::log() {
 
 		switch(it->type) {
 			case INT:
-				lfs<< *((int*) it->data);
+				lfs<< *(reinterpret_cast<int*>( it->data));
 			break;
 			case DOUBLE:
-				lfs<< *((double*) it->data);
+				lfs<< *(reinterpret_cast<double*>( it->data));
 			break;
 			case FLOAT:
-				lfs<< *((float*) it->data);
+				lfs<< *(reinterpret_cast<float*>( it->data));
 			break;
 			case CHAR:
-				lfs<< *((char*) it->data);
+				lfs<< *(reinterpret_cast<char*>( it->data));
 			break;
 			case STRING:
-				lfs<< *((std::string *)it->data);
+				lfs<< *(reinterpret_cast<std::string *>(it->data));
 			break;
 		}
 
 	}
 	lfs<<"###"<<std::endl;
+	lfs.flush();
 	lfs.close();
+
+
+	if(lfs.fail()) {
+		
+		return -1;
+	}
 	return 0;
 }
 
