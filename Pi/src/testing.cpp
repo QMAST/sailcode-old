@@ -48,5 +48,9 @@ int main(int argc, char* argv[]) {
 		
 	}
 	cout<<"End test"<<endl;
+
+	Logging::clean();
+	delete test1;
+	delete test2;
 	return 0;
 }

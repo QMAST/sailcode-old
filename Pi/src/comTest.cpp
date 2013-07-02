@@ -2,11 +2,12 @@
 #include <iostream>
 #include <unistd.h>
 #include "arduinoCom.h"
-
+#include "logging.h"
 using namespace std;
 
 int main(int argc, char* argv[]) {
 
+	Logging::init();
 	ArduinoCom* ac = new ArduinoCom("/dev/ttyACM0", 2);
 	std::string str = "";
 	int stat;
@@ -22,4 +23,5 @@ int main(int argc, char* argv[]) {
 		}
 	}
 
+	Logging::clean();
 }

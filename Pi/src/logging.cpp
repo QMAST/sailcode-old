@@ -38,28 +38,7 @@ void Logging::init() {
 
 void Logging::clean() {
 	//Loop through the entire list of data sources
-	std::list<DataSource*>::iterator it;
-	std::list<DataSource*>::iterator end;
-	for(it=Logging::sources.begin(), end=Logging::sources.end(); it != end; it++) 
-	{ 
-		switch(it->type) {
-			case INT:
-				delete (reinterpret_cast<int*>((*it)->data));
-			break;
-			case DOUBLE:
-				delete (reinterpret_cast<double*>((*it)->data));
-			break;
-			case FLOAT:
-				delete (reinterpret_cast<float*>((*it)->data));
-			break;
-			case CHAR:
-				delete (reinterpret_cast<char*>(*it)->data));
-			break;
-			case STRING:
-				delete (reinterpret_cast<std::string*>((*it)->data));
-			break;
-		}
-	}
+	Logging::sources.clear();
 }
 
 int Logging::addDataSource(DataSource* src) {

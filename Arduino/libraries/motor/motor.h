@@ -16,7 +16,10 @@ class Motor {
 	Motor(Stream* serialLine, int pin, char controllerID);
 
 	double getAngle();
-
+	void setMotorParams(int min, int max);
+	void reset();
+	int setLength(int position);
+	int setMotorSpeed(int speed);
 private:
 	int anglePin;
 	char controllerID;

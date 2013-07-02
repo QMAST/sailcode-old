@@ -23,6 +23,11 @@ int main(int argc, char* argv[]) {
 		Logging::log();
 		Logging::error(__func__,"Calling an error from the main function.");
 	}
+
+	delete test1;
+	delete test2;
+	Logging::clean();
+	return 0;
 }
 
 void testFcn() {
