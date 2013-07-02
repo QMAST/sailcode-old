@@ -2,7 +2,7 @@
 
 std::string Logging::errPath = "error00.log";
 std::string Logging::dataPath = "data00.log";
-std::list<DataSource> Logging::sources = std::list<DataSource>();
+std::list<DataSource*> Logging::sources = std::list<DataSource*>();
 
 void Logging::init() {
 	//Generate the paths for the logfiles.
@@ -32,31 +32,31 @@ void Logging::init() {
 	Logging::errPath = std::string(ePath);
 	Logging::dataPath = std::string(dPath);
 
-	Logging::sources = std::list<DataSource>();
+	Logging::sources = std::list<DataSource*>();
 	return;
 }
 
 void Logging::clean() {
 	//Loop through the entire list of data sources
-	std::list<DataSource>::iterator it;
-	std::list<DataSource>::iterator end;
+	std::list<DataSource*>::iterator it;
+	std::list<DataSource*>::iterator end;
 	for(it=Logging::sources.begin(), end=Logging::sources.end(); it != end; it++) 
 	{ 
 		switch(it->type) {
 			case INT:
-				delete (reinterpret_cast<int*>(it->data));
+				delete (reinterpret_cast<int*>((*it)->data));
 			break;
 			case DOUBLE:
-				delete (reinterpret_cast<double*>(it->data));
+				delete (reinterpret_cast<double*>((*it)->data));
 			break;
 			case FLOAT:
-				delete (reinterpret_cast<float*>(it->data));
+				delete (reinterpret_cast<float*>((*it)->data));
 			break;
 			case CHAR:
-				delete (reinterpret_cast<char*>(it->data));
+				delete (reinterpret_cast<char*>(*it)->data));
 			break;
 			case STRING:
-				delete (reinterpret_cast<std::string*>(it->data));
+				delete (reinterpret_cast<std::string*>((*it)->data));
 			break;
 		}
 	}
@@ -69,7 +69,7 @@ int Logging::addDataSource(DataSource* src) {
 		return -1;
 	}
 
-	Logging::sources.push_back(*src);
+	Logging::sources.push_back(src);
 	return 0;
 }
 
@@ -88,7 +88,7 @@ int Logging::log() {
 		return -1;
 	}
 
-	std::fstream lfs;
+	std::fstream lfs = std::fstream();
 	lfs.open(Logging::dataPath.c_str(), 
 			std::fstream::out | std::fstream::app);
 	
@@ -98,8 +98,8 @@ int Logging::log() {
 	}
 
 	//Loop through the entire list of data sources
-	std::list<DataSource>::iterator it;
-	std::list<DataSource>::iterator end;
+	std::list<DataSource*>::iterator it;
+	std::list<DataSource*>::iterator end;
 	lfs<<Logging::getTimeStamp()<<":";
 	for(it=Logging::sources.begin(), end=Logging::sources.end(); it != end; it++) 
 	{ 
@@ -111,19 +111,19 @@ int Logging::log() {
 
 		switch(it->type) {
 			case INT:
-				lfs<< *(reinterpret_cast<int*>( it->data));
+				lfs<< *(reinterpret_cast<int*>( (*it)->data));
 			break;
 			case DOUBLE:
-				lfs<< *(reinterpret_cast<double*>( it->data));
+				lfs<< *(reinterpret_cast<double*>( (*it)->data));
 			break;
 			case FLOAT:
-				lfs<< *(reinterpret_cast<float*>( it->data));
+				lfs<< *(reinterpret_cast<float*>( (*it)->data));
 			break;
 			case CHAR:
-				lfs<< *(reinterpret_cast<char*>( it->data));
+				lfs<< *(reinterpret_cast<char*>( (*it)->data));
 			break;
 			case STRING:
-				lfs<< *(reinterpret_cast<std::string *>(it->data));
+				lfs<< *(reinterpret_cast<std::string *>((*it)->data));
 			break;
 		}
 
@@ -146,7 +146,7 @@ void Logging::error(const char* src, const std::string &msg) {
 		return;
 	}
 
-	std::fstream efs;
+	std::fstream efs = std::fstream();
 	efs.open(Logging::errPath.c_str(), std::fstream::out | std::fstream::app);
 	
 	if(!efs.is_open()) {

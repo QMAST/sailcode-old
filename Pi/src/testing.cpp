@@ -15,10 +15,11 @@ int main(int argc, char* argv[]) {
 	ac = new ArduinoCom("/dev/ttyACM0", 2);
 	std::string str = "";
 	Logging::init();
-	double test1, test2;
+	double* test1 = new double;
+	double* test2 = new double;
 
-	Logging::addDataSource(DOUBLE, "test1", &test1);
-	Logging::addDataSource(DOUBLE, "test2", &test2);
+	Logging::addDataSource(DOUBLE, "test1", test1);
+	Logging::addDataSource(DOUBLE, "test2", test2);
 
 	char* buf;
 	int stat;
@@ -27,9 +28,13 @@ int main(int argc, char* argv[]) {
 		stat = ac->requestVariables("test","test1 test2", str);
 		if(stat==0) {
 			buf = new char[str.length()];
+			if(buf==NULL) {
+				Logging::error(__func__, "Run out of memory");
+				return 1;
+			}
 			strcpy(buf, str.c_str());
-			test1 = atof(strtok(buf, ","));
-			test2 = atof(strtok(NULL, ","));
+			*test1 = atof(strtok(buf, ","));
+			*test2 = atof(strtok(NULL, ","));
 
 			delete[] buf;
 			cout<<str<<endl;

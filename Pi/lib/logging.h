@@ -37,7 +37,7 @@ static void clean();
 static void error(const char* src, const std::string &msg);//Log error to file pointed by errPath
 static int addDataSource(DataType type, const std::string &label, void* data);
 static int log();//write line to file.
-static std::list<DataSource> sources;//List of data sources to print to file.
+static std::list<DataSource*> sources;//List of data sources to print to file.
 static std::string getTimeStamp();
 static int addDataSource(DataSource* src);
 };
