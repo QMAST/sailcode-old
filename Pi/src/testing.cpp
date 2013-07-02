@@ -13,6 +13,12 @@ int main(int argc, char* argv[]) {
 
 	//Simple place to test individual features.
 	ac = new ArduinoCom("/dev/ttyACM0", 2);
+
+	if(!(ac->isValid())) {
+		cout<<"Arduino failed to open"<<endl;
+		return -1;
+	}
+
 	std::string str = "";
 	Logging::init();
 	double* test1 = new double;

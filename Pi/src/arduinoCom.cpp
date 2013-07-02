@@ -5,7 +5,7 @@ ArduinoCom::ArduinoCom(const std::string &path, int pin){
 	//which the arduino interrupt is connected to, 
 	//and the path of the usb port which that same arduino is hooked up to.
 	int stat;
-
+	this->fildes =-1;
 	stat = GPIO::init();
 	if(stat!=0) {
 		Logging::error(__func__, "Error Setting up the Arduino.");
@@ -14,8 +14,10 @@ ArduinoCom::ArduinoCom(const std::string &path, int pin){
 	GPIO::setPin(pin, OUTPUT);
 	this->interruptPin = pin;
 
-	this->openPort(path);
-
+	stat = this->openPort(path);
+	if(stat!=0) {
+		Logging::error(__func__, "Error setting up the arduino.");
+	}
 }
 
 int ArduinoCom::requestVariables(const std::string &source ,

@@ -1,9 +1,16 @@
 #include "serial.h"
 
+Serial::Serial() {
+	this->fildes = -1;
+}
+
+bool Serial::isValid() {
+	return (this->fildes==-1) ? false : true;
+}
+
 int Serial::openPort(const std::string &path) {
 	int fd, stat;
 	struct termios tio;
-
 	fd = open(path.c_str(), O_RDWR | O_NOCTTY);
 	if(fd<0) {
 		//Catch an error, log it.

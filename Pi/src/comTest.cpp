@@ -9,6 +9,12 @@ int main(int argc, char* argv[]) {
 
 	Logging::init();
 	ArduinoCom* ac = new ArduinoCom("/dev/ttyACM0", 2);
+
+	if(!(ac->isValid())) {
+		cout<<"Arduino failed to open"<<endl;
+		return -1;
+	}
+
 	std::string str = "";
 	int stat;
 

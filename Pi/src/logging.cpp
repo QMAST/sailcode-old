@@ -4,6 +4,10 @@ std::string Logging::errPath = "error00.log";
 std::string Logging::dataPath = "data00.log";
 std::list<DataSource*> Logging::sources = std::list<DataSource*>();
 
+std::fstream Logging::lfs;
+std::fstream Logging::efs;
+
+
 void Logging::init() {
 	//Generate the paths for the logfiles.
 	char dPath [] = "data00.log";
@@ -33,11 +37,29 @@ void Logging::init() {
 	Logging::dataPath = std::string(dPath);
 
 	Logging::sources = std::list<DataSource*>();
+
+	//New implementation: open the files once.
+	Logging::efs.open(Logging::errPath.c_str(), std::fstream::out | std::fstream::app);
+	
+	if(!Logging::efs.is_open()) {
+		return;
+	}
+
+	Logging::lfs.open(Logging::dataPath.c_str(), 
+			std::fstream::out | std::fstream::app);
+	
+	if(!Logging::lfs.is_open()) {
+		Logging::error(__func__, "LogFile failed to open.");
+		return -1;
+	}
+
 	return;
 }
 
 void Logging::clean() {
 	//Loop through the entire list of data sources
+	Logging::lfs.close();
+	Logging::efs.close();
 	Logging::sources.clear();
 }
 
@@ -67,6 +89,7 @@ int Logging::log() {
 		return -1;
 	}
 
+	/* Old implementation
 	std::fstream lfs;
 	lfs.open(Logging::dataPath.c_str(), 
 			std::fstream::out | std::fstream::app);
@@ -75,44 +98,45 @@ int Logging::log() {
 		Logging::error(__func__, "File failed to open.");
 		return -1;
 	}
+	*/
 
 	//Loop through the entire list of data sources
 	std::list<DataSource*>::iterator it;
 	std::list<DataSource*>::iterator end;
-	lfs<<Logging::getTimeStamp()<<":";
+	Logging::lfs<<Logging::getTimeStamp()<<":";
 	for(it=Logging::sources.begin(), end=Logging::sources.end(); it != end; it++) 
 	{ 
 		if(it!=Logging::sources.begin())
 		{
-			lfs<<",";
+			Logging::lfs<<",";
 		}
-		lfs<< (*it)->label <<" - ";
+		Logging::lfs<< (*it)->label <<" - ";
 
 		switch((*it)->type) {
 			case INT:
-				lfs<< *(reinterpret_cast<int*>( (*it)->data));
+				Logging::lfs<< *(reinterpret_cast<int*>( (*it)->data));
 			break;
 			case DOUBLE:
-				lfs<< *(reinterpret_cast<double*>( (*it)->data));
+				Logging::lfs<< *(reinterpret_cast<double*>( (*it)->data));
 			break;
 			case FLOAT:
-				lfs<< *(reinterpret_cast<float*>( (*it)->data));
+				Logging::lfs<< *(reinterpret_cast<float*>( (*it)->data));
 			break;
 			case CHAR:
-				lfs<< *(reinterpret_cast<char*>( (*it)->data));
+				Logging::lfs<< *(reinterpret_cast<char*>( (*it)->data));
 			break;
 			case STRING:
-				lfs<< *(reinterpret_cast<std::string *>((*it)->data));
+				Logging::lfs<< *(reinterpret_cast<std::string *>((*it)->data));
 			break;
 		}
 
 	}
-	lfs<<"###"<<std::endl;
-	lfs.flush();
-	lfs.close();
+	Logging::lfs<<"###"<<std::endl;
+	Logging::lfs.flush();
+	Logging::lfs.close();
 
 
-	if(lfs.fail()) {
+	if(Logging::lfs.fail()) {
 		
 		return -1;
 	}
@@ -125,6 +149,8 @@ void Logging::error(const char* src, const std::string &msg) {
 		return;
 	}
 
+	/* Older implementation
+
 	std::fstream efs;
 	efs.open(Logging::errPath.c_str(), std::fstream::out | std::fstream::app);
 	
@@ -132,9 +158,10 @@ void Logging::error(const char* src, const std::string &msg) {
 		return;
 	}
 
-	efs<<Logging::getTimeStamp()<<":"<<src<<"-"<<msg<<std::endl;
+	*/
+	Logging::efs<<Logging::getTimeStamp()<<":"<<src<<"-"<<msg<<std::endl;
 
-	efs.close();
+	Logging::efs.close();
 	return;
 }
 

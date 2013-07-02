@@ -23,7 +23,7 @@ testing: testing.o logging.o arduinoCom.o gpio.o serial.o
 logtest: logtest.o logging.o
 	$(CXX) $^ -o $@
 
-comtest: comtest.o arduinoCom.o gpio.o serial.o
+comtest: comtest.o arduinoCom.o gpio.o serial.o logging.o
 	$(CXX) $^ -o $@
 
 comtest.o: comTest.cpp logging.h
