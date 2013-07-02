@@ -50,7 +50,7 @@ void Logging::init() {
 	
 	if(!Logging::lfs.is_open()) {
 		Logging::error(__func__, "LogFile failed to open.");
-		return -1;
+		return;
 	}
 
 	return;
@@ -132,14 +132,7 @@ int Logging::log() {
 
 	}
 	Logging::lfs<<"###"<<std::endl;
-	Logging::lfs.flush();
-	Logging::lfs.close();
-
-
-	if(Logging::lfs.fail()) {
-		
-		return -1;
-	}
+	
 	return 0;
 }
 
@@ -161,7 +154,6 @@ void Logging::error(const char* src, const std::string &msg) {
 	*/
 	Logging::efs<<Logging::getTimeStamp()<<":"<<src<<"-"<<msg<<std::endl;
 
-	Logging::efs.close();
 	return;
 }
 

@@ -42,8 +42,8 @@ static std::string getTimeStamp();
 static int addDataSource(DataSource* src);
 
 private:
-	std::fstream lfs;
-	std::fstream efs;
+	static std::fstream lfs;
+	static std::fstream efs;
 };
 
 #endif
