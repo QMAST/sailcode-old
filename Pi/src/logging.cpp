@@ -67,7 +67,7 @@ int Logging::log() {
 		return -1;
 	}
 
-	std::fstream lfs = std::fstream();
+	std::fstream lfs;
 	lfs.open(Logging::dataPath.c_str(), 
 			std::fstream::out | std::fstream::app);
 	
@@ -86,9 +86,9 @@ int Logging::log() {
 		{
 			lfs<<",";
 		}
-		lfs<< it->label <<" - ";
+		lfs<< (*it)->label <<" - ";
 
-		switch(it->type) {
+		switch((*it)->type) {
 			case INT:
 				lfs<< *(reinterpret_cast<int*>( (*it)->data));
 			break;
@@ -125,7 +125,7 @@ void Logging::error(const char* src, const std::string &msg) {
 		return;
 	}
 
-	std::fstream efs = std::fstream();
+	std::fstream efs;
 	efs.open(Logging::errPath.c_str(), std::fstream::out | std::fstream::app);
 	
 	if(!efs.is_open()) {
