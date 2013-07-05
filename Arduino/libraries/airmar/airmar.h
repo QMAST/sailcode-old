@@ -5,7 +5,7 @@
 #include <Arduino.h>
 #include <stdlib.h>
 #include "nmea.h"
-#include "sensor.h"
+#include <sensor.h>
 
 class Airmar : public Sensor {
 public:

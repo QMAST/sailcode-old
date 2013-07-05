@@ -13,6 +13,7 @@ the sail has.
 #include <Arduino.h>
 
 class Motor {
+public:
 	Motor(Stream* serialLine, int pin, char controllerID);
 
 	double getAngle();
@@ -33,9 +34,6 @@ private:
 	int maxAngle; //Angle reported when the knot is all the way out.
 
 	Stream* serialCom;
-
-	int DEBUG;
-	Stream* serialDebug;
 };
 
 #endif	

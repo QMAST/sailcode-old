@@ -22,7 +22,7 @@ double Motor::getAngle() {
 	//Convert the raw number into an angle between 0 and 360.
 	//In this case, an angle of 0 corresponds to a reading of -180 by the sensor.
 	//This makes it clearer to show the relationship between the amount of rope out and the angle.
-	if(val<100||val>) {
+	if(val<100) {
 		//Value is in LOW
 		return -1.0;
 	}
@@ -49,7 +49,7 @@ int Motor::setLength(int position) {
 	int speed, sign;
 	//First calculate desired angle from position.
 	double dif = this->maxAngle - this->zeroAngle;
-	double endAngle = this->zeroAngle + (position/100.0 * dif)
+	double endAngle = this->zeroAngle + (position/100.0 * dif);
 
 	double currAngle = this->getAngle();
 	dif=abs(endAngle - currAngle);
