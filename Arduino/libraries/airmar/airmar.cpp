@@ -1,3 +1,5 @@
+#include "airmar.h"
+
 Airmar::Airmar(const char* id, Stream* lineIn) {
 	int idLen = strlen(id);
 	this->id = (char*) malloc(sizeof(char)*idLen);
@@ -11,7 +13,19 @@ Airmar::Airmar(const char* id, Stream* lineIn) {
 	addVar(DOUBLE, "windHeading", &windHeading);
 	addVar(DOUBLE, "var", &var);
 	addVar(DOUBLE, "dev", &dev);
+	addVar(DOUBLE, "courseOG", &courseOverGround);
+	addVar(DOUBLE, "speedOG", &speedOverGround);
 	//Now we can easily implement new AIRMAR features.
+
+	this->lat = 0;
+	this->lon = 0;
+	this->heading = 0;
+	this->var = 0;
+	this->dev = 0;
+	this->windSpeed = 0;
+	this->windHeading = 0;
+	this->courseOverGround = 0;
+	this->speedOverGround = 0;
 	this->update();
 }
 
@@ -24,6 +38,8 @@ int Airmar::update() {
 	char charIn ='\0';
 	int i=0;
 
+	//Need a timeout here, to prevent a hang.
+	unsigned long st = millis();
 	while(i<255) {
 		if(this->lineIn->available() >0) {
 			charIn = this->lineIn->read();//Read a single character;
@@ -34,6 +50,9 @@ int Airmar::update() {
 
 			buf[i] = charIn;
 			i++;//Should never reach a 255 character line, especially from the airmar.
+		}
+		if(abs(millis()-st) > 500) {
+			return -1;//Timeout
 		}
 	}
 
@@ -105,7 +124,7 @@ int Airmar::update() {
 }
 
 int Airmar::getTemp(unsigned long time) {
-	unsigned long timeDif = time-this.prevTime;
-	this->temp += (int)(timeDif*this.tempRate);
+	unsigned long timeDif = time-this->prevTime;
+	this->temp += (int)(timeDif*this->tempRate);
 	return this->temp;
 }

@@ -19,31 +19,31 @@ typedef enum {
 	STRING
 } DataType;
 
-class Logging
-{
-
-public:
-static std::string errPath;//Path for the error log
-
-Logging();
-~Logging();
-static void error(const char* src, const std::string &msg);//Log error to file pointed by errPath
-int addDataSource(DataType type, const std::string &label, void* data);
-int log();//write line to file.
-
-private:
-
-typedef struct {
+typedef struct DataSource{
 	DataType type;
 	std::string label;
 	void* data;
 } DataSource;
 
-std::string dataPath;//Path for the data log
-std::list<DataSource> sources;//List of data sources to print to file.
-static std::string getTimeStamp();
-int addDataSource(DataSource* src);
+class Logging
+{
 
+public:
+static std::string errPath;//Path for the error log
+static std::string dataPath;//Path for the data log
+
+static void init();
+static void clean();
+static void error(const char* src, const std::string &msg);//Log error to file pointed by errPath
+static int addDataSource(DataType type, const std::string &label, void* data);
+static int log();//write line to file.
+static std::list<DataSource*> sources;//List of data sources to print to file.
+static std::string getTimeStamp();
+static int addDataSource(DataSource* src);
+
+private:
+	static std::fstream lfs;
+	static std::fstream efs;
 };
 
 #endif

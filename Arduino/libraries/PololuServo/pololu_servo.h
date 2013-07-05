@@ -63,11 +63,6 @@ class PololuMSC {
          * suspect, restart device.
          */
         int restart();
-
-        /** Takes a motor value between 0 and 7 and a power value between 
-         * 0 and 254. Works in a manner similar to analogWrite on a 
-         * PWM pin
-         */
         int setPosition(int motorID, int newValue);
         
         int debugSet(Stream*);
