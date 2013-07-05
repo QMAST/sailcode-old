@@ -1,26 +1,35 @@
 #include "serial.h"
 
+Serial::Serial() {
+	this->fildes = -1;
+}
+
+bool Serial::isValid() {
+	return (this->fildes==-1) ? false : true;
+}
+
 int Serial::openPort(const std::string &path) {
 	int fd, stat;
 	struct termios tio;
-
 	fd = open(path.c_str(), O_RDWR | O_NOCTTY);
 	if(fd<0) {
 		//Catch an error, log it.
-		Logging::error(__func__, "Unable to Open Serial Port at " + path);
+		Logging::error(__func__, "Unable to Open Serial Port at " + path + ", errno:" + strerror(errno));
 		return -1;
 	}
 
 	if(tcgetattr(fd, &tio) < 0) {
 		//An error
-		Logging::error(__func__, "Unable to get serial port attributes.");
+		std::string errString = strerror(errno);
+		Logging::error(__func__, "Unable to get serial port attributes. Errno:" +errString);
 		return -1;
 	}
 
 	stat = cfsetspeed(&tio, BAUDRATE);
 	if(stat!=0) {
 		//Another error!
-		Logging::error(__func__, "Unable to set baudrate");
+		std::string errString = strerror(errno);
+		Logging::error(__func__, "Unable to set baudrate. Errno:" + errString);
 		return -1;
 	}
 
@@ -45,7 +54,8 @@ int Serial::openPort(const std::string &path) {
     stat |= tcsetattr(fd, TCSANOW, &tio);
     if(stat!=0) {
     	//One last error.
-    	Logging::error(__func__, "Unable to set serial port properties");
+    	std::string errString = strerror(errno);
+    	Logging::error(__func__, "Unable to set serial port properties. Errno:" + errString);
     	return -1;
     }
     this->fildes = fd;
@@ -73,7 +83,7 @@ int Serial::readBlock(std::string &msg) {
 
 	if(num<=0) {
 		//Error while reading.
-		Logging::error(__func__, "Problem while reading from serial port: "+msg);
+		Logging::error(__func__, "Problem while reading from serial port: "+msg+ ". Errno:" + strerror(errno));
 		return -1;
 	}
 	else if(buf[0]!='\n' && buf[0]!='\r') {
@@ -91,7 +101,8 @@ int Serial::sendCommand(const std::string &cmd, std::string &resp) {
 
 	if(num<0) {
 		//Log an error
-		Logging::error(__func__, "Could not write command.");
+		std::string errString = strerror(errno);
+		Logging::error(__func__, "Could not write command. Errno:" + errString);
 		return -1;
 	}
 
