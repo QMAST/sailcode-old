@@ -10,7 +10,12 @@ typedef enum {//Enum which stores all the different possible NMEA headings we ma
 	WIMWV,
 	GPVTG,
 	GPGLL,
-	GPRMC
+	GPRMC,
+	GPGGA,
+	GPZDA,
+	WIMDA,
+	WIMWD
+
 } NMEA_head_t;
 
 typedef struct NMEAData {

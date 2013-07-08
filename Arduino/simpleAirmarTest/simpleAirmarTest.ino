@@ -3,7 +3,7 @@ char msg[255];
 char buf;
 void setup() {
     Serial.begin(115200);
-    Serial1.begin(4800); 
+    Serial2.begin(4800); 
     pinMode(13, OUTPUT);
 }
 
@@ -11,14 +11,14 @@ void loop() {
     
     
     //readLine();
-    if(Serial1.available()>0) {
+    if(Serial2.available()>0) {
         digitalWrite(13, HIGH);
-        buf = Serial1.read();
+        buf = Serial2.read();
         Serial.print(buf);
     } else {
         digitalWrite(13, LOW);
-        Serial.print('.'); 
-      delay(500);  
+        //Serial.print('.'); 
+      //delay(500);  
     }
 }
 
