@@ -13,11 +13,14 @@ public:
 	~Airmar();
 	int update();
 	int getTemp(unsigned long temp);
+	
+	double heading, windDirection;
+	
 private:
 	int tempRate;//Relative rate at which the temperature should increase.
 	double lat, lon;//Latitude and Longitude
-	double heading, var, dev; //Heading, variation, deviation
-	double windSpeed, windHeading;//Wind speed, in knots
+	double var, dev; //Heading, variation, deviation
+	double windSpeed;//Wind speed, in knots
 	double courseOverGround, speedOverGround;//Speed in knots
 	unsigned long prevTime;
 	int temp;

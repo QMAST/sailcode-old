@@ -38,7 +38,7 @@ float getGPS(float* lat, float* lon) {
 
 float getWind(float* speed, float* heading) {
 	std::string vars = "";
-	int stat = this->lineIn->requestVariables("airmar", "windSpeed windHeading", vars);
+	int stat = this->lineIn->requestVariables("airmar", "windSpeed windDirection", vars);
 	if(stat!=0) {
 		Logging::error(__func__, "Error while getting variables");
 	}

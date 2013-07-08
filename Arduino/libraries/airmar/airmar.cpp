@@ -10,7 +10,7 @@ Airmar::Airmar(const char* id, Stream* lineIn) {
 	addVar(DOUBLE, "lon", &lon);
 	addVar(DOUBLE, "heading", &heading);
 	addVar(DOUBLE, "windSpeed", &windSpeed);
-	addVar(DOUBLE, "windHeading", &windHeading);
+	addVar(DOUBLE, "windDirection", &windDirection);
 	addVar(DOUBLE, "var", &var);
 	addVar(DOUBLE, "dev", &dev);
 	addVar(DOUBLE, "courseOG", &courseOverGround);
@@ -23,7 +23,7 @@ Airmar::Airmar(const char* id, Stream* lineIn) {
 	this->var = 0;
 	this->dev = 0;
 	this->windSpeed = 0;
-	this->windHeading = 0;
+	this->windDirection = 0;
 	this->courseOverGround = 0;
 	this->speedOverGround = 0;
 	this->update();
@@ -79,7 +79,7 @@ int Airmar::update() {
 		break;
 		case WIMWV:
 		if(strcmp(nmea->data[4], "A")==0) {
-			this->windHeading = atof(nmea->data[0]);
+			this->windDirection = atof(nmea->data[0]);
 			this->windSpeed = atof(nmea->data[2]);
 		}
 		break;
