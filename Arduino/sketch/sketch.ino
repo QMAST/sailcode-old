@@ -1,11 +1,14 @@
 #include <Arduino.h>
 #include <ashcon.h>
 #include <airmar.h>
+#include <compass.h>
 #include <sensor.h>
 
 #define RCPIN 8
 #define KILLPIN 10
 
+#define MULTIPLEX_PIN1 30
+#define MULTIPLEX_PIN2 31
 
 
 typedef struct SensorLink {
@@ -15,8 +18,9 @@ typedef struct SensorLink {
 
 int mode = 0;
 int spd;
-int direction = 90;
+int dir = 90;
 Airmar* airmar;
+Compass* compass;
 ashcon* Console;
 SensorLink* sensorList;
 
@@ -35,7 +39,11 @@ void setup() {
     Console->user_function_register("req", &dispatchRequest);
     Console->user_function_register("dir", &updateDirection);
     
-//Initialize Pololu
+    //Initialize multiplexor
+    pinMode(MULTIPLEX_PIN1, OUTPUT);
+    pinMode(MULTIPLEX_PIN2, OUTPUT);
+    
+    //Initialize Pololu
     Serial2.begin(38400);
     pinMode(RCPIN, INPUT);
     delay(5);
@@ -44,7 +52,9 @@ void setup() {
 
     //Initialize sensors
     airmar = new Airmar("airmar",&Serial1);
+    compass = new Compass("compass",&Serial1);
     addToList(airmar);
+    addToList(compass);
 
     //Setup interrupts
     attachInterrupt(0, piInterrupt, FALLING);
@@ -124,7 +134,7 @@ int dispatchRequest(int argc, char* argv[]) {
 int updateDirection(int argc, char*argv[]) {
 	//argv[1] is the new sail direction
 
-	direction = argv[1];
+	direction = atoi(argv[1]);
 	return 0;
 
 

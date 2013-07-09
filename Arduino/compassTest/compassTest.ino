@@ -4,19 +4,21 @@
 #include <compass.h>
 
 Compass* c;
-char* comp[]={"compassHeadin", "compassStatus"};
-
+char* comp[]={"compassHeading", "compassStatus"};
+char** vars;
 int stat;
+
 void setup() {
 	Serial.begin(115200);
 	Serial3.begin(9600);
 	c = new Compass("compass", &Serial3);
-	Serial.println(freeMemory());
+	//Serial.println(freeMemory());
 }
 
 void loop() {
-	Serial.println("freeMemory());
-	stat = c->update();
+	//Serial.println(freeMemory());
+	Serial3.println("$PTNT,HTM*63");
+        stat = c->update();
 	if(stat!=0) {
 		Serial.println("Polling failed.");
 	}else {
@@ -26,10 +28,10 @@ void loop() {
 			Serial.print(vars[0]);
 			Serial.print(", Status: ");
 			Serial.print(vars[1]);
-				for(int i = 0; i <2; i++) {
-					free(vars[i]);
-				}
-				free(vars);
+			for(int i = 0; i <2; i++) {
+				free(vars[i]);
 			}
+			free(vars);
 		}
+	}
 }
