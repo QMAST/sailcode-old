@@ -1,9 +1,13 @@
 #include "nmea.h"
-#define DEBUG 1
+#define DEBUG 0
+
+using namespace std;
+
 int NMEA::parseString(char* msg, NMEAData* nmea) {
 	//This message parses a generic NMEA string and returns it in an NMEAData struct.
 	//This separates the data types making it easier for further parsing, and will check the checksum.
 	//Will return a -1 if the checksum is invalid.
+
 	int i, j;
 	unsigned char check=0;
 	if(msg==NULL || nmea==NULL) {
@@ -12,9 +16,7 @@ int NMEA::parseString(char* msg, NMEAData* nmea) {
 		}
 		return -1;
 	}
-	j=0;
-	while(msg[j]!='*' && msg[j]!='\0') j++;//Find the index of the * or end of the string, whichever is first.
-
+	
 	if(msg[0]!='$') {
 		//Invalid NMEA String, at least from AIRMAR
 		if(DEBUG) {
@@ -22,6 +24,9 @@ int NMEA::parseString(char* msg, NMEAData* nmea) {
 		}
 		return -1;
 	}
+
+	j=0;
+	while(msg[j]!='*' && msg[j]!='\0') j++;//Find the index of the * or end of the string, whichever is first.
 
 	//Calculate the checksum;
 	for(i = 1; i<j; i++) {
@@ -44,11 +49,14 @@ int NMEA::parseString(char* msg, NMEAData* nmea) {
 	//First, get heading info.
 	//Assume we have the $ as the first character.
 	char* headString = strtok(msg, ",");
-	headString = &(headString[1]);
+	if(headString==NULL) {
+	} else {
+		headString = &(headString[1]);
+	}
 	//Look up how many arguments this header has:
 	int numArgs;
-	Serial.print("Header String:");
-	Serial.println(headString);
+	//Serial.print("Header String:");
+	//Serial.println(headString);
 	if(strncmp(headString, "HCHDG",5)==0) { //Heading, deviation and variation
 		//5 data fields
 		nmea->header = HCHDG;
@@ -96,18 +104,18 @@ int NMEA::parseString(char* msg, NMEAData* nmea) {
 	}//Add more as necessary, for other sensors.
 	else {//Unrecognized NMEA header
 		if(DEBUG) {
-			Serial.print("Unrecognized NMEA Header");
+			//Serial.print("Unrecognized NMEA Header");
 		}
 		return -1; 
 	}
-
 	nmea->data = (char**) malloc(sizeof(char*)*numArgs);
+	nmea->count = numArgs;
 	j=0;
 	
 
 	while(msg[j] != '\0') j++;//Go through the header info
 	j++;
-	Serial.println(&(msg[j]));
+	//Serial.println(&(msg[j]));
 	int k;
 	//In the next loop, we find all the values, delimited by commas.
 	//We use j to index the start of a value, and k to index the end.
@@ -123,13 +131,14 @@ int NMEA::parseString(char* msg, NMEAData* nmea) {
 			nmea->data[i] = NULL;
 		}
 		else{
+			
 			nmea->data[i] = (char*) malloc(sizeof(char)*(len+1));
 			strncpy(nmea->data[i], &(msg[j]), len);
-			nmea->data[len] = '\0';
+			nmea->data[i][len] = '\0';
+			
 		}
 		j=k+1;
 	}
-
 	return 0;
 }
 

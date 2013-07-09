@@ -4,7 +4,8 @@
 #include <string.h>
 #include <stdio.h>
 #include <Arduino.h>
-
+//#include <stdlib.h>
+//#include <iostream>
 typedef enum {//Enum which stores all the different possible NMEA headings we may encounter.
 	HCHDG,
 	WIMWV,
@@ -20,6 +21,7 @@ typedef enum {//Enum which stores all the different possible NMEA headings we ma
 
 typedef struct NMEAData {
 	NMEA_head_t header;
+	int count;
 	char** data;
 };
 

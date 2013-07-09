@@ -1,5 +1,5 @@
 #include "airmar.h"
-#define DEBUG 1
+#define DEBUG 0
 
 Airmar::Airmar(const char* id, Stream* lineIn) {
 	int idLen = strlen(id);
@@ -42,6 +42,25 @@ int Airmar::update() {
 
 	//Need a timeout here, to prevent a hang.
 	unsigned long st = millis();
+	//Wait to get a $ to start the line
+	while(true){
+		if(this->lineIn->peek() == '$'){
+			break;
+		}
+		if(this->lineIn->available() >0){
+			this->lineIn->read();
+		}
+		if(abs(millis()-st) > 500) {
+			if(DEBUG) {
+			 	Serial.println("Timeout.");
+			}
+			free(buf);
+			return -1;//Timeout
+
+		}
+	}
+
+	st = millis();
 	while(i<255) {
 		if(this->lineIn->available() >0) {
 			charIn = this->lineIn->read();//Read a single character;
@@ -76,6 +95,8 @@ int Airmar::update() {
 		if(DEBUG) {
 			Serial.println("Error Parsing: ");
 		}
+
+		free(nmea);
 		free(buf);
 		return -1;
 	}
@@ -93,22 +114,15 @@ int Airmar::update() {
 			}
 		break;
 		case WIMWV:
-		if(DEBUG) {
-				Serial.print("Data extracted: ");
-				Serial.print(nmea->data[0]);
-				Serial.print(",");
-				Serial.print(nmea->data[1]);
-				Serial.print(",");
-				Serial.print(nmea->data[2]);
-				Serial.print(",");
-				Serial.print(nmea->data[3]);
-				Serial.print(",");
-				Serial.println(nmea->data[4]);
-		}
 		if(strcmp(nmea->data[4], "A")==0) {
-			
-			this->windHeading = atof(nmea->data[0]);
-			this->windSpeed = atof(nmea->data[2]);
+			if(nmea->data[0]!=NULL && nmea->data[0][0]!='\0')
+			{
+				this->windHeading = atof(nmea->data[0]);
+			}
+			if(nmea->data[0]!=NULL && nmea->data[2][0]!='\0')
+			{
+				this->windSpeed = atof(nmea->data[2]);
+			}
 		}
 		break;
 		case GPVTG:
@@ -141,9 +155,6 @@ int Airmar::update() {
 			
 		break;
 		case GPGGA:
-			if(DEBUG) {
-				Serial.println(nmea->data[5]);
-			}
 			this->lat = atof(nmea->data[1]);
 			if(strcmp(nmea->data[2], "S")==0) {
 				this->lat *=-1;
@@ -157,25 +168,45 @@ int Airmar::update() {
 			//Just date and time, ignore for now.
 		break;
 		case WIMDA:
-			this->windHeading = atof(nmea->data[12]);
-			this->windSpeed = atof(nmea->data[16]);
+			if(nmea->data[0]!=NULL && nmea->data[12][0]!='\0')
+			{
+				this->windHeading = atof(nmea->data[12]);
+			}
+			if(nmea->data[0]!=NULL && nmea->data[16][0]!='\0')
+			{
+				this->windSpeed = atof(nmea->data[16]);
+			}
 		break;
 		case WIMWD:
-			this->windHeading = atof(nmea->data[0]);
-			this->windSpeed = atof(nmea->data[4]);
+			if(nmea->data[0]!=NULL && nmea->data[0][0]!='\0')
+			{
+				this->windHeading = atof(nmea->data[0]);
+			}
+			if(nmea->data[0]!=NULL && nmea->data[4][0]!='\0')
+			{
+				this->windSpeed = atof(nmea->data[4]);
+			}
 		break;
 		default:
 			if(DEBUG) {
 				Serial.print("Invalid NMEA Header:");
 				Serial.print(nmea->header);
 			}
+			for(i=0; i<nmea->count; i++){
+				free(nmea->data[i]);
+			}
+			free(nmea);
 			free(buf);
 			return -1;
 	}
 
-
+	//Free all of the nmea stuff.
+	for(i=0; i<nmea->count; i++){
+		free(nmea->data[i]);
+	}
+	free(nmea);
 	free(buf);
-	this->temp =0;//Reset the temperature.
+	this->temp = 0;//Reset the temperature.
 	return 0;
 }
 
