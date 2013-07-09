@@ -29,7 +29,7 @@ void readLine(){
     int i=0;
     char buf = '\0';
     while( (millis()-startTime) < 1000) {
-         if(Serial1.available()>0) {
+         if(Serial2.available()>0) {
               buf = Serial1.read();
               Serial.print(buf)
               if(buf=='\r' || buf=='\n'){ 

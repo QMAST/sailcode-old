@@ -5,6 +5,9 @@
 
 #define RCPIN 8
 #define KILLPIN 10
+
+
+
 typedef struct SensorLink {
 	struct SensorLink* next;
 	Sensor* s;
@@ -12,6 +15,7 @@ typedef struct SensorLink {
 
 int mode = 0;
 int spd;
+int direction = 90;
 Airmar* airmar;
 ashcon* Console;
 SensorLink* sensorList;
@@ -21,12 +25,15 @@ int dispatchRequest(int argc, char* argv[]);
 Sensor* getHottestSensor();
 void piInterrupt();
 boolean isKillswitchEngaged();
+int updateDirection(int argc, char* argv[]);
+void SailAutonomous();
 
 void setup() {
 	//Initialize console
     Serial.begin(115200);
     Console = new ashcon(&Serial);
     Console->user_function_register("req", &dispatchRequest);
+    Console->user_function_register("dir", &updateDirection);
     
 //Initialize Pololu
     Serial2.begin(38400);
@@ -58,7 +65,8 @@ void loop() {
                     setMotorSpeed(0);
                 }
             } else {
-                 setMotorSpeed(0);   
+                // setMotorSpeed(0);
+				SailAutonomous();
             }
             Sensor* sens = getHottestSensor();
             //Serial.print("Hottest sensor is ");
@@ -111,6 +119,15 @@ int dispatchRequest(int argc, char* argv[]) {
 	}
 	Serial.print("\n\r");
 	return 0;
+}
+
+int updateDirection(int argc, char*argv[]) {
+	//argv[1] is the new sail direction
+
+	direction = argv[1];
+	return 0;
+
+
 }
 
 Sensor* getHottestSensor() {
@@ -175,4 +192,32 @@ boolean isKillswitchEngaged()
      if(num>0) return false;
       return true;   
     
+}
+
+void SailAutonomous(){
+
+	
+	//Set rudder 
+	if (Airmar.heading == direction){
+		//set rudder to neutral
+	}
+	else if(Airmar.heading > direction){
+		if ( (Airmar.heading - direction) < 180 )
+			//turn left
+		else
+			//turn right
+	}
+	else {
+		if( (direction - Airmar.heading) < 180)
+			//turn right
+		else
+			//turn left
+	}
+	
+	//Set sails
+	//Funky trig to get optimum sail position for current heading and wind direction
+	Airmar.windDirection
+	
+	
+
 }

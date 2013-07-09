@@ -11,7 +11,7 @@ int main(int argc, char* argv[]) {
 	//Simple data logging test.
 	double lat, lon;
 	double heading, var, dev;
-	double windSpeed, windHeading;
+	double windSpeed, windDirection;
 	double courseOverGround, speedOverGround;
 	std::string resp;
 	int stat=0;
@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
 	Logging::addDataSource(DOUBLE, "var", &var);
 	Logging::addDataSource(DOUBLE, "dev", &dev);
 	Logging::addDataSource(DOUBLE, "windSpeed", &windSpeed);
-	Logging::addDataSource(DOUBLE, "windHeading", &windHeading);
+	Logging::addDataSource(DOUBLE, "windDirection", &windDirection);
 	Logging::addDataSource(DOUBLE, "courseOG", &courseOverGround);
 	Logging::addDataSource(DOUBLE, "speedOG", &speedOverGround);
 	
@@ -51,12 +51,12 @@ int main(int argc, char* argv[]) {
 
 			delete[] buf;
 		}
-		stat = ard.requestVariables("airmar", "windSpeed windHeading courseOverGround speedOverGround", resp);
+		stat = ard.requestVariables("airmar", "windSpeed windDirection courseOverGround speedOverGround", resp);
 		if(stat==0) {
 			buf = new char[resp.length()];
 			strcpy(buf, resp.c_str());
 			windSpeed = atof(strtok(buf, ","));
-			windHeading = atof(strtok(NULL, ","));
+			windDirection = atof(strtok(NULL, ","));
 			courseOverGround = atof(strtok(NULL, ","));
 			speedOverGround = atof(strtok(NULL, ","));
 

@@ -7,7 +7,7 @@
 
 Airmar* am;
 char* gps[]={"lat","lon"};
-char* wind[]={"windSpeed", "windHeading"};
+char* wind[]={"windSpeed", "windDirection"};
 char* comp[]={"heading","var","dev"};
 char* overGround[] = {"courseOG", "speedOG"};
 char** vars;
