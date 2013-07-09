@@ -1,4 +1,5 @@
 #include "airmar.h"
+#define DEBUG 0
 
 Airmar::Airmar(const char* id, Stream* lineIn) {
 	int idLen = strlen(id);
@@ -6,6 +7,7 @@ Airmar::Airmar(const char* id, Stream* lineIn) {
 	strcpy(this->id, id);
 	
 	this->lineIn = lineIn;
+	this->varList = NULL;
 	addVar(DOUBLE, "lat", &lat);
 	addVar(DOUBLE, "lon", &lon);
 	addVar(DOUBLE, "heading", &heading);
@@ -40,6 +42,25 @@ int Airmar::update() {
 
 	//Need a timeout here, to prevent a hang.
 	unsigned long st = millis();
+	//Wait to get a $ to start the line
+	while(true){
+		if(this->lineIn->peek() == '$'){
+			break;
+		}
+		if(this->lineIn->available() >0){
+			this->lineIn->read();
+		}
+		if(abs(millis()-st) > 500) {
+			if(DEBUG) {
+			 	Serial.println("Timeout.");
+			}
+			free(buf);
+			return -1;//Timeout
+
+		}
+	}
+
+	st = millis();
 	while(i<255) {
 		if(this->lineIn->available() >0) {
 			charIn = this->lineIn->read();//Read a single character;
@@ -52,15 +73,30 @@ int Airmar::update() {
 			i++;//Should never reach a 255 character line, especially from the airmar.
 		}
 		if(abs(millis()-st) > 500) {
+
+			if(DEBUG) {
+			 	Serial.println("Timeout.");
+			}
+			free(buf);
 			return -1;//Timeout
 		}
 	}
 
 	buf[i] = '\0';
+	if(DEBUG) {
+		Serial.print("Line Read: ");
+		Serial.println(buf);
+		Serial.println("End of the line");
+	}
 	//call NMEA::parseString();
 	NMEAData* nmea = (NMEAData*) malloc(sizeof(NMEAData)); 
 	i = NMEA::parseString(buf, nmea);
 	if(i!=0) {
+		if(DEBUG) {
+			Serial.println("Error Parsing: ");
+		}
+
+		free(nmea);
 		free(buf);
 		return -1;
 	}
@@ -79,8 +115,14 @@ int Airmar::update() {
 		break;
 		case WIMWV:
 		if(strcmp(nmea->data[4], "A")==0) {
-			this->windDirection = atof(nmea->data[0]);
-			this->windSpeed = atof(nmea->data[2]);
+			if(nmea->data[0]!=NULL && nmea->data[0][0]!='\0')
+			{
+				this->windDirection = atof(nmea->data[0]);
+			}
+			if(nmea->data[0]!=NULL && nmea->data[2][0]!='\0')
+			{
+				this->windSpeed = atof(nmea->data[2]);
+			}
 		}
 		break;
 		case GPVTG:
@@ -112,14 +154,59 @@ int Airmar::update() {
 			}
 			
 		break;
+		case GPGGA:
+			this->lat = atof(nmea->data[1]);
+			if(strcmp(nmea->data[2], "S")==0) {
+				this->lat *=-1;
+			}
+			this->lon = atof(nmea->data[3]);
+			if(strcmp(nmea->data[4], "S")==0) {
+				this->lon *=-1;
+			}
+		break;
+		case GPZDA:
+			//Just date and time, ignore for now.
+		break;
+		case WIMDA:
+			if(nmea->data[0]!=NULL && nmea->data[12][0]!='\0')
+			{
+				this->windDirection = atof(nmea->data[12]);
+			}
+			if(nmea->data[0]!=NULL && nmea->data[16][0]!='\0')
+			{
+				this->windSpeed = atof(nmea->data[16]);
+			}
+		break;
+		case WIMWD:
+			if(nmea->data[0]!=NULL && nmea->data[0][0]!='\0')
+			{
+				this->windDirection = atof(nmea->data[0]);
+			}
+			if(nmea->data[0]!=NULL && nmea->data[4][0]!='\0')
+			{
+				this->windSpeed = atof(nmea->data[4]);
+			}
+		break;
 		default:
+			if(DEBUG) {
+				Serial.print("Invalid NMEA Header:");
+				Serial.print(nmea->header);
+			}
+			for(i=0; i<nmea->count; i++){
+				free(nmea->data[i]);
+			}
+			free(nmea);
 			free(buf);
 			return -1;
 	}
 
-
+	//Free all of the nmea stuff.
+	for(i=0; i<nmea->count; i++){
+		free(nmea->data[i]);
+	}
+	free(nmea);
 	free(buf);
-	this->temp =0;//Reset the temperature.
+	this->temp = 0;//Reset the temperature.
 	return 0;
 }
 

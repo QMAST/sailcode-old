@@ -13,12 +13,12 @@ void loop() {
     //readLine();
     if(Serial2.available()>0) {
         digitalWrite(13, HIGH);
-        buf = Serial1.read();
+        buf = Serial2.read();
         Serial.print(buf);
     } else {
         digitalWrite(13, LOW);
-        Serial.print('.'); 
-      delay(500);  
+        //Serial.print('.'); 
+      //delay(500);  
     }
 }
 

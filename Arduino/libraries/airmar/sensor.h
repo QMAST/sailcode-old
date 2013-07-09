@@ -7,6 +7,7 @@
 #include <Arduino.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 /*
 I was worried about this conflicting with the 
 same enum in logging.h, but then realized this is running 
