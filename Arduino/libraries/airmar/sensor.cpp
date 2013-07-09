@@ -19,15 +19,11 @@ char** Sensor::getVariables(int argc, char* argv[]) {
 	DataSource* item = this->varList;
 	if(item==NULL) {
 		free(variables);
-		if(DEBUG != 0) Serial.println("No Variable list.");
 		return NULL;//No variables registered, can't return anything.
 	}
-	if(DEBUG != 0) Serial.println("Entering loop");
+
 	while(item != NULL) {
-		if(DEBUG != 0) Serial.print("Finding item ");
-		if(DEBUG != 0) Serial.println(item->id);
 		for(int i=0; i<argc; i++) {
-			if(DEBUG != 0) Serial.print(".");
 			if(strcmp(argv[i],item->id)==0) {//Item is found
 				//Convert item to c-string
 				char* buf= (char*) calloc(255,sizeof(char));
