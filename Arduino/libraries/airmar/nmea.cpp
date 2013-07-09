@@ -67,6 +67,11 @@ int NMEA::parseString(char* msg, NMEAData* nmea) {
 		nmea->header = WIMWV;
 		numArgs = 5;
 	}
+	else if (strncmp(headString, "PTNTHTM",7)==0) { //heading from compass
+		//8 data fields
+		nmea->header = PTNTHTM;
+		numArgs = 8;
+	}
 	else if(strncmp(headString, "GPVTG",5)==0) {//Course over ground/speed
 		//9 data fields
 		nmea->header = GPVTG;

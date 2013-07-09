@@ -58,6 +58,7 @@ char** Sensor::getVariables(int argc, char* argv[]) {
 				variables[i] = (char*) malloc(len*sizeof(char));
 				strcpy(variables[i], buf);
 				totLen+=len;
+				free(buf);
 			}
 		}
 		item = item->next;

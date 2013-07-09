@@ -1,0 +1,25 @@
+#ifndef _COMPASS_H_
+#define _COMPASS_H_
+
+#include <Arduino.h>
+#include <stdlib.h>
+#include "nmea.h"
+#include <sensor.h>
+
+class Compass : public Sensor {
+public:
+	Compass(const char* id, Stream* lineIn);
+	~Compass();
+	int update();
+	int getTemp(unsigned long temp);
+	
+	double compassHeading;
+	char compassStatus;
+	
+private:
+	int tempRate;//Relative rate at which the temperature should increase.
+	unsigned long prevTime;
+	int temp;
+};
+
+#endif

@@ -15,7 +15,8 @@ typedef enum {//Enum which stores all the different possible NMEA headings we ma
 	GPGGA,
 	GPZDA,
 	WIMDA,
-	WIMWD
+	WIMWD,
+	PTNTHTM
 
 } NMEA_head_t;
 
