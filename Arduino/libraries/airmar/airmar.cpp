@@ -52,7 +52,7 @@ int Airmar::update() {
 		}
 		if(abs(millis()-st) > 500) {
 			if(DEBUG) {
-			 	Serial.println("Timeout.");
+			 	Serial.println("Early Timeout.");
 			}
 			free(buf);
 			return -1;//Timeout
