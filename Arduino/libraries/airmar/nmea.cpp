@@ -22,6 +22,7 @@ int NMEA::parseString(char* msg, NMEAData* nmea) {
 		if(DEBUG) {
 			Serial.println("No $ detected");
 		}
+		
 		return -1;
 	}
 
