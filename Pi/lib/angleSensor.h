@@ -6,6 +6,8 @@
 #include <float.h>
 #include "buffer.h"
 #include "logging.h"
+#include "arduinoCom.h"
+
 #include <string>
 
 class AngleSensor{
@@ -16,10 +18,10 @@ public:
 
 private:
 	ArduinoCom* ard;
-	Buffer<int> motor1(BUFFER_SIZE);
-	Buffer<int> motor2(BUFFER_SIZE);
-	Buffer<int> mast(BUFFER_SIZE);
-	Buffer<time_t> time(BUFFER_SIZE);
+	Buffer<int> motor1 = Buffer<int>(BUFFER_SIZE);
+	Buffer<int> motor2 = Buffer<int>(BUFFER_SIZE);
+	Buffer<int> mast = Buffer<int>(BUFFER_SIZE);
+	Buffer<time_t> time = Buffer<time_t>(BUFFER_SIZE);
 };
 
 
