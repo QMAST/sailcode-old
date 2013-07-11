@@ -30,7 +30,7 @@ T Buffer<T>::pop() {
 }
 
 template<class T>
-T Buffer<T>::get() {
+T* Buffer<T>::get() {
 	//Returns the buffer array, out of order
 	T* temp = new T[this->size];
 	for(int i=0; i<size;i++) {
