@@ -198,27 +198,31 @@ void setMotorSpeed(int speed)
 
 void SailAutonomous(){
 
-	
+	int diff = abs(airmar->heading - dir);
 	//Set rudder 
-	if (airmar->heading == dir){
-		//set rudder to neutral
+	if (diff < 10){
+		servo->setPosition(0, 127);
+		servo->setPosition(1, 127);
 	}
 	else if(airmar->heading > dir){
 		if ( (airmar->heading - dir) < 180 ){
-			//turn left
-                }
+			servo->setPosition(0, 254);
+			servo->setPosition(1, 254);
+        }
 		else {
-			//turn right
-                }
+			servo->setPosition(0, 1);
+			servo->setPosition(1, 1);
+        }
 	}
 	else {
 		if( (dir - airmar->heading) < 180){
-			//turn right
-                }
+			servo->setPosition(0, 1);
+			servo->setPosition(1, 1);
+        }
 		else{
-  
-                }
-			//turn left
+			servo->setPosition(0, 254);
+			servo->setPosition(1, 254);
+		}
 	}
 	
 	//Set sails
