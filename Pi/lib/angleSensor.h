@@ -17,11 +17,12 @@ public:
 	float getAngles(int* motor1, int* motor2, int* mast);
 
 private:
-	ArduinoCom* ard(BUFFER_SIZE);
-	Buffer<int> motor1(BUFFER_SIZE);
-	Buffer<int> motor2(BUFFER_SIZE);
-	Buffer<int> mast(BUFFER_SIZE);
-	Buffer<time_t> time(BUFFER_SIZE);
+	ArduinoCom* ard;
+	
+	Buffer<int> *motor1;
+	Buffer<int> *motor2;
+	Buffer<int> *mast;
+	Buffer<time_t> *time;
 };
 
 
