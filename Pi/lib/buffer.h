@@ -7,6 +7,7 @@
 
 template <class T>
 class Buffer {
+public:
 	const int size;
 	
 	Buffer(int s);

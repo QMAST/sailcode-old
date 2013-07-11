@@ -20,11 +20,22 @@ int main(int argc, char* argv[]) {
 	AngleSensor angles(&ard);
 	
 	//Simple data logging test.
-	float *lat, *lon;
-	float *airmarHeading, *airmarVar, *airmarDev;
-	float *windSpeed, *windDirection;
-	float *compassHeading, *compassPitch, *compassRoll, *compassDip;
-	int *motor1Angle, *motor2Angle, *mastAngle;
+	float *lat = new float;
+	float *lon = new float;
+
+	float *airmarHeading  = new float;
+	float *airmarVar = new float;
+	float *airmarDev = new float;
+
+	float *windSpeed = new float;
+	float *windDirection = new float;
+	float *compassHeading = new float;
+	float *compassPitch = new float;
+	float *compassRoll = new float;
+	float *compassDip = new float;
+	int *motor1Angle = new int;
+	int *motor2Angle = new int;
+	int *mastAngle = new int;
 	std::string resp;
 	
 	

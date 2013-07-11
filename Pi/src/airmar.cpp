@@ -19,7 +19,7 @@ Airmar::Airmar(ArduinoCom* lineIn) {
 	cTime = Buffer<time_t>(BUFFER_SIZE);
 }
 
-float getGPS(float* lat, float* lon) {
+float Airmar::getGPS(float* lat, float* lon) {
 	//float* lats = this->gLat.get();
 	//float* lons = this->gLon.get();
 	//time_t* times = this->gTime.get();
@@ -57,7 +57,7 @@ float getGPS(float* lat, float* lon) {
 	return 1.0f;//Right now, self confidence is not implemented
 }
 
-float getWind(float* speed, float* heading) {
+float Airmar::getWind(float* speed, float* heading) {
 	std::string vars = "";
 	int stat = this->lineIn->requestVariables("airmar", "windSpeed windDirection", vars);
 	if(stat!=0) {
@@ -84,7 +84,7 @@ float getWind(float* speed, float* heading) {
 	return 1.0f;
 }
 
-float getCompass(float* heading, float* variation, float* deviation) {
+float Airmar::getCompass(float* heading, float* variation, float* deviation) {
 
 	std::string vars = "";
 	int stat = this->lineIn->requestVariables("airmar", "heading var dev", vars);
