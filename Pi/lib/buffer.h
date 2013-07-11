@@ -17,7 +17,7 @@ class Buffer {
 	int peek(T* item);
 private:
 	T* buf;
-	
+	int size;
 	int n;//Index
 };
 

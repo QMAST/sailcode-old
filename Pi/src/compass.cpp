@@ -2,6 +2,12 @@
 
 Compass::Compass(Arduinocom* lineIn) {
 	this->ard = lineIn;
+
+	heading = Buffer<float>(BUFFER_SIZE);
+	pitch = Buffer<float>(BUFFER_SIZE);
+	roll = Buffer<float>(BUFFER_SIZE);
+	dip = Buffer<float>(BUFFER_SIZE);
+	this->time = Buffer<time_t>;
 }
 
 float Compass::getValues(float* heading, float* pitch, float* roll, float* dip) {

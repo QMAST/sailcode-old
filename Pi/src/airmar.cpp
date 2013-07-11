@@ -2,7 +2,21 @@
 
 Airmar::Airmar(ArduinoCom* lineIn) {
 	this->ard = lineIn;
+	//GPS information buffers
+	gLat = Buffer<float>(BUFFER_SIZE);
+	gLon = Buffer<float>(BUFFER_SIZE);
+	gTime = Buffer<time_t>(BUFFER_SIZE);
 
+	//Wind information buffers
+	wSpeed = Buffer<float>(BUFFER_SIZE);
+	wHeading = Buffer<float>(BUFFER_SIZE);
+	wTime = Buffer<time_t>(BUFFER_SIZE);
+
+	//Compass information buffers
+	cHeading = Buffer<float>(BUFFER_SIZE);
+	cVar = Buffer<float>(BUFFER_SIZE);
+	cDev = Buffer<float>(BUFFER_SIZE);
+	cTime = Buffer<time_t>(BUFFER_SIZE);
 }
 
 float getGPS(float* lat, float* lon) {
