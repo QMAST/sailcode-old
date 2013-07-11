@@ -7,7 +7,7 @@ Compass::Compass(ArduinoCom* lineIn) {
 	pitch = new Buffer<float>(BUFFER_SIZE);
 	roll = new Buffer<float>(BUFFER_SIZE);
 	dip = new Buffer<float>(BUFFER_SIZE);
-	this->ctime = new Buffer<time_t>;
+	this->ctime = new Buffer<time_t>(BUFFER_SIZE);
 }
 
 float Compass::getValues(float* heading, float* pitch, float* roll, float* dip) {
