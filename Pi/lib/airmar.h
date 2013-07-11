@@ -6,6 +6,7 @@
 #include <float.h>
 #include "buffer.h"
 #include "float.h"
+#include "arduinoCom.h"
 #include <string>
 
 class Airmar {
@@ -19,20 +20,20 @@ private:
 	ArduinoCom* ard;
 	
 	//GPS information buffers
-	Buffer<float> gLat (BUFFER_SIZE);
-	Buffer<float> gLon (BUFFER_SIZE);
-	Buffer<time_t> gTime (BUFFER_SIZE);
+	Buffer<float> *gLat;
+	Buffer<float> *gLon;
+	Buffer<time_t> *gTime;
 
 	//Wind information buffers
-	Buffer<float> wSpeed (BUFFER_SIZE);
-	Buffer<float> wHeading (BUFFER_SIZE);
-	Buffer<time_t> wTime (BUFFER_SIZE);
+	Buffer<float> *wSpeed;
+	Buffer<float> *wHeading;
+	Buffer<time_t> *wTime;
 
 	//Compass information buffers
-	Buffer<float> cHeading (BUFFER_SIZE);
-	Buffer<float> cVar (BUFFER_SIZE);
-	Buffer<float> cDev (BUFFER_SIZE);
-	Buffer<time_t> cTime (BUFFER_SIZE);
+	Buffer<float> *cHeading;
+	Buffer<float> *cVar;
+	Buffer<float> *cDev;
+	Buffer<time_t> *cTime;
 };
 
 #endif

@@ -1,7 +1,7 @@
 #include "buffer.h"
 
 template <class T>
-Buffer<T>::Buffer(int s){
+Buffer<T>::Buffer(int s)  : size(s), n(0){
 	this->buf = new T[s];
 	return;
 }
@@ -30,7 +30,7 @@ T Buffer<T>::pop() {
 }
 
 template<class T>
-T Buffer<T>::get() {
+T* Buffer<T>::get() {
 	//Returns the buffer array, out of order
 	T* temp = new T[this->size];
 	for(int i=0; i<size;i++) {
@@ -60,3 +60,8 @@ int Buffer<T>::peek(T* item) {
 	*item = buf[i];
 	return i;
 }
+
+
+template class Buffer<float>;
+template class Buffer<int>;
+template class Buffer<long>;
