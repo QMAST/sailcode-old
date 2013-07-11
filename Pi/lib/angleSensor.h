@@ -22,7 +22,7 @@ private:
 	Buffer<int> *motor1;
 	Buffer<int> *motor2;
 	Buffer<int> *mast;
-	Buffer<time_t> *time;
+	Buffer<time_t> *atime;
 };
 
 

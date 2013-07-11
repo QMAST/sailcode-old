@@ -5,7 +5,7 @@ AngleSensor::AngleSensor(ArduinoCom* lineIn) {
 	motor1 =  new Buffer<int>(BUFFER_SIZE);
 	motor2 =  new Buffer<int>(BUFFER_SIZE);
 	mast = new  Buffer<int>(BUFFER_SIZE);
-	this->time =  new Buffer<time_t>(BUFFER_SIZE);
+	this->atime =  new Buffer<time_t>(BUFFER_SIZE);
 }
 
 float AngleSensor::getAngles(int* motor1, int* motor2, int* mast) {
@@ -59,7 +59,7 @@ float AngleSensor::getAngles(int* motor1, int* motor2, int* mast) {
 
 		delete[] str;
 	}
-	this->time.add(time(NULL));
+	this->atime.add(time(NULL));
 
 
 	*motor1 = this->motor1->peek();
