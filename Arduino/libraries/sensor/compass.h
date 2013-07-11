@@ -22,6 +22,10 @@ private:
 	int tempRate;//Relative rate at which the temperature should increase.
 	unsigned long prevTime;
 	int temp;
+	
+	double pitchAngle;
+	double rollAngle;
+	double dipAngle;
 };
 
 #endif
