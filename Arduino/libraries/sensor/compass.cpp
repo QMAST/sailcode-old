@@ -17,6 +17,10 @@ Compass::Compass(const char* id, Stream* lineIn) {
 	addVar(DOUBLE, "dip", &dipAngle);
 
 	this->compassHeading = 0;
+	this->compassStatus = 0;
+	this->pitchAngle = 0;
+	this->rollAngle = 0;
+	this->dipAngle = 0;
 
 	this->update();
 }
