@@ -64,4 +64,4 @@ int Buffer<T>::peek(T* item) {
 
 template class Buffer<float>;
 template class Buffer<int>;
-template class Buffer<time_t>;
+template class Buffer<long>;
