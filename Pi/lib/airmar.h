@@ -19,20 +19,20 @@ private:
 	ArduinoCom* ard;
 	
 	//GPS information buffers
-	Buffer<float> gLat (BUFFER_SIZE);
-	Buffer<float> gLon (BUFFER_SIZE);
-	Buffer<time_t> gTime (BUFFER_SIZE);
+	Buffer<float> gLat(BUFFER_SIZE);
+	Buffer<float> gLon(BUFFER_SIZE);
+	Buffer<time_t> gTime(BUFFER_SIZE);
 
 	//Wind information buffers
-	Buffer<float> wSpeed (BUFFER_SIZE);
-	Buffer<float> wHeading (BUFFER_SIZE);
-	Buffer<time_t> wTime (BUFFER_SIZE);
+	Buffer<float> wSpeed(BUFFER_SIZE);
+	Buffer<float> wHeading(BUFFER_SIZE);
+	Buffer<time_t> wTime(BUFFER_SIZE);
 
 	//Compass information buffers
-	Buffer<float> cHeading (BUFFER_SIZE);
-	Buffer<float> cVar (BUFFER_SIZE);
-	Buffer<float> cDev (BUFFER_SIZE);
-	Buffer<time_t> cTime (BUFFER_SIZE);
+	Buffer<float> cHeading(BUFFER_SIZE);
+	Buffer<float> cVar(BUFFER_SIZE);
+	Buffer<float> cDev(BUFFER_SIZE);
+	Buffer<time_t> cTime(BUFFER_SIZE);
 };
 
 #endif

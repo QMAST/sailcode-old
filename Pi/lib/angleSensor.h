@@ -16,10 +16,10 @@ public:
 
 private:
 	ArduinoCom* ard;
-	Buffer<int> motor1 (BUFFER_SIZE);
-	Buffer<int> motor2 (BUFFER_SIZE);
-	Buffer<int> mast (BUFFER_SIZE);
-	Buffer<time_t> time (BUFFER_SIZE);
+	Buffer<int> motor1(BUFFER_SIZE);
+	Buffer<int> motor2(BUFFER_SIZE);
+	Buffer<int> mast(BUFFER_SIZE);
+	Buffer<time_t> time(BUFFER_SIZE);
 };
 
 

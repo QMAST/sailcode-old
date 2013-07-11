@@ -18,11 +18,11 @@ private:
 	ArduinoCom* ard;
 
 	//Buffers to hold all the data, over a period of time.
-	Buffer<float> heading (BUFFER_SIZE);
-	Buffer<float> pitch (BUFFER_SIZE);
-	Buffer<float> roll (BUFFER_SIZE);
-	Buffer<float> dip (BUFFER_SIZE);
-	Buffer<time_t> time (BUFFER_SIZE);
+	Buffer<float> heading(BUFFER_SIZE);
+	Buffer<float> pitch(BUFFER_SIZE);
+	Buffer<float> roll(BUFFER_SIZE);
+	Buffer<float> dip(BUFFER_SIZE);
+	Buffer<time_t> time(BUFFER_SIZE);
 };
 
 #endif

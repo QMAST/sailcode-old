@@ -12,6 +12,7 @@
 
 int main(int argc, char* argv[]) {
 	Logging::init();
+	int pin =2;
 	ArduinoCom ard("/dev/ttyACM0",pin);
 	
 	Airmar airmar(&ard);
@@ -25,21 +26,19 @@ int main(int argc, char* argv[]) {
 	float *compassHeading, *compassPitch, *compassRoll, *compassDip;
 	int *motor1Angle, *motor2Angle, *mastAngle;
 	std::string resp;
-	int stat=0;
-	int pin= 2;
-	char* buf;
 	
 	
-	Logging::addDataSource(DOUBLE, "lat", lat);
-	Logging::addDataSource(DOUBLE, "lon", lon);
-	Logging::addDataSource(DOUBLE, "airmarHeading", airmarHeading);
-	Logging::addDataSource(DOUBLE, "airmarVar", airmarVar);
-	Logging::addDataSource(DOUBLE, "airmarDev", airmarDev);
-	Logging::addDataSource(DOUBLE, "windSpeed", windSpeed);
-	Logging::addDataSource(DOUBLE, "windDirection", windDirection);
-	Logging::addDataSource(DOUBLE, "compassHeading", compassHeading);
-	Logging::addDataSource(DOUBLE, "compassVar", compassVar);
-	Logging::addDataSource(DOUBLE, "compassDev", compassDev);
+	Logging::addDataSource(FLOAT, "lat", lat);
+	Logging::addDataSource(FLOAT, "lon", lon);
+	Logging::addDataSource(FLOAT, "airmarHeading", airmarHeading);
+	Logging::addDataSource(FLOAT, "airmarVar", airmarVar);
+	Logging::addDataSource(FLOAT, "airmarDev", airmarDev);
+	Logging::addDataSource(FLOAT, "windSpeed", windSpeed);
+	Logging::addDataSource(FLOAT, "windDirection", windDirection);
+	Logging::addDataSource(FLOAT, "compassHeading", compassHeading);
+	Logging::addDataSource(FLOAT, "compassPitch", compassPitch);
+	Logging::addDataSource(FLOAT, "compassRoll", compassRoll);
+	Logging::addDataSource(FLOAT, "compassDip", compassDip);
 	Logging::addDataSource(INT, "motor1Angle", motor1Angle);
 	Logging::addDataSource(INT, "motor2Angle", motor2Angle);
 	Logging::addDataSource(INT, "mastAngle", mastAngle);
@@ -54,7 +53,7 @@ int main(int argc, char* argv[]) {
 		compass.getValues(compassHeading, compassPitch, compassRoll, compassDip);
 
 		angles.getAngles(motor1Angle, motor2Angle, mastAngle);
-		
+
 		Logging::log();
 
 		usleep(1000*5000);
