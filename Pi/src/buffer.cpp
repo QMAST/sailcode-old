@@ -60,3 +60,8 @@ int Buffer<T>::peek(T* item) {
 	*item = buf[i];
 	return i;
 }
+
+
+template class Buffer<float>;
+template class Buffer<int>;
+template class Buffer<time_t>;

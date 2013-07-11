@@ -59,7 +59,7 @@ float AngleSensor::getAngles(int* motor1, int* motor2, int* mast) {
 
 		delete[] str;
 	}
-	this->atime.add(time(NULL));
+	this->atime->add(time(NULL));
 
 
 	*motor1 = this->motor1->peek();
