@@ -1,15 +1,23 @@
+/*
+  This is the main sketch which contains our most up-to-date sailcode and
+  accurate steps
+*/
+
+
 #include <Arduino.h>
 #include <ashcon.h>
 #include <airmar.h>
 #include <compass.h>
 #include <sensor.h>
-
-#define RCPIN 8
-#define KILLPIN 10
+#include <rc.h>
+#include <pololu_servo.h>
+#include <motor.h>
 
 #define MULTIPLEX_PIN1 30
 #define MULTIPLEX_PIN2 31
-
+#define SERVO_RESET_PIN 40
+#define MOTOR_1_ANGLEPIN 1
+#define MOTOR_2_ANGLEPIN 2
 
 typedef struct SensorLink {
 	struct SensorLink* next;
@@ -19,18 +27,27 @@ typedef struct SensorLink {
 int mode = 0;
 int spd;
 int dir = 90;
+
+//All the objects necessary on the boat
 Airmar* airmar;
 Compass* compass;
-ashcon* Console;
+ashcon* console;
 SensorLink* sensorList;
+RC* control;
+PololuMSC* servo;
+Motor* motor1;
+Motor* motor2;
 
+
+//Function prototypes
 void addToList(Sensor* item);
 int dispatchRequest(int argc, char* argv[]);
 Sensor* getHottestSensor();
 void piInterrupt();
-boolean isKillswitchEngaged();
 int updateDirection(int argc, char* argv[]);
 void SailAutonomous();
+void HandleRC();
+
 
 void setup() {
 	//Initialize console
@@ -43,12 +60,17 @@ void setup() {
     pinMode(MULTIPLEX_PIN1, OUTPUT);
     pinMode(MULTIPLEX_PIN2, OUTPUT);
     
-    //Initialize Pololu 
-    Serial2.begin(38400);
-    pinMode(RCPIN, INPUT);
-    delay(5);
-    Serial2.write(0xAA);
-    Serial2.write(0x83);
+	
+    //Initialize Servos
+    Serial3.begin(9600);
+    servo = new PololuMSC(&Serial3, SERVO_RESET_PIN);
+
+    //Initialize RC
+    control = new RC();
+
+    //Initialize motors
+    motor1 = new Motor(&Serial2, MOTOR_1_ANGLEPIN, '\x0D');
+    motor2 = new Motor(&Serial2, MOTOR_2_ANGLEPIN, '\x0E');
 
     //Initialize sensors
     airmar = new Airmar("airmar",&Serial1);
@@ -64,25 +86,20 @@ void loop() {
     switch(mode) {
         case 0: //Default mode, polling sensors, handling RC.
         {
-            if(isKillswitchEngaged() ==false)
+            if(control->gearSwitchUp()) //We're in RC mode.
             {
-                spd = getPWM_Value(RCPIN);
-                if(spd > -3200 && spd <3200){
-                    setMotorSpeed(spd);
-                }
-                else
-                {
-                    setMotorSpeed(0);
-                }
-            } else {
-                // setMotorSpeed(0);
-				SailAutonomous();
+                HandleRC();
+            } 
+            else { //We're in autonomous mode
+				        SailAutonomous();
             }
+
+            //Update Sensors, regardless of mode.
+
             Sensor* sens = getHottestSensor();
-            //Serial.print("Hottest sensor is ");
-            //Serial.println(sens->id);
+            //Need to include multiplexor and code for changing Baud rate when necessary.
+
             sens->update();
-            //Serial.write(0); //Just to see if the light blinks.
         }
         break;
         case 1: //Responding to request for variables.
@@ -164,23 +181,6 @@ void piInterrupt() {
 	mode =1;
 }
 
-int getPWM_Value(int pinIn)
-{
-    
-  int RCVal = pulseIn(pinIn, HIGH, 20000);
-  if(RCVal == 0)
-  {
-    RCVal = -10000;
-  }
-
-  RCVal = map(RCVal, 1000, 2000, -3200, 3200);
-  //Serial.print(pinIn);
-  //Serial.print("-");
-  //Serial.println(RCVal);
-  return RCVal;
-
-}
-
 void setMotorSpeed(int speed)
 {
   if (speed < 0)
@@ -194,14 +194,6 @@ void setMotorSpeed(int speed)
   }
   Serial2.write(speed & 0x1F);
   Serial2.write(speed >> 5);
-}
-
-boolean isKillswitchEngaged()
-{
-     int num = getPWM_Value(KILLPIN);
-     if(num>0) return false;
-      return true;   
-    
 }
 
 void SailAutonomous(){
@@ -235,4 +227,71 @@ void SailAutonomous(){
 	
 	
 
+}
+
+
+void HandleRC() {
+  //Handles all the RC control possibilities. 
+  if(control->getValueLV() > 0) {//If the left stick is set more than halfway up...
+    //Enter motor configuration mode, to set the motor parameters.
+    //This will take complete control of the program until the mode is disabled, regardless of gearswitch position
+    getMotorParams();
+  }
+  else {//If the left stick is less than halfway up...
+    //Go into normal RC mode.
+    int temp;
+    temp = control->getValueRV();
+    temp = map(temp, -100,100, -3600,3600);
+    motor1->setMotorSpeed(temp);
+    motor2->setMotorSpeed(temp);
+
+    temp = control->getValueRH();
+    temp = map(temp, -100,100, 0,254);
+    servo->setPosition(0, temp);
+    servo->setPosition(1, temp);
+
+  }
+
+}
+
+void getMotorParams() {
+  /*
+    Subroutine to get the motor parameters using RC control.
+    Keeps track of the max and minimum positions of the two motors,
+    until the auxiliary switch is set back to a normal position.
+    Sets the motors with this position.
+  */
+  int max1, max2, min1, min2;
+  int temp;
+
+  while(control->getValueLV() > 0) {
+    //While the aux knob is over halfway, get the max and min
+    temp = motor1->getAngle();
+    if(temp > max1) {
+      max1 = temp;
+    }
+    else if(temp < min1) {
+      min1 = temp;
+    }
+
+    temp = motor2->getAngle();
+    if(temp > max2) {
+      max2 = temp;
+    } else if(temp<min2) {
+      min2 = temp;
+    }
+
+    //Get RC values for motor movement.
+    temp= control->getValueRV();
+    temp = map(temp, -100, 100, -3600, 3600);
+    motor1->setMotorSpeed(temp);
+    temp= control->getValueRH();
+    temp = map(temp, -100, 100, -3600, 3600);
+    motor2->setMotorSpeed(temp);
+
+  }
+
+  motor1->setMotorParams(min1, max1);
+  motor2->setMotorParams(min2, max2);
+  return;
 }
