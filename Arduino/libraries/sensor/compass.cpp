@@ -6,6 +6,8 @@ Compass::Compass(const char* id, Stream* lineIn) {
 	this->id = (char*) malloc(sizeof(char)*idLen);
 	strcpy(this->id, id);
 	
+	this->tempRate =1;
+
 	this->lineIn = lineIn;
 	this->varList = NULL;
 	addVar(DOUBLE, "compassHeading", &compassHeading);
@@ -18,7 +20,7 @@ Compass::Compass(const char* id, Stream* lineIn) {
 
 int Compass::update() {
 	//Get the data from the sensor, parse it properly, do anything else necessary.
-	digitalWrite(MULTIPLEX_PIN1, HIGH);
+	digitalWrite(MULTIPLEX_PIN1, LOW);
 	digitalWrite(MULTIPLEX_PIN2, LOW);
 	delay(20);
 		
