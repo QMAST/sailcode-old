@@ -43,7 +43,7 @@ void setup() {
     pinMode(MULTIPLEX_PIN1, OUTPUT);
     pinMode(MULTIPLEX_PIN2, OUTPUT);
     
-    //Initialize Pololu
+    //Initialize Pololu 
     Serial2.begin(38400);
     pinMode(RCPIN, INPUT);
     delay(5);

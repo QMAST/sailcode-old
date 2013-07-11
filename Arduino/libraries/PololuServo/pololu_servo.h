@@ -34,7 +34,7 @@ class PololuMSC {
     private:
         static const int RESET_HIGH_WAIT = 100;
         static const int RESET_LOW_WAIT = 1000;
-        static const int SERVO_SLOTS = 8;
+        static const int SERVO_SLOTS = 2;
         static const int SERVO_DEFAULT = 127;
 
         struct servo {
