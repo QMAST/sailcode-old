@@ -39,12 +39,12 @@ void Motor::reset(){
 }
 
 int Motor::setLength(int position) {
-	/* Ajust the motor to have the specified rope length out.
+	/* Adjust the motor to have the specified rope length out.
 	For example, setLength(0) would bring the rope in all the way,
 	setLength(100) would take it all the way out.
 	Need to determine max and min angles, but we should be able to make this work.
-	Theres a linear relationship between the angle and the position of the knot on the line.
-	Also need to include a timeout in case the motor isnt responsive.
+	There is a linear relationship between the angle and the position of the knot on the line.
+	Also need to include a timeout in case the motor isn't responsive.
 	*/
 	int speed, sign;
 	//First calculate desired angle from position.

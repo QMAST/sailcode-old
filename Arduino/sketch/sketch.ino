@@ -231,12 +231,11 @@ void SailAutonomous(){
 		windDirWRTHeading+=360;
 	
 	if(windDirWRTHeading >=180 && windDirWRTHeading < 360) {
-		//set motors appropriately
+		windDirWRTHeading = 360-windDirWRTHeading;
 	}
-	else{
-		//set motors appropriately
-	}
-	
+
+	motor1->setLength((windDirWRTHeading/180)*100);
+	motor2->setLength((windDirWRTHeading/180)*100);
 
 }
 

@@ -14,20 +14,27 @@ void setup() {
   
   rudderServo = new PololuMSC(&Serial2, RESET_PIN);
   
-  Serial2.begin(9600);
+  Serial2.begin(2400);
   pinMode(RESET_PIN, INPUT);
   delay(5);
-  Serial2.write(0xAA);
-  Serial2.write(0x83);
+
 }
 
 void loop() {
   
+  //rudderServo->restart();
 
-  rudderServo->setPosition(0, 45);
-  rudderServo->setPosition(1, 45);
+  rudderServo->setPosition(0, 127);
+  rudderServo->setPosition(1, 127);
   
-  delay(1000);
+  
+  delay(2000);
+  
+  
+  //rudderServo->setPosition(0, 200);
+  //rudderServo->setPosition(1, 200);
+  
+  delay(2000);
   
    
   
