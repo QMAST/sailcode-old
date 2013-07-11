@@ -17,17 +17,24 @@ float getGPS(float* lat, float* lon) {
 		Logging::error(__func__, "Error while getting variables");
 	}
 	else {
-		char* buf = strtok(vars.c_str(), ",");
+		int len = vars.length();
+		char* str = new char[len+1];
+		vars.copy(str, len);
+		str[len] ='\0';
+
+		char* buf = strtok(str, ",");
 		this->gLat.add((float) atof(buf));
 		buf =strtok(NULL, ",");
 		this->gLon.add((float) atof(buf));
 		this->gTime.add(time(NULL));
+
+		delete[] str;
 	}
 
 	//To-do - implement a method for computing self-confidence.
 	//Right now, just return a 1 for self confidence, and return the most recent values.
-	*lat = this->gLat.peak();
-	*lon = this->gLon.peak();
+	*lat = this->gLat.peek();
+	*lon = this->gLon.peek();
 	
 	//delete[] lats;
 	//delete[] lons;
@@ -43,15 +50,22 @@ float getWind(float* speed, float* heading) {
 		Logging::error(__func__, "Error while getting variables");
 	}
 	else {
-		char* buf = strtok(vars.c_str(), ",");
+		int len = vars.length();
+		char* str = new char[len+1];
+		vars.copy(str, len);
+		str[len] ='\0';
+
+		char* buf = strtok(str, ",");
 		this->wSpeed.add((float) atof(buf));
 		buf =strtok(NULL, ",");
 		this->wHeading.add((float) atof(buf));
 		this->wTime.add(time(NULL));
+
+		delete[] str;
 	}
 
-	*speed = this->wSpeed.peak();
-	*heading = this->wHeading.peak();
+	*speed = this->wSpeed.peek();
+	*heading = this->wHeading.peek();
 
 	return 1.0f;
 }
@@ -64,7 +78,12 @@ float getCompass(float* heading, float* variation, float* deviation) {
 		Logging::error(__func__, "Error while getting variables");
 	}
 	else {
-		char* buf = strtok(vars.c_str(), ",");
+		int len = vars.length();
+		char* str = new char[len+1];
+		vars.copy(str, len);
+		str[len] ='\0';
+
+		char* buf = strtok(str, ",");
 		this->cHeading.add((float) atof(buf));
 		buf =strtok(NULL, ",");
 		this->cVar.add((float) atof(buf));
@@ -72,11 +91,13 @@ float getCompass(float* heading, float* variation, float* deviation) {
 		this->cDev.add((float) atof(buf));
 
 		this->cTime.add(time(NULL));
+
+		delete[] str;
 	}
 
-	*heading = this->cHeading.peak();
-	*variation = this->cVar.peak();
-	*deviation = this->cDev.peak();
+	*heading = this->cHeading.peek();
+	*variation = this->cVar.peek();
+	*deviation = this->cDev.peek();
 
 	return 1.0f;
 }
