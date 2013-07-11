@@ -1,6 +1,8 @@
 
 #ifndef _AIRMAR_H_
 #define _AIRMAR_H_
+#define MULTIPLEX_PIN1 28
+#define MULTIPLEX_PIN2 29
 
 #include <Arduino.h>
 #include <stdlib.h>
@@ -12,7 +14,7 @@ public:
 	Airmar(const char* id, Stream* lineIn);
 	~Airmar();
 	int update();
-	int getTemp(unsigned long temp);
+	int getTemp(unsigned long time);
 	
 	double heading, windDirection;
 	
