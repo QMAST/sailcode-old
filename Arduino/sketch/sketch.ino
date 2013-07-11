@@ -134,7 +134,7 @@ int dispatchRequest(int argc, char* argv[]) {
 int updateDirection(int argc, char*argv[]) {
 	//argv[1] is the new sail direction
 
-	direction = atoi(argv[1]);
+	dir = atoi(argv[1]);
 	return 0;
 
 
@@ -208,25 +208,30 @@ void SailAutonomous(){
 
 	
 	//Set rudder 
-	if (Airmar.heading == direction){
+	if (airmar->heading == dir){
 		//set rudder to neutral
 	}
-	else if(Airmar.heading > direction){
-		if ( (Airmar.heading - direction) < 180 )
+	else if(airmar->heading > dir){
+		if ( (airmar->heading - dir) < 180 ){
 			//turn left
-		else
+                }
+		else {
 			//turn right
+                }
 	}
 	else {
-		if( (direction - Airmar.heading) < 180)
+		if( (dir - airmar->heading) < 180){
 			//turn right
-		else
+                }
+		else{
+  
+                }
 			//turn left
 	}
 	
 	//Set sails
 	//Funky trig to get optimum sail position for current heading and wind direction
-	Airmar.windDirection
+	airmar->windDirection;
 	
 	
 
