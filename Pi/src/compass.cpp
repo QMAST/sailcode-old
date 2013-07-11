@@ -4,7 +4,7 @@ Compass::Compass(Arduinocom* lineIn) {
 	this->ard = lineIn;
 }
 
-Compass::getValues(float* heading, float* pitch, float* roll, float* dip) {
+float Compass::getValues(float* heading, float* pitch, float* roll, float* dip) {
 	std::string vars = "";
 	int stat = this->lineIn->requestVariables("compass", "heading pitch roll dip", vars);
 	if(stat!=0) {

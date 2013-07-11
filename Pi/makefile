@@ -14,7 +14,7 @@ SHELL = /bin/sh
 
 all: main
 
-main: main.o logging.o arduinoCom.o gpio.o serial.o airmar.o compass.o buffer.o
+main: main.o logging.o arduinoCom.o gpio.o serial.o airmar.o compass.o buffer.o anglesensor.o
 	$(CXX) $^ -o $@
 
 testing: testing.o logging.o arduinoCom.o gpio.o serial.o
@@ -25,6 +25,9 @@ logtest: logtest.o logging.o
 
 comtest: comtest.o arduinoCom.o gpio.o serial.o logging.o
 	$(CXX) $^ -o $@
+
+anglesensor.o: angleSensor.cpp buffer.h logging.h
+	$(CXX) $(CFLAGS) $< -o $@
 
 compass.o: compass.cpp buffer.h logging.h
 	$(CXX) $(CFLAGS) $< -o $@

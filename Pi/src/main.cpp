@@ -4,6 +4,7 @@
 #include "logging.h"
 #include "arduinoCom.h"
 #include "compass.h"
+#include "angleSensor.h"
 
 //#include "gaelforce.h"
 //#include "environment.h"
@@ -15,12 +16,14 @@ int main(int argc, char* argv[]) {
 	
 	Airmar airmar(&ard);
 	Compass compass(&ard);
+	AngleSensor angles(&ard);
 	
 	//Simple data logging test.
 	float *lat, *lon;
 	float *airmarHeading, *airmarVar, *airmarDev;
 	float *windSpeed, *windDirection;
 	float *compassHeading, *compassPitch, *compassRoll, *compassDip;
+	int *motor1Angle, *motor2Angle, *mastAngle;
 	std::string resp;
 	int stat=0;
 	int pin= 2;
@@ -37,6 +40,11 @@ int main(int argc, char* argv[]) {
 	Logging::addDataSource(DOUBLE, "compassHeading", compassHeading);
 	Logging::addDataSource(DOUBLE, "compassVar", compassVar);
 	Logging::addDataSource(DOUBLE, "compassDev", compassDev);
+	Logging::addDataSource(INT, "motor1Angle", motor1Angle);
+	Logging::addDataSource(INT, "motor2Angle", motor2Angle);
+	Logging::addDataSource(INT, "mastAngle", mastAngle);
+
+
 	while(true) {
 		
 		airmar.getGPS(lat, lon);
@@ -45,6 +53,8 @@ int main(int argc, char* argv[]) {
 
 		compass.getValues(compassHeading, compassPitch, compassRoll, compassDip);
 
+		angles.getAngles(motor1Angle, motor2Angle, mastAngle);
+		
 		Logging::log();
 
 		usleep(1000*5000);
