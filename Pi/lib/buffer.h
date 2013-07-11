@@ -9,7 +9,7 @@ template <class T>
 class Buffer {
 	const int size;
 	
-	Buffer(int s) : size(s), n(0);
+	Buffer(int s);
 	void add(T item);
 	T pop();
 	T* get();
@@ -17,7 +17,6 @@ class Buffer {
 	int peek(T* item);
 private:
 	T* buf;
-	int size;
 	int n;//Index
 };
 

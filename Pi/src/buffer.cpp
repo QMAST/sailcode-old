@@ -1,7 +1,7 @@
 #include "buffer.h"
 
 template <class T>
-Buffer<T>::Buffer(int s){
+Buffer<T>::Buffer(int s)  : size(s), n(0){
 	this->buf = new T[s];
 	return;
 }
