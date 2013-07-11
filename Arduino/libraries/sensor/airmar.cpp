@@ -6,6 +6,8 @@ Airmar::Airmar(const char* id, Stream* lineIn) {
 	this->id = (char*) malloc(sizeof(char)*idLen);
 	strcpy(this->id, id);
 	
+	this->tempRate =1;
+
 	this->lineIn = lineIn;
 	this->varList = NULL;
 	addVar(DOUBLE, "lat", &lat);
@@ -34,8 +36,8 @@ Airmar::Airmar(const char* id, Stream* lineIn) {
 int Airmar::update() {
 	//Get the data from the sensor, parse it properly, do anything else necessary.
 	//Airmar will be read much more frequently, so probably only read one line per call of this.
-	digitalWrite(MULTIPLEX_PIN1, LOW);
-	digitalWrite(MULTIPLEX_PIN2, HIGH);
+	digitalWrite(MULTIPLEX_PIN1, HIGH);
+	digitalWrite(MULTIPLEX_PIN2, LOW);
 	delay(20);
 	
 	//Read line, place into a buffer.

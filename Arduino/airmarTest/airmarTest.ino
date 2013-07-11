@@ -4,6 +4,8 @@
 #include <Arduino.h>
 #include <airmar.h>
 
+#define MULTIPLEX_PIN1 28
+#define MULTIPLEX_PIN2 29
 
 Airmar* am;
 char* gps[]={"lat","lon"};
@@ -15,7 +17,13 @@ int stat;
 void setup() {
         Serial.begin(115200);
 	Serial2.begin(4800);
-	am = new Airmar("airmar", &Serial2);
+
+        pinMode(MULTIPLEX_PIN1, OUTPUT);
+	pinMode(MULTIPLEX_PIN2, OUTPUT);
+
+        digitalWrite(MULTIPLEX_PIN1, HIGH);
+        digitalWrite(MULTIPLEX_PIN2, LOW);	
+        am = new Airmar("airmar", &Serial2);
         Serial.println(freeMemory());
 }
 
