@@ -13,8 +13,8 @@ class Buffer {
 	void add(T item);
 	T pop();
 	T* get();
-	T peak();
-	int peak(T* item);
+	T peek();
+	int peek(T* item);
 private:
 	T* buf;
 	
