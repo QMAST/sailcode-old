@@ -5,6 +5,8 @@
 #include <time.h>
 #include <float.h>
 #include "buffer.h"
+#include "float.h"
+#include <string>
 
 class Airmar {
 public:
