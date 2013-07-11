@@ -226,9 +226,16 @@ void SailAutonomous(){
 	}
 	
 	//Set sails
-	//Funky trig to get optimum sail position for current heading and wind direction
-	airmar->windDirection;
+	int windDirWRTHeading = airmar->windDirection - compass->compassHeading;
+	if (windDirWRTHeading < 0)
+		windDirWRTHeading+=360;
 	
+	if(windDirWRTHeading >=180 && windDirWRTHeading < 360) {
+		//set motors appropriately
+	}
+	else{
+		//set motors appropriately
+	}
 	
 
 }

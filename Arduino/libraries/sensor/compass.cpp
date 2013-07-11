@@ -12,6 +12,9 @@ Compass::Compass(const char* id, Stream* lineIn) {
 	this->varList = NULL;
 	addVar(DOUBLE, "compassHeading", &compassHeading);
 	addVar(CHAR, "compassStatus", &compassStatus);
+	addVar(DOUBLE, "pitch", &pitchAngle);
+	addVar(DOUBLE, "roll", &rollAngle);
+	addVar(DOUBLE, "dip", &dipAngle);
 
 	this->compassHeading = 0;
 
@@ -20,6 +23,8 @@ Compass::Compass(const char* id, Stream* lineIn) {
 
 int Compass::update() {
 	//Get the data from the sensor, parse it properly, do anything else necessary.
+	this->lineIn.println("$PTNT,HTM*63");
+	
 	digitalWrite(MULTIPLEX_PIN1, LOW);
 	digitalWrite(MULTIPLEX_PIN2, LOW);
 	delay(20);
@@ -95,6 +100,9 @@ int Compass::update() {
 		case PTNTHTM:
 			this->compassHeading = atof(nmea->data[0]);
 			this->compassStatus = atof(nmea->data[1]);
+			this->pitchAngle = atof(nmea->data[2]);
+			this->rollAngle = atof(nmea->data[4]);
+			this->dipAngle = atof(nmea->data[6]);
 		break;
 		default:
 			if(DEBUG) {
