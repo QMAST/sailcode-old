@@ -23,7 +23,7 @@ private:
 	Buffer<float> *pitch;
 	Buffer<float> *roll;
 	Buffer<float> *dip;
-	Buffer<time_t> *time;
+	Buffer<time_t> *ctime;
 };
 
 #endif

@@ -1,13 +1,13 @@
 #include "compass.h"
 
-Compass::Compass(Arduinocom* lineIn) {
+Compass::Compass(ArduinoCom* lineIn) {
 	this->ard = lineIn;
 
-	// heading = Buffer<float>(BUFFER_SIZE);
-	// pitch = Buffer<float>(BUFFER_SIZE);
-	// roll = Buffer<float>(BUFFER_SIZE);
-	// dip = Buffer<float>(BUFFER_SIZE);
-	// this->time = Buffer<time_t>;
+	heading = new Buffer<float>(BUFFER_SIZE);
+	pitch = new Buffer<float>(BUFFER_SIZE);
+	roll = new Buffer<float>(BUFFER_SIZE);
+	dip = new Buffer<float>(BUFFER_SIZE);
+	this->ctime = new Buffer<time_t>;
 }
 
 float Compass::getValues(float* heading, float* pitch, float* roll, float* dip) {
@@ -31,7 +31,7 @@ float Compass::getValues(float* heading, float* pitch, float* roll, float* dip) 
 		buf = strtok(NULL, ",");
 		this->dip->add((float) atof(buf));
 
-		this->time->add(time(NULL));
+		this->ctime->add(time(NULL));
 
 		delete[] str;
 	}
