@@ -8,6 +8,9 @@ class Gaelforce {
 public:
 	Gaelforce(Airmar* am);
 
+	int updateCompass();
+	int updateGPS();
+	
 	double heading, dev, var;
 	double courseOG, speedOG;
 	double lat, lon;

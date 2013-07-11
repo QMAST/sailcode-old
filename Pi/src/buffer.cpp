@@ -40,7 +40,7 @@ T Buffer<T>::get() {
 }
 
 template<class T>
-T Buffer<T>::peak() {
+T Buffer<T>::peek() {
 	//Returns the last added item in the buffer, without removing it.
 	int i = n-1;
 	if(i<0){
@@ -50,7 +50,7 @@ T Buffer<T>::peak() {
 }
 
 template<class T>
-int Buffer<T>::peak(T* item) {
+int Buffer<T>::peek(T* item) {
 	//Copys the last added item in the buffer into item,
 	//And returns its index;
 	int i = n-1;
