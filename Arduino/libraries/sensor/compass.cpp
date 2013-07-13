@@ -27,7 +27,7 @@ Compass::Compass(const char* id, Stream* lineIn) {
 
 int Compass::update() {
 	//Get the data from the sensor, parse it properly, do anything else necessary.
-	this->lineIn.println("$PTNT,HTM*63");
+	this->lineIn->println("$PTNT,HTM*63");
 	
 	digitalWrite(MULTIPLEX_PIN1, LOW);
 	digitalWrite(MULTIPLEX_PIN2, LOW);

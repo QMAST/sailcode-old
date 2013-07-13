@@ -13,11 +13,11 @@
 #include <pololu_servo.h>
 #include <motor.h>
 
-#define MULTIPLEX_PIN1 30
-#define MULTIPLEX_PIN2 31
+#define MULTIPLEX_PIN1 28
+#define MULTIPLEX_PIN2 29
 #define SERVO_RESET_PIN 40
-#define MOTOR_1_ANGLEPIN 1
-#define MOTOR_2_ANGLEPIN 2
+#define MOTOR_1_ANGLEPIN A0
+#define MOTOR_2_ANGLEPIN A1
 
 typedef struct SensorLink {
 	struct SensorLink* next;
@@ -31,7 +31,7 @@ int dir = 90;
 //All the objects necessary on the boat
 Airmar* airmar;
 Compass* compass;
-ashcon* console;
+ashcon* Console;
 SensorLink* sensorList;
 RC* control;
 PololuMSC* servo;
@@ -47,6 +47,7 @@ void piInterrupt();
 int updateDirection(int argc, char* argv[]);
 void SailAutonomous();
 void HandleRC();
+void clearBuffer();
 
 
 void setup() {
@@ -69,12 +70,14 @@ void setup() {
     control = new RC();
 
     //Initialize motors
-    motor1 = new Motor(&Serial2, MOTOR_1_ANGLEPIN, '\x0D');
-    motor2 = new Motor(&Serial2, MOTOR_2_ANGLEPIN, '\x0E');
+    Serial1.begin(38400);
+    motor1 = new Motor(&Serial1, MOTOR_1_ANGLEPIN, '\x0D');
+    motor2 = new Motor(&Serial1, MOTOR_2_ANGLEPIN, '\x0E');
 
     //Initialize sensors
-    airmar = new Airmar("airmar",&Serial1);
-    compass = new Compass("compass",&Serial1);
+    Serial2.begin(9600);
+    airmar = new Airmar("airmar",&Serial2);
+    compass = new Compass("compass",&Serial2);
     addToList(airmar);
     addToList(compass);
 
@@ -88,17 +91,39 @@ void loop() {
         {
             if(control->gearSwitchUp()) //We're in RC mode.
             {
+                //Serial.println("Entering RC");
                 HandleRC();
+                //Serial.println("RC");
             } 
             else { //We're in autonomous mode
-				        SailAutonomous();
+                int pos = control->getValueAux();
+                if(pos<25) {
+                  dir=0;
+                } else if(pos<50) {
+                  dir=90;
+                } else if(pos<75) {
+                  dir=180;
+                } else {
+                  dir=270;
+                }
+            
+              
+		SailAutonomous();
             }
 
             //Update Sensors, regardless of mode.
 
             Sensor* sens = getHottestSensor();
             //Need to include multiplexor and code for changing Baud rate when necessary.
-
+            
+            clearBuffer();
+            if(strcmp(sens->id, "compass")){
+              Serial2.begin(9600);
+            }
+            else 
+            {
+              Serial2.begin(4800);
+            }
             sens->update();
         }
         break;
@@ -138,13 +163,18 @@ int dispatchRequest(int argc, char* argv[]) {
 	for(int i=0; i<argc-2; i++) {//Print out all the variables.
 		if(variables[i]!=NULL) {
 			Serial.print(variables[i]);
+                        free(variables[i]);
 		} else {
 			Serial.print(" ");
 		}
 		Serial.print(",");
 		Serial.flush();
+                free(variables);
 	}
 	Serial.print("\n\r");
+
+        
+
 	return 0;
 }
 
@@ -155,6 +185,16 @@ int updateDirection(int argc, char*argv[]) {
 	return 0;
 
 
+}
+
+void clearBuffer(){
+	//Switch to an unconnected pin
+	digitalWrite(MULTIPLEX_PIN1, LOW);
+	digitalWrite(MULTIPLEX_PIN2, HIGH);
+
+	while(Serial1.available()>0){
+		Serial.read();
+	}
 }
 
 Sensor* getHottestSensor() {
@@ -197,7 +237,7 @@ void setMotorSpeed(int speed)
 }
 
 void SailAutonomous(){
-
+        //Serial.println("Sailing Autonomously");
 	int diff = abs(airmar->heading - dir);
 	//Set rudder 
 	if (diff < 10){
@@ -245,21 +285,25 @@ void HandleRC() {
   if(control->getValueLV() > 0) {//If the left stick is set more than halfway up...
     //Enter motor configuration mode, to set the motor parameters.
     //This will take complete control of the program until the mode is disabled, regardless of gearswitch position
+    //Serial.println("Calibrating...");
     getMotorParams();
   }
   else {//If the left stick is less than halfway up...
     //Go into normal RC mode.
+    Serial.println("In RC");
     int temp;
     temp = control->getValueRV();
     temp = map(temp, -100,100, -3600,3600);
-    motor1->setMotorSpeed(temp);
-    motor2->setMotorSpeed(temp);
-
+    if(abs(temp)<3600) {
+      motor1->setMotorSpeed(temp);
+      motor2->setMotorSpeed(temp);
+    }
     temp = control->getValueRH();
     temp = map(temp, -100,100, 0,254);
-    servo->setPosition(0, temp);
-    servo->setPosition(1, temp);
-
+    if(abs(temp)<254) {
+      servo->setPosition(0, temp);
+      servo->setPosition(1, temp);
+    }
   }
 
 }
@@ -272,6 +316,10 @@ void getMotorParams() {
     Sets the motors with this position.
   */
   int max1, max2, min1, min2;
+  max1=-180;
+  max2=-180;
+  min1=180;
+  min2=180;
   int temp;
 
   while(control->getValueLV() > 0) {
@@ -294,14 +342,28 @@ void getMotorParams() {
     //Get RC values for motor movement.
     temp= control->getValueRV();
     temp = map(temp, -100, 100, -3600, 3600);
-    motor1->setMotorSpeed(temp);
+    if(abs(temp)<3600){
+      motor1->setMotorSpeed(temp);
+    }
     temp= control->getValueRH();
+    
     temp = map(temp, -100, 100, -3600, 3600);
-    motor2->setMotorSpeed(temp);
-
+    if(abs(temp)<3600){
+      motor2->setMotorSpeed(temp);
+    }
   }
 
   motor1->setMotorParams(min1, max1);
   motor2->setMotorParams(min2, max2);
+//  //Serial.print("Max winch 1: ");
+//  Serial.print(max1);
+//  Serial.print("Min winch 1: ");
+//  Serial.print(min1);
+//  
+//  Serial.print("   Max winch 2: ");
+//  Serial.print(max2);
+//  Serial.print("Min winch 2: ");
+//  Serial.print(min2);
+//  
   return;
 }
