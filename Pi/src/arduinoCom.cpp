@@ -48,27 +48,26 @@ int ArduinoCom::requestVariables(const std::string &source ,
 
 	*/
 	time_t startTime = time(NULL);
-
+	int stat = 0;
 	while(difftime(time(NULL) , startTime) < 5) {//Wait for up to 5 seconds for a response
-		int stat;
+		
 		
 		stat = this->readBlock(resp);//Read a line...
-		if(stat==0) {
+		if(stat == 0) {
 			if(resp.find(">")!=-1) {
 			//Found the > sign, arduino is ready to respond.
 				break;
 			}
 		}
-
-
 	}
+
 	if(stat!=0 || resp.find(">")==-1){
 		//Something went wrong - haven't received anything yet.
 		Logging::error(__func__,"Arduino not responsive to interrupt - timeout occured.");
 		return -1;
 	}
 
-	stat = this->sendCommand("req "+source+" "+labels+"\n",vars);
+	stat = this->sendCommand("req "+source+" "+labels+"\n", vars);
 	if(stat!=0) {
 		Logging::error(__func__,"Variables not returned. Response: "+resp+", Variables:"+vars);
 		return -1;
