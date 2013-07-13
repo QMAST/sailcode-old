@@ -12,9 +12,9 @@ int RC::getValueRV() {
 	int pwm = this->getPWMValue(CHANNEL2);
 	if(pwm < 100)//Incredibly low value, an error
 	{
-		return -1;
+		return -1000;
 	}
-	pwm = map(pwm, 900,2100, -100, 100);
+	pwm = map(pwm, 1000,2000, -100, 100);
 	if(pwm>100) {
 		pwm=100;
 	}
@@ -26,10 +26,10 @@ int RC::getValueRV() {
 
 int RC::getValueRH() {
 	int pwm = this->getPWMValue(CHANNEL1);
-	if(pwm < 100) {
-		return -1;
+	if(pwm < 750) {
+		return -1000;
 	}
-	pwm = map(pwm, 850,2100, -100, 100);
+	pwm = map(pwm, 1000, 1900, -100, 100);
 	if(pwm>100) {
 		pwm=100;
 	}
@@ -41,10 +41,10 @@ int RC::getValueRH() {
 
 int RC::getValueLV() {
 	int pwm = this->getPWMValue(CHANNEL3);
-	if(pwm < 100) {
-		return -1;
+	if(pwm < 750) {
+		return -1000;
 	}
-	pwm = map(pwm, 900,2000, -100, 100);
+	pwm = map(pwm, 1000, 1800, -100, 100);
 	if(pwm>100) {
 		pwm=100;
 	}
@@ -56,10 +56,10 @@ int RC::getValueLV() {
 
 int RC::getValueLH() {
 	int pwm = this->getPWMValue(CHANNEL4);
-	if(pwm < 100) {
-		return -1;
+	if(pwm < 750) {
+		return -1000;
 	}
-	pwm = map(pwm, 850,2100, -100, 100);
+	pwm = map(pwm, 950, 1950, -100, 100);
 	if(pwm>100) {
 		pwm=100;
 	}
@@ -78,10 +78,10 @@ bool RC::gearSwitchUp() {
 int RC::getValueAux() {
 	//Returns a value between 0 and 100 based on the auxilliary switch.
 	int pwm = this->getPWMValue(CHANNEL6);
-	if(pwm < 1000) {
-		return -1;
+	if(pwm < 800) {
+		return -1000;
 	}
-	pwm = map(pwm, 1000,2000,0,100);
+	pwm = map(pwm, 1150,1850,0,100);
 	if(pwm > 100) {
 		pwm = 100;
 	} else if(pwm<0) {
