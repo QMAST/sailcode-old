@@ -42,7 +42,6 @@ void setup() {
     Serial.begin(115200);
     Console = new ashcon(&Serial);
     Console->user_function_register("req", &dispatchRequest);
-    Console->user_function_register("dir", &updateDirection);
     
     //Initialize multiplexor
     pinMode(MULTIPLEX_PIN1, OUTPUT);
