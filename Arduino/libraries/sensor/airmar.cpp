@@ -3,7 +3,7 @@
 
 Airmar::Airmar(const char* id, Stream* lineIn) {
 	int idLen = strlen(id);
-	this->id = (char*) malloc(sizeof(char)*idLen);
+	this->id = (char*) malloc(sizeof(char)*(idLen+1));
 	strcpy(this->id, id);
 	
 	this->tempRate =1;
