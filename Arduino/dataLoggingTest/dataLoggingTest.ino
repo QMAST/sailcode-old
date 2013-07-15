@@ -80,6 +80,7 @@ void loop() {
         break;
         case 1: //Responding to request for variables.
         {
+            
             Console->command_prompt();
             mode=0;
         }
