@@ -23,9 +23,9 @@ private:
 	unsigned long prevTime;
 	int temp;
 	
-	double pitchAngle;
-	double rollAngle;
-	double dipAngle;
+	double pitch;
+	double roll;
+	double dip;
 };
 
 #endif
