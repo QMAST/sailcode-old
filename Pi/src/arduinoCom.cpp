@@ -36,6 +36,7 @@ int ArduinoCom::requestVariables(const std::string &source ,
 	GPIO::digitalWrite(this->interruptPin, HIGH);
 	usleep(10*1000);
 	GPIO::digitalWrite(this->interruptPin, LOW);
+	usleep(10*1000);
 	GPIO::digitalWrite(this->interruptPin, HIGH);
 
 

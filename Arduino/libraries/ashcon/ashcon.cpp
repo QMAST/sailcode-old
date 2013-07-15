@@ -229,7 +229,7 @@ void ashcon::ufunc_dump() {
 
 int ashcon::command_prompt() {
     //this->printf(">\n");
-    this->line_in->println(">");
+    this->line_in->print(">\n");
     if(this->get_line() == this->SUCCESS) {
         this->get_line_splitline();
         this->user_function_call(this->command_arg_list[0]);
