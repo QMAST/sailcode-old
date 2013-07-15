@@ -77,7 +77,7 @@ int Serial::readBlock(std::string &msg) {
 	buf[0]='\0';
 	num=1;
 
-	while((num>0) && buf[0]!='\n' && buf[0]!='\r') {
+	while((num>0) && buf[0]!='\n' && buf[0]!='\r' && buf[0]!='>') {
 		num = read(this->fildes, buf, 1);
 		buf[num] = '\0';
 
