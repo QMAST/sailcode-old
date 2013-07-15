@@ -37,20 +37,37 @@ int ArduinoCom::requestVariables(const std::string &source ,
 	usleep(10*1000);
 	GPIO::digitalWrite(this->interruptPin, LOW);
 	GPIO::digitalWrite(this->interruptPin, HIGH);
-	int stat;
-	while(resp.find_first_not_of("\n\r ")==std::string::npos) {
-		stat = this->readBlock(resp);//Read first non-empty line.
+
+
+	/*
+	Want to wait for response for Arduino, but not get thrown 
+	off by any leftover debugging statements in the arduino code.
+	Actual communications from the Arduino start with a >. 
+	How to do this?
+	Just keep reading lines until we get one that starts with a >, within a timeout.
+
+	*/
+	time_t startTime = time(NULL);
+	int stat = 0;
+	while(difftime(time(NULL) , startTime) < 5) {//Wait for up to 5 seconds for a response
+		
+		
+		stat = this->readBlock(resp);//Read a line...
+		if(stat == 0) {
+			if(resp.find(">")!=-1) {
+			//Found the > sign, arduino is ready to respond.
+				break;
+			}
+		}
 	}
 
-	if(stat!=0) {
-		//Request failed.
-		Logging::error(__func__, "Variable request failed. Arduino not responsive: "+resp);
-		return -1; //Error getting info from arduino.
+	if(stat!=0 || resp.find(">")==-1){
+		//Something went wrong - haven't received anything yet.
+		Logging::error(__func__,"Arduino not responsive to interrupt - timeout occured.");
+		return -1;
 	}
-	if(resp.find(">")==-1) {//Arduino is not responding.
-		Logging::error(__func__, "Didn't find a > to indicate proper response: "+resp);
-	}
-	stat = this->sendCommand("req "+source+" "+labels+"\n",vars);
+
+	stat = this->sendCommand("req "+source+" "+labels+"\n", vars);
 	if(stat!=0) {
 		Logging::error(__func__,"Variables not returned. Response: "+resp+", Variables:"+vars);
 		return -1;

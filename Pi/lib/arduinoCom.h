@@ -5,7 +5,7 @@
 #include "logging.h"
 #include "gpio.h"
 #include <string>
-
+#include <time.h>
 
 
 class ArduinoCom : public Serial {
