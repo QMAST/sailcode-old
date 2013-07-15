@@ -1,7 +1,7 @@
 #include "environment.h"
 
 Environment::Environment() {
-
+	
 }
 
 int Environment::updateWind() {

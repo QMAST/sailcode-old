@@ -11,11 +11,12 @@ public:
 	int updateCompass();
 	int updateGPS();
 	
-	double heading, dev, var;
-	double courseOG, speedOG;
-	double lat, lon;
+	double *heading, *pitch, *roll, *dip;
+	//double *courseOG, *speedOG;
+	double *lat, *lon;
 private:
 	Airmar* airmar;
+	Compass* compass;
 };
 
 #endif
