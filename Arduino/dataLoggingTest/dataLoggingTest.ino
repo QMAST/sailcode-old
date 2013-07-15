@@ -21,12 +21,13 @@ typedef struct SensorLink {
 	Sensor* s;
 } SensorLink;
 
-int mode = 0;
+volatile int mode = 0;
 
 //All the objects necessary on the boat
 Airmar* airmar;
 Compass* compass;
 ashcon* Console;
+
 SensorLink* sensorList;
 
 
@@ -38,9 +39,13 @@ void piInterrupt();
 
 void setup() {
 	//Initialize console
+    pinMode(13, OUTPUT);
+
     Serial.begin(115200);
     Console = new ashcon(&Serial);
     Console->user_function_register("req", &dispatchRequest);
+    
+    sensorList = NULL;
     
     //Initialize multiplexor
     pinMode(MULTIPLEX_PIN1, OUTPUT);
@@ -48,13 +53,13 @@ void setup() {
 
     //Initialize sensors
     Serial2.begin(9600);
-    airmar = new Airmar("airmar",&Serial2);
+    //airmar = new Airmar("airmar",&Serial2);
     compass = new Compass("compass",&Serial2);
-    addToList(airmar);
+    //addToList(airmar);
     addToList(compass);
 
     //Setup interrupts
-    attachInterrupt(0, piInterrupt, FALLING);
+    attachInterrupt(0, piInterrupt, RISING);
 }
 
 void loop() {
@@ -62,10 +67,9 @@ void loop() {
         case 0: //Default mode, polling sensors, handling RC.
         {
             //Update Sensors, regardless of mode.
-
+            digitalWrite(13, HIGH);
             Sensor* sens = getHottestSensor();
             //Need to include multiplexor and code for changing Baud rate when necessary.
-            
             clearBuffer();
             if(strcmp(sens->id, "compass")){
               Serial2.begin(9600);
@@ -75,6 +79,7 @@ void loop() {
               Serial2.begin(4800);
             }
             sens->update();
+            digitalWrite(13,LOW);
         }
         break;
         case 1: //Responding to request for variables.
@@ -97,34 +102,36 @@ void addToList(Sensor* item) {
 }
 
 int dispatchRequest(int argc, char* argv[]) {
+        digitalWrite(13, HIGH);
 	//Need to search through a list of sensors, 
 	//and find one that matches argv[1] - 
 	//this should be the sensor name. 
 	//All following args are variables that are requested.
 	SensorLink* link = sensorList;
+        
 	while(link!=NULL) {
 		if(strcmp(link->s->id, argv[1])==0){
 			break;
 		}
 		link = link->next;
 	}
-
+        digitalWrite(13, LOW);
 	char** variables = link->s->getVariables(argc-2, &(argv[2]));
 	for(int i=0; i<argc-2; i++) {//Print out all the variables.
 		if(variables[i]!=NULL) {
 			Serial.print(variables[i]);
-      free(variables[i]);
+                          free(variables[i]);
 		} else {
 			Serial.print(" ");
 		}
 		Serial.print(",");
 		Serial.flush();
-    free(variables);
+                free(variables);
 	}
 	Serial.print("\n\r");
 
         
-
+        
 	return 0;
 }
 
@@ -134,7 +141,7 @@ void clearBuffer(){
 	digitalWrite(MULTIPLEX_PIN2, HIGH);
 
 	while(Serial1.available()>0){
-		Serial.read();
+		Serial1.read();
 	}
 }
 
