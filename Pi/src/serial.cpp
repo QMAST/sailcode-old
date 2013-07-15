@@ -65,6 +65,11 @@ int Serial::openPort(const std::string &path) {
 }
 
 int Serial::readBlock(std::string &msg) {
+	if(!this->isValid()) {
+		Logging::error(__func__, "Serial port not initialized properly.");
+		return -1;
+	}
+
 	char* buf = new char[2];
 	int num;
 	msg ="";
@@ -80,17 +85,24 @@ int Serial::readBlock(std::string &msg) {
 			msg +=buf;//omgzors, this is so much easier than before.
 		}
 	}
-	delete[] buf;
-	if(num<=0) {
+	
+	if(num<0) {
 		//Error while reading.
 		Logging::error(__func__, "Problem while reading from serial port: "+msg+ ". Errno:" + strerror(errno));
+		delete[] buf;
+		return -1;
+	} else if(num==0) {
+		Logging::error(__func__, "Didn't read anything from file. Timeout likely occured.");
+		delete[] buf;
 		return -1;
 	}
 	else if(buf[0]!='\n' && buf[0]!='\r') {
 		//Timeout before reading full line, be cautious
 		Logging::error(__func__, "Full line not read :"+msg);
+		delete[] buf;
 		return -1;
 	}
+	delete[] buf;
 	return 0;
 }
 

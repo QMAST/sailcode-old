@@ -36,6 +36,7 @@ int ArduinoCom::requestVariables(const std::string &source ,
 	GPIO::digitalWrite(this->interruptPin, HIGH);
 	usleep(10*1000);
 	GPIO::digitalWrite(this->interruptPin, LOW);
+	usleep(10*1000);
 	GPIO::digitalWrite(this->interruptPin, HIGH);
 
 
@@ -48,8 +49,8 @@ int ArduinoCom::requestVariables(const std::string &source ,
 
 	*/
 	time_t startTime = time(NULL);
-	int stat = 0;
-	while(difftime(time(NULL) , startTime) < 5) {//Wait for up to 5 seconds for a response
+	int stat = 1;
+	while(difftime(time(NULL) , startTime) < 10) {//Wait for up to 5 seconds for a response
 		
 		
 		stat = this->readBlock(resp);//Read a line...
