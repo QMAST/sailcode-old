@@ -48,7 +48,7 @@ int ArduinoCom::requestVariables(const std::string &source ,
 
 	*/
 	time_t startTime = time(NULL);
-	int stat = 0;
+	int stat = 1;
 	while(difftime(time(NULL) , startTime) < 5) {//Wait for up to 5 seconds for a response
 		
 		
