@@ -340,15 +340,10 @@ void getMotorParams() {
     }
 
     //Get RC values for motor movement.
-    temp= control->getValueRV();
-    temp = map(temp, -100, 100, -3600, 3600);
-    if(abs(temp)<3600){
+    temp = control->getValueRV();
+    temp = map(temp, -100,100, -3600,3600);
+    if(abs(temp)<3600) {
       motor1->setMotorSpeed(temp);
-    }
-    temp= control->getValueRH();
-    
-    temp = map(temp, -100, 100, -3600, 3600);
-    if(abs(temp)<3600){
       motor2->setMotorSpeed(temp);
     }
   }
