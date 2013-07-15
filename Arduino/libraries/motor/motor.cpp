@@ -46,6 +46,14 @@ int Motor::setLength(int position) {
 	There is a linear relationship between the angle and the position of the knot on the line.
 	Also need to include a timeout in case the motor isn't responsive.
 	*/
+
+	//Cap out possible values.
+	if(position>100) {
+		position=100;
+	} else if(position<0){
+		position=0;
+	}
+
 	int speed, sign;
 	//First calculate desired angle from position.
 	double dif = this->maxAngle - this->zeroAngle;
@@ -53,6 +61,9 @@ int Motor::setLength(int position) {
 
 	double currAngle = this->getAngle();
 	dif=abs(endAngle - currAngle);
+
+	//Need to include a timeout.
+	unsigned long st = millis();
 	while(dif > this->ANGLE_ERROR) {
 
 		//Need to translate the difference into an appropriate motor speed.
@@ -68,7 +79,15 @@ int Motor::setLength(int position) {
 		}
 		this->setMotorSpeed(speed);
 		currAngle = this->getAngle();
-		dif = abs(endAngle - currAngle);
+		dif = abs(endAngle - currAngle); 
+
+		if(currAngle > this->maxAngle || currAngle < this->zeroAngle) {
+			break;
+		}
+
+		if(abs(millis()-st) > 2000) {
+			break;
+		}
 	}
 
 	this->setMotorSpeed(0);

@@ -1,5 +1,6 @@
 #include <string.h>
 #include <stdlib.h>
+#include <string>
 #include "airmar.h"
 #include "logging.h"
 #include "arduinoCom.h"
@@ -9,6 +10,7 @@
 //#include "gaelforce.h"
 //#include "environment.h"
 
+using namespace std;
 
 int main(int argc, char* argv[]) {
 	Logging::init();
@@ -36,7 +38,7 @@ int main(int argc, char* argv[]) {
 	int *motor1Angle = new int;
 	int *motor2Angle = new int;
 	int *mastAngle = new int;
-	std::string resp;
+	string resp;
 	
 	
 	Logging::addDataSource(FLOAT, "lat", lat);

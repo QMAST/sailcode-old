@@ -65,7 +65,7 @@ int Serial::openPort(const std::string &path) {
 }
 
 int Serial::readBlock(std::string &msg) {
-	char* buf = (char*) malloc(sizeof(char)*2);
+	char* buf = new char[2];
 	int num;
 	msg ="";
 
@@ -80,7 +80,7 @@ int Serial::readBlock(std::string &msg) {
 			msg +=buf;//omgzors, this is so much easier than before.
 		}
 	}
-
+	delete[] buf;
 	if(num<=0) {
 		//Error while reading.
 		Logging::error(__func__, "Problem while reading from serial port: "+msg+ ". Errno:" + strerror(errno));
