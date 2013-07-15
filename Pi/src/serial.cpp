@@ -86,10 +86,12 @@ int Serial::readBlock(std::string &msg) {
 		}
 	}
 	delete[] buf;
-	if(num<=0) {
+	if(num<0) {
 		//Error while reading.
 		Logging::error(__func__, "Problem while reading from serial port: "+msg+ ". Errno:" + strerror(errno));
 		return -1;
+	} else if(num==0) {
+		Logging::error(__func__, "Didn't read anything from file. Timeout likely occured.");
 	}
 	else if(buf[0]!='\n' && buf[0]!='\r') {
 		//Timeout before reading full line, be cautious

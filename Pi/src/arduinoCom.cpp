@@ -49,7 +49,7 @@ int ArduinoCom::requestVariables(const std::string &source ,
 	*/
 	time_t startTime = time(NULL);
 	int stat = 1;
-	while(difftime(time(NULL) , startTime) < 5) {//Wait for up to 5 seconds for a response
+	while(difftime(time(NULL) , startTime) < 10) {//Wait for up to 5 seconds for a response
 		
 		
 		stat = this->readBlock(resp);//Read a line...
