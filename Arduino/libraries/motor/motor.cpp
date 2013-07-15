@@ -100,6 +100,13 @@ int Motor::setLength(int position) {
 
 int Motor::setMotorSpeed(int speed) {
 	// Adjust the motor speed, to the specified value between -3600 and 3600
+	int currAngle = this->getAngle();
+	if(currAngle > maxAngle || currAngle < minAngle)
+	{
+		//speed = 0
+		return 0;
+	}
+	
 	if(speed!=this->currentSpeed) {
 		this->serialCom->write(0xAA);
 		this->serialCom->write(this->controllerID);
