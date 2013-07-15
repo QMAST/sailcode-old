@@ -20,7 +20,7 @@ int main(int argc, char* argv[]) {
 
 	for(int i=0;i<10; i++){
 		cout<<"Request no. "<<i+1<<endl;
-		stat = ac->requestVariables("test","test1 test2", str);
+		stat = ac->requestVariables("compass","heading pitch", str);
 		if(stat==0) {
 			cout<<str<<endl;
 		}

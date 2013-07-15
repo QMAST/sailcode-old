@@ -66,7 +66,7 @@ int Serial::openPort(const std::string &path) {
 
 int Serial::readBlock(std::string &msg) {
 	if(!this->isValid()) {
-		Logging::error(__func__, "Serial port not initialized properly.")
+		Logging::error(__func__, "Serial port not initialized properly.");
 		return -1;
 	}
 
