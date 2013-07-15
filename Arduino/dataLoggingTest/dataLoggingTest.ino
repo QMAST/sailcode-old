@@ -28,7 +28,11 @@ Airmar* airmar;
 Compass* compass;
 ashcon* Console;
 
-SensorLink* sensorList;
+SensorLink* sensorList = (SensorLink*)malloc(sizeof(SensorLink));
+SensorLink* head = NULL;
+sensorList->val = NULL;
+sensorList->next = NULL;
+head = sensorList;
 
 
 //Function prototypes
@@ -36,6 +40,7 @@ void addToList(Sensor* item);
 int dispatchRequest(int argc, char* argv[]);
 Sensor* getHottestSensor();
 void piInterrupt();
+
 
 void setup() {
 	//Initialize console
@@ -45,7 +50,6 @@ void setup() {
     Console = new ashcon(&Serial);
     Console->user_function_register("req", &dispatchRequest);
     
-    sensorList = NULL;
     
     //Initialize multiplexor
     pinMode(MULTIPLEX_PIN1, OUTPUT);
@@ -96,9 +100,10 @@ void addToList(Sensor* item) {
         return;
     }
     SensorLink* link = (SensorLink*) malloc(sizeof(SensorLink));
-    link->next = sensorList;
+    link->next = NULL;
     link->s = item;
-    sensorList = link;
+    sensorList->next = link;
+	sensorList = link;
 }
 
 int dispatchRequest(int argc, char* argv[]) {
@@ -107,7 +112,7 @@ int dispatchRequest(int argc, char* argv[]) {
 	//and find one that matches argv[1] - 
 	//this should be the sensor name. 
 	//All following args are variables that are requested.
-	SensorLink* link = sensorList;
+	SensorLink* link = head;
         
 	while(link!=NULL) {
 		if(strcmp(link->s->id, argv[1])==0){
@@ -115,7 +120,8 @@ int dispatchRequest(int argc, char* argv[]) {
 		}
 		link = link->next;
 	}
-        digitalWrite(13, LOW);
+    
+	digitalWrite(13, LOW);
 	char** variables = link->s->getVariables(argc-2, &(argv[2]));
 	for(int i=0; i<argc-2; i++) {//Print out all the variables.
 		if(variables[i]!=NULL) {
