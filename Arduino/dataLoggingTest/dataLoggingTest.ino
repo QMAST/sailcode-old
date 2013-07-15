@@ -29,10 +29,7 @@ Compass* compass;
 ashcon* Console;
 
 SensorLink* sensorList = (SensorLink*)malloc(sizeof(SensorLink));
-SensorLink* head = NULL;
-sensorList->val = NULL;
-sensorList->next = NULL;
-head = sensorList;
+SensorLink* head = sensorList;
 
 
 //Function prototypes
@@ -54,6 +51,9 @@ void setup() {
     //Initialize multiplexor
     pinMode(MULTIPLEX_PIN1, OUTPUT);
     pinMode(MULTIPLEX_PIN2, OUTPUT);
+    
+sensorList->s = NULL;
+sensorList->next = NULL;
 
     //Initialize sensors
     Serial2.begin(9600);
