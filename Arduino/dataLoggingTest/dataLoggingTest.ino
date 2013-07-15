@@ -1,6 +1,5 @@
 /*
-  This is the main sketch which contains our most up-to-date sailcode and
-  accurate steps
+  This is a test for data logging, it includes everything from the main sketch without RC
 */
 
 
@@ -160,5 +159,5 @@ Sensor* getHottestSensor() {
 }
 
 void piInterrupt() {
-	mode =1;
+	mode = 1;
 }

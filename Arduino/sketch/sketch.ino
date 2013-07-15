@@ -71,8 +71,8 @@ void setup() {
 
     //Initialize motors
     Serial1.begin(38400);
-    motor1 = new Motor(&Serial1, MOTOR_1_ANGLEPIN, '\x0D');
-    motor2 = new Motor(&Serial1, MOTOR_2_ANGLEPIN, '\x0E');
+    motor1 = new Motor(&Serial1, MOTOR_1_ANGLEPIN, '\x0D', -180, 180);
+    motor2 = new Motor(&Serial1, MOTOR_2_ANGLEPIN, '\x0E', -180, 180);
 
     //Initialize sensors
     Serial2.begin(9600);
@@ -237,7 +237,7 @@ void setMotorSpeed(int speed)
 }
 
 void SailAutonomous(){
-        //Serial.println("Sailing Autonomously");
+        Serial.println("Sailing Autonomously");
 	int diff = abs(airmar->heading - dir);
 	//Set rudder 
 	if (diff < 10){
@@ -308,22 +308,27 @@ void HandleRC() {
       servo->setPosition(0, temp);
       servo->setPosition(1, temp);
     }*/
-    if (temp < -20){
+    if (temp < -500 || temp > 500) {
+       servo->setPosition(0,127);
+       servo->setPosition(1,127);
+       //Serial.println("NEUTRAL");
+    }
+    else if (temp < -20){
        servo->restart();
        servo->setPosition(0, 1);
        servo->setPosition(1, 1);
-       Serial.println("RIGHT");
+       //Serial.println("RIGHT");
     }
     else if (temp > 20) {
        servo->restart();
        servo->setPosition(0,254);
        servo->setPosition(1,254);
-       Serial.println("LEFT");
+       //Serial.println("LEFT");
     }
     else{
        servo->setPosition(0,127);
        servo->setPosition(1,127);
-       Serial.println("NEUTRAL");
+       //Serial.println("NEUTRAL");
     }
   }
 
@@ -371,7 +376,7 @@ void getMotorParams() {
 
   motor1->setMotorParams(min1, max1);
   motor2->setMotorParams(min2, max2);
-  /*Serial.print("Max winch 1: ");
+  Serial.print("Max winch 1: ");
   Serial.print(max1);
   Serial.print("Min winch 1: ");
   Serial.print(min1);
@@ -379,7 +384,7 @@ void getMotorParams() {
   Serial.print("   Max winch 2: ");
   Serial.print(max2);
   Serial.print("Min winch 2: ");
-  Serial.print(min2); */
+  Serial.print(min2); 
   
   return;
 }
