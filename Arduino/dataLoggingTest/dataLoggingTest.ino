@@ -68,19 +68,22 @@ void loop() {
         case 0: //Default mode, polling sensors, handling RC.
         {
             //Update Sensors, regardless of mode.
-            digitalWrite(13, HIGH);
+            //digitalWrite(13, HIGH);
             Sensor* sens = getHottestSensor();
             //Need to include multiplexor and code for changing Baud rate when necessary.
             clearBuffer();
             if(strcmp(sens->id, "compass")){
               Serial2.begin(9600);
+              delay(100);
             }
             else 
             {
               Serial2.begin(4800);
-            }
+                delay(100);    
+        }
+            
             sens->update();
-            digitalWrite(13,LOW);
+            //digitalWrite(13,LOW);
         }
         break;
         case 1: //Responding to request for variables.

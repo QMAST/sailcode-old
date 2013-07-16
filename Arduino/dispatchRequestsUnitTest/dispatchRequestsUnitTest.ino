@@ -60,9 +60,7 @@ void setup() {
 
 
 void loop(){ 
-    dispatchRequest(4, comp);
-    
-    delay(500);
+    Console->command_prompt();
 }
 
 int dispatchRequest(int argc, char* argv[]) {
@@ -72,11 +70,11 @@ int dispatchRequest(int argc, char* argv[]) {
 	//this should be the sensor name. 
 	//All following args are variables that are requested.
 	SensorLink* link = sensorList;
-        Serial.print("Loooking for sensor ");
-        Serial.println(argv[1]);
+        //Serial.print("Loooking for sensor ");
+        //Serial.println(argv[1]);
 	while(link!=NULL) {
 		if(strcmp(link->s->id, argv[1])==0){
-                        Serial.println("Found Sensor!");
+                        //Serial.println("Found Sensor!");
 			break;
 		}
 		link = link->next;
@@ -102,7 +100,7 @@ int dispatchRequest(int argc, char* argv[]) {
 	}
 	Serial.print("\n\r");
 
-        Serial.println("Exiting request");
+        //Serial.println("Exiting request");
         for(int i=0; i<(argc-2); i++){
              free(variables[i]);   
         }

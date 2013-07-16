@@ -43,10 +43,10 @@ char** Sensor::getVariables(int argc, char* argv[]) {
 						//Will have to use a workaround.
 						dtostrf(*(double*)item->data, 1, 4, buf);
 						len = strlen(buf) +1;
-						Serial.print(" '");
+						/*Serial.print(" '");
 						Serial.print(buf);
 						Serial.print("' -");
-						Serial.print(len);
+						Serial.print(len);*/
 					break;
 					case CHAR:
 						len = sprintf(buf,"%d", *((char*) item->data)) +1;
