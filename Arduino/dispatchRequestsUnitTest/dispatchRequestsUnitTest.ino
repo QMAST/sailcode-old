@@ -92,18 +92,21 @@ int dispatchRequest(int argc, char* argv[]) {
 	for(int i=0; i<(argc-2); i++) {//Print out all the variables.
 		if(variables[i]!=NULL) {
 			Serial.print(variables[i]);
-                        free(variables[i]);
+                        
 		} else {
 			Serial.print("*");
 		}
 		Serial.print(",");
 		Serial.flush();
-                free(variables);
+                
 	}
 	Serial.print("\n\r");
 
         Serial.println("Exiting request");
-        
+        for(int i=0; i<(argc-2); i++){
+             free(variables[i]);   
+        }
+        free(variables);
 	return 0;
 }
 
