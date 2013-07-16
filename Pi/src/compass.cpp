@@ -12,7 +12,7 @@ Compass::Compass(ArduinoCom* lineIn) {
 
 float Compass::getValues(float* heading, float* pitch, float* roll, float* dip) {
 	std::string vars = "";
-	int stat = this->ard->requestVariables("compass", "heading pitch roll dip", vars);
+	int stat = this->ard->requestVariables("compass", "compassHeading pitch roll dip", vars);
 	if(stat!=0) {
 		Logging::error(__func__, "Error while getting variables");
 	}

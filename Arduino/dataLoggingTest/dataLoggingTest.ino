@@ -29,8 +29,6 @@ Compass* compass;
 ashcon* Console;
 
 SensorLink* sensorList = (SensorLink*)malloc(sizeof(SensorLink));
-SensorLink* head = sensorList;
-
 
 //Function prototypes
 void addToList(Sensor* item);
@@ -71,19 +69,22 @@ void loop() {
         case 0: //Default mode, polling sensors, handling RC.
         {
             //Update Sensors, regardless of mode.
-            digitalWrite(13, HIGH);
+            //digitalWrite(13, HIGH);
             Sensor* sens = getHottestSensor();
             //Need to include multiplexor and code for changing Baud rate when necessary.
             clearBuffer();
             if(strcmp(sens->id, "compass")){
               Serial2.begin(9600);
+              delay(100);
             }
             else 
             {
               Serial2.begin(4800);
-            }
+                delay(100);    
+        }
+            
             sens->update();
-            digitalWrite(13,LOW);
+            //digitalWrite(13,LOW);
         }
         break;
         case 1: //Responding to request for variables.
@@ -100,45 +101,54 @@ void addToList(Sensor* item) {
         return;
     }
     SensorLink* link = (SensorLink*) malloc(sizeof(SensorLink));
-    link->next = NULL;
+    link->next = sensorList;
     link->s = item;
-    sensorList->next = link;
-	sensorList = link;
+    sensorList = link;
 }
 
 int dispatchRequest(int argc, char* argv[]) {
-        digitalWrite(13, HIGH);
-	//Need to search through a list of sensors, 
-	//and find one that matches argv[1] - 
-	//this should be the sensor name. 
-	//All following args are variables that are requested.
-	SensorLink* link = head;
-        
-	while(link!=NULL) {
-		if(strcmp(link->s->id, argv[1])==0){
-			break;
-		}
-		link = link->next;
-	}
     
-	digitalWrite(13, LOW);
-	char** variables = link->s->getVariables(argc-2, &(argv[2]));
-	for(int i=0; i<argc-2; i++) {//Print out all the variables.
-		if(variables[i]!=NULL) {
-			Serial.print(variables[i]);
-                          free(variables[i]);
-		} else {
-			Serial.print(" ");
-		}
-		Serial.print(",");
-		Serial.flush();
-                free(variables);
-	}
-	Serial.print("\n\r");
+    //Need to search through a list of sensors, 
+    //and find one that matches argv[1] - 
+    //this should be the sensor name. 
+    //All following args are variables that are requested.
+    SensorLink* link = sensorList;
+        //Serial.print("Loooking for sensor ");
+        //Serial.println(argv[1]);
+    while(link!=NULL) {
+        if(strcmp(link->s->id, argv[1])==0){
+                        //Serial.println("Found Sensor!");
+            break;
+        }
+        link = link->next;
+    }
+        
+        if(link==NULL){
+             //Didn't find a match
+              return -1;   
+        }
 
         
-        
-	return 0;
+    char** variables = link->s->getVariables(argc-2, &(argv[2]));
+    for(int i=0; i<(argc-2); i++) {//Print out all the variables.
+        if(variables[i]!=NULL) {
+            Serial.print(variables[i]);
+                        
+        } else {
+            Serial.print("*");
+        }
+        Serial.print(",");
+        Serial.flush();
+                
+    }
+    Serial.print("\n\r");
+
+    //Serial.println("Exiting request");
+    for(int i=0; i<(argc-2); i++){
+         free(variables[i]);   
+    }
+    free(variables);
+    return 0;
 }
 
 void clearBuffer(){

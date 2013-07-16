@@ -34,9 +34,9 @@ int ArduinoCom::requestVariables(const std::string &source ,
 	std::string resp = "";
 	//First, raise an interrupt, and wait for a '>' from the arduino.
 	GPIO::digitalWrite(this->interruptPin, HIGH);
-	usleep(10*1000);
+	usleep(10*100);
 	GPIO::digitalWrite(this->interruptPin, LOW);
-	usleep(10*1000);
+	usleep(10*100);
 	GPIO::digitalWrite(this->interruptPin, HIGH);
 
 
@@ -50,7 +50,7 @@ int ArduinoCom::requestVariables(const std::string &source ,
 	*/
 	time_t startTime = time(NULL);
 	int stat = 1;
-	while(difftime(time(NULL) , startTime) < 10) {//Wait for up to 5 seconds for a response
+	while(difftime(time(NULL) , startTime) < 5) {//Wait for up to 5 seconds for a response
 		
 		
 		stat = this->readBlock(resp);//Read a line...
@@ -67,6 +67,7 @@ int ArduinoCom::requestVariables(const std::string &source ,
 		Logging::error(__func__,"Arduino not responsive to interrupt - timeout occured.");
 		return -1;
 	}
+	usleep(10*1000);
 
 	stat = this->sendCommand("req "+source+" "+labels+"\n", vars);
 	if(stat!=0) {
