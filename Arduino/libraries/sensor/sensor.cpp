@@ -10,6 +10,8 @@ char** Sensor::getVariables(int argc, char* argv[]) {
 	of elements in argv[]. Additionally, all the arguments should be
 	valid sources in the varList.
 	*/
+
+	Serial.println("Entering getVariables..");
 	int totLen=0;
 	char** variables = (char**) malloc(sizeof(char*)*argc);
 	for(int i=0; i<argc; i++){
@@ -23,30 +25,38 @@ char** Sensor::getVariables(int argc, char* argv[]) {
 	}
 
 	while(item != NULL) {
+		Serial.print("Looking for match for ");
+		Serial.println(item->id);
 		for(int i=0; i<argc; i++) {
+			Serial.print(argv[i]);
+			Serial.print(" ");
 			if(strcmp(argv[i],item->id)==0) {//Item is found
 				//Convert item to c-string
 				char* buf= (char*) calloc(255,sizeof(char));
 				int len;
 				switch(item->type) {
 					case INT:
-						len = sprintf(buf,"%d", *((int*) item->data));
+						len = sprintf(buf,"%d", *((int*) item->data))+1;
 					break;
 					case DOUBLE:
 						//Sprintf for doubles/floats isn't implemented on Arduino.
 						//Will have to use a workaround.
 						dtostrf(*(double*)item->data, 1, 4, buf);
 						len = strlen(buf) +1;
+						Serial.print(" '");
+						Serial.print(buf);
+						Serial.print("' -");
+						Serial.print(len);
 					break;
 					case CHAR:
-						len = sprintf(buf,"%d", *((char*) item->data));
+						len = sprintf(buf,"%d", *((char*) item->data)) +1;
 					break;
 					case FLOAT:
 						dtostrf(*(float*)item->data, 1, 4, buf);
 						len = strlen(buf) +1;
 					break;
 					case STRING:
-						len = strlen((char*) item->data);
+						len = strlen((char*) item->data) +1;
 						strcpy(buf, (char*) item->data);
 					break;
 				}
@@ -55,12 +65,21 @@ char** Sensor::getVariables(int argc, char* argv[]) {
 				strcpy(variables[i], buf);
 				totLen+=len;
 				free(buf);
+				break;
 			}
 		}
+		Serial.print("\n");
 		item = item->next;
 		
 	}
 
+
+	Serial.println("getVariables is returning: ");
+	for(int i=0; i<argc ; i++){
+		Serial.print(variables[i]);
+		Serial.print(" ");
+	}
+	Serial.println("");
 	return variables;
 }
 
