@@ -11,7 +11,7 @@ char** Sensor::getVariables(int argc, char* argv[]) {
 	valid sources in the varList.
 	*/
 
-	Serial.println("Entering getVariables..");
+	//Serial.println("Entering getVariables..");
 	int totLen=0;
 	char** variables = (char**) malloc(sizeof(char*)*argc);
 	for(int i=0; i<argc; i++){
@@ -25,11 +25,11 @@ char** Sensor::getVariables(int argc, char* argv[]) {
 	}
 
 	while(item != NULL) {
-		Serial.print("Looking for match for ");
-		Serial.println(item->id);
+		//Serial.print("Looking for match for ");
+		//Serial.println(item->id);
 		for(int i=0; i<argc; i++) {
-			Serial.print(argv[i]);
-			Serial.print(" ");
+			//Serial.print(argv[i]);
+			//Serial.print(" ");
 			if(strcmp(argv[i],item->id)==0) {//Item is found
 				//Convert item to c-string
 				char* buf= (char*) calloc(255,sizeof(char));
@@ -43,10 +43,10 @@ char** Sensor::getVariables(int argc, char* argv[]) {
 						//Will have to use a workaround.
 						dtostrf(*(double*)item->data, 1, 4, buf);
 						len = strlen(buf) +1;
-						Serial.print(" '");
+						/*Serial.print(" '");
 						Serial.print(buf);
 						Serial.print("' -");
-						Serial.print(len);
+						Serial.print(len);*/
 					break;
 					case CHAR:
 						len = sprintf(buf,"%d", *((char*) item->data)) +1;
@@ -68,18 +68,18 @@ char** Sensor::getVariables(int argc, char* argv[]) {
 				break;
 			}
 		}
-		Serial.print("\n");
+		//Serial.print("\n");
 		item = item->next;
 		
 	}
 
-
+/*
 	Serial.println("getVariables is returning: ");
 	for(int i=0; i<argc ; i++){
 		Serial.print(variables[i]);
 		Serial.print(" ");
 	}
-	Serial.println("");
+	Serial.println("");*/
 	return variables;
 }
 

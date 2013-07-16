@@ -82,7 +82,7 @@ int ashcon::get_line() {
             }
             i++;
             start=millis();
-        } else if((millis()-start) > 1000 || millis()<start) {
+        } else if((millis()-start) > 3000 || millis()<start) {
             return this->FAILURE;
         }
     }
