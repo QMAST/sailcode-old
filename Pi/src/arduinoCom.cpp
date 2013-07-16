@@ -67,7 +67,7 @@ int ArduinoCom::requestVariables(const std::string &source ,
 		Logging::error(__func__,"Arduino not responsive to interrupt - timeout occured.");
 		return -1;
 	}
-
+	usleep(10*1000);
 
 	stat = this->sendCommand("req "+source+" "+labels+"\n", vars);
 	if(stat!=0) {

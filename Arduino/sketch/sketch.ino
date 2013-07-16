@@ -3,7 +3,6 @@
   accurate steps
 */
 
-
 #include <Arduino.h>
 #include <ashcon.h>
 #include <airmar.h>
@@ -147,34 +146,48 @@ void addToList(Sensor* item) {
 }
 
 int dispatchRequest(int argc, char* argv[]) {
+        //digitalWrite(13, HIGH);
 	//Need to search through a list of sensors, 
 	//and find one that matches argv[1] - 
 	//this should be the sensor name. 
 	//All following args are variables that are requested.
 	SensorLink* link = sensorList;
+        //Serial.print("Loooking for sensor ");
+        //Serial.println(argv[1]);
 	while(link!=NULL) {
 		if(strcmp(link->s->id, argv[1])==0){
+                        //Serial.println("Found Sensor!");
 			break;
 		}
 		link = link->next;
 	}
+        
+        if(link==NULL){
+             //Didn't find a match
+              return -1;   
+        }
 
+        
 	char** variables = link->s->getVariables(argc-2, &(argv[2]));
-	for(int i=0; i<argc-2; i++) {//Print out all the variables.
+	for(int i=0; i<(argc-2); i++) {//Print out all the variables.
 		if(variables[i]!=NULL) {
 			Serial.print(variables[i]);
-                        free(variables[i]);
+                        
 		} else {
-			Serial.print(" ");
+			Serial.print("*");
 		}
 		Serial.print(",");
 		Serial.flush();
-                free(variables);
+                
 	}
 	Serial.print("\n\r");
 
-        
-
+        //Serial.println("Exiting request");
+        for(int i=0; i<(argc-2); i++){
+             free(variables[i]);   
+        }
+        free(variables);
+        //digitalWrite(13, LOW);
 	return 0;
 }
 

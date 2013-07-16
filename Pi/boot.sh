@@ -6,5 +6,5 @@ read -t 5 -r -n 1 VAR
 if [ $? -gt 129 ]; then
 	echo "Timeout occured, starting sailcode."
 	ls /dev/tty* > /home/pi/devices.txt
-	sudo /home/pi/sailcode/Pi/comtest > result.txt	
+	sudo /home/pi/sailcode/Pi/main
 fi
