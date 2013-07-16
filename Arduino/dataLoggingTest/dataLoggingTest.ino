@@ -124,7 +124,7 @@ int dispatchRequest(int argc, char* argv[]) {
               return -1;   
         }
 
-        digitalWrite(13, LOW);
+        
 	char** variables = link->s->getVariables(argc-2, &(argv[2]));
 	for(int i=0; i<(argc-2); i++) {//Print out all the variables.
 		if(variables[i]!=NULL) {
@@ -144,6 +144,7 @@ int dispatchRequest(int argc, char* argv[]) {
              free(variables[i]);   
         }
         free(variables);
+        digitalWrite(13, LOW);
 	return 0;
 }
 
