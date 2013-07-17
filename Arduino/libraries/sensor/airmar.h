@@ -18,7 +18,6 @@ public:
 	
 	double heading, windDirection;
 	
-private:
 	int tempRate;//Relative rate at which the temperature should increase.
 	double lat, lon;//Latitude and Longitude
 	double var, dev; //Heading, variation, deviation

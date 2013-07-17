@@ -46,12 +46,15 @@ int ArduinoCom::requestVariables(const std::string &source ,
 	Actual communications from the Arduino start with a >. 
 	How to do this?
 	Just keep reading lines until we get one that starts with a >, within a timeout.
-
+	Also need to limit the rate at which readBlock is called -
+	A couple of times when tested, readBlcok would return an error immediately, and go into a crazy fast loop.
+	Want to avoid that by limiting the "frame rate"
 	*/
 	time_t startTime = time(NULL);
+	time_t frameBegin;
 	int stat = 1;
 	while(difftime(time(NULL) , startTime) < 5) {//Wait for up to 5 seconds for a response
-		
+		frameBegin = time(NULL);
 		
 		stat = this->readBlock(resp);//Read a line...
 		if(stat == 0) {
@@ -60,6 +63,10 @@ int ArduinoCom::requestVariables(const std::string &source ,
 				break;
 			}
 		}
+		while(difftime(time(NULL) , frameBegin) < 1) {//Wait for at least 1 second between calls to readBlock
+			usleep(100*1000);//Sleep for 100 milliseconds.
+		}
+
 	}
 
 	if(stat!=0 || resp.find(">")==-1){

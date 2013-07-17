@@ -18,7 +18,7 @@ public:
 	double compassHeading;
 	char compassStatus;
 	
-private:
+public:
 	int tempRate;//Relative rate at which the temperature should increase.
 	unsigned long prevTime;
 	int temp;

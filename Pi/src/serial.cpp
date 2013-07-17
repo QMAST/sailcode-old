@@ -92,7 +92,8 @@ int Serial::readBlock(std::string &msg) {
 		delete[] buf;
 		return -1;
 	} else if(num==0) {
-		Logging::error(__func__, "Didn't read anything from file. Timeout likely occured.");
+		std::string errString = strerror(errno);
+		Logging::error(__func__, "Didn't read anything from file. Timeout likely occured. " + errString);
 		delete[] buf;
 		return -1;
 	}

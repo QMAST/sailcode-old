@@ -12,26 +12,7 @@ void setup() {
 	Serial.begin(115200);
 	Serial2.begin(9600);
 	c = new Compass("compass", &Serial2);
-	//Serial.println(freeMemory());
-//        Serial2.println("@B6=1*78");//Set the baud rate to 4800BPS
-//        delay(200);
-//        char buf[10];
-//        Serial2.readBytes(buf, 10);
-//        Serial.println(buf);
-//        delay(1000);
-//        //Serial2.begin(4800);
-//        Serial2.println("@F0.3=1*67");//Reset the compass.
-//        Serial2.readBytes(buf, 10);
-//        Serial.println(buf);
-//        delay(1000);
-//        //Serial2.begin(4800);
-//        Serial2.println("@F28.6=1*58");//Reset the compass.
-//        Serial2.readBytes(buf, 10);
-//        Serial.println(buf);
-//        Serial2.println("@B6?*4B");//Reset the compass.
-//        Serial2.readBytes(buf, 10);
-//        Serial.println(buf);
-        //Serial2.begin(4800);
+	a = new Airmar("airmar", &Serial2);
         delay(1000);
         
        
