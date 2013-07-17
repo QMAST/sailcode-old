@@ -1,8 +1,8 @@
 
 #ifndef _AIRMAR_H_
 #define _AIRMAR_H_
-#define MULTIPLEX_PIN1 28
-#define MULTIPLEX_PIN2 29
+#define MULTIPLEX_PIN1 30
+#define MULTIPLEX_PIN2 31
 
 #include <Arduino.h>
 #include <stdlib.h>
