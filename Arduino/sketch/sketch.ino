@@ -206,7 +206,7 @@ void clearBuffer(){
 	digitalWrite(MULTIPLEX_PIN2, HIGH);
 
 	while(Serial1.available()>0){
-		Serial.read();
+		Serial1.read();
 	}
 }
 

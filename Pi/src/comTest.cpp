@@ -17,8 +17,9 @@ int main(int argc, char* argv[]) {
 
 	std::string str = "";
 	int stat;
-
-	for(int i=0;i<10; i++){
+	int i=0;
+	while(true){
+		i++;
 		cout<<"Request no. "<<i+1<<endl;
 		stat = ac->requestVariables("compass","compassHeading pitch", str);
 		if(stat==0) {
@@ -30,4 +31,5 @@ int main(int argc, char* argv[]) {
 	}
 
 	Logging::clean();
+
 }
