@@ -337,21 +337,24 @@ void getMotorParams() {
 
   while(control->getValueLV() > 0) {
     //While the aux knob is over halfway, get the max and min
+   
     temp = motor1->getAngle();
-    if(temp > max1) {
-      max1 = temp;
+    if(temp>-180 && temp <180) {
+        if(temp > max1) {
+          max1 = temp;
+        }
+        else if(temp < min1) {
+          min1 = temp;
+        }
     }
-    else if(temp < min1) {
-      min1 = temp;
-    }
-
     temp = motor2->getAngle();
-    if(temp > max2) {
-      max2 = temp;
-    } else if(temp<min2) {
-      min2 = temp;
+    if(temp>-180 && temp <180){
+        if(temp > max2) {
+          max2 = temp;
+        } else if(temp<min2) {
+          min2 = temp;
+        }
     }
-
     //Get RC values for motor movement.
     temp = control->getValueRV();
     temp = map(temp, -100,100, -3600,3600);
