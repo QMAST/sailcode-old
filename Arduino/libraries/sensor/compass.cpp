@@ -26,12 +26,12 @@ Compass::Compass(const char* id, Stream* lineIn) {
 }
 
 int Compass::update() {
-	//Get the data from the sensor, parse it properly, do anything else necessary.
-	this->lineIn->println("$PTNT,HTM*63");
-	
+
 	digitalWrite(MULTIPLEX_PIN1, LOW);
 	digitalWrite(MULTIPLEX_PIN2, LOW);
-	delay(20);
+	
+	//Get the data from the sensor, parse it properly, do anything else necessary.
+	this->lineIn->print("$PTNT,HTM*63");
 		
 		
 	//Read line, place into a buffer.
@@ -48,10 +48,11 @@ int Compass::update() {
 		}
 		if(this->lineIn->available() >0){
 			this->lineIn->read();
+			break;
 		}
-		if(abs(millis()-st) > 500) {
+		if(abs(millis()-st) > 1000) {
 			if(DEBUG) {
-			 	Serial.println("Timeout.");
+			 	Serial.println("First Timeout.");
 			}
 			free(buf);
 			return -1;//Timeout

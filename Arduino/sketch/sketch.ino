@@ -12,8 +12,9 @@
 #include <pololu_servo.h>
 #include <motor.h>
 
-#define MULTIPLEX_PIN1 28
-#define MULTIPLEX_PIN2 29
+#define MULTIPLEX_PIN1 30
+#define MULTIPLEX_PIN2 31
+#define ENABLE_PIN 50
 #define SERVO_RESET_PIN 40
 #define MOTOR_1_ANGLEPIN A0
 #define MOTOR_2_ANGLEPIN A1
@@ -59,6 +60,8 @@ void setup() {
     //Initialize multiplexor
     pinMode(MULTIPLEX_PIN1, OUTPUT);
     pinMode(MULTIPLEX_PIN2, OUTPUT);
+	pinMode(ENABLE_PIN, OUTPUT);
+	digitalWrite(ENABLE_PIN, HIGH);
     
 	
     //Initialize Servos
