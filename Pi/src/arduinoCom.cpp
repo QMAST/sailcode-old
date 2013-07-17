@@ -63,7 +63,7 @@ int ArduinoCom::requestVariables(const std::string &source ,
 				break;
 			}
 		}
-		while(diffTime(time(NULL) , frameBegin) < 1) {//Wait for at least 1 second between calls to readBlock
+		while(difftime(time(NULL) , frameBegin) < 1) {//Wait for at least 1 second between calls to readBlock
 			usleep(100*1000);//Sleep for 100 milliseconds.
 		}
 
