@@ -32,6 +32,7 @@ int Compass::update() {
 	
 	//Get the data from the sensor, parse it properly, do anything else necessary.
 	this->lineIn->print("$PTNT,HTM*63");
+
 		
 		
 	//Read line, place into a buffer.
@@ -52,7 +53,7 @@ int Compass::update() {
 		}
 		if(abs(millis()-st) > 1000) {
 			if(DEBUG) {
-			 	Serial.println("First Timeout.");
+			 	Serial.println("Timeout waiting for $");
 			}
 			free(buf);
 			return -1;//Timeout
@@ -75,7 +76,7 @@ int Compass::update() {
 		if(abs(millis()-st) > 500) {
 
 			if(DEBUG) {
-			 	Serial.println("Timeout.");
+			 	Serial.println("Timeout waiting for full line");
 			}
 			free(buf);
 			return -1;//Timeout

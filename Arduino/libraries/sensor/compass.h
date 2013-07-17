@@ -21,7 +21,7 @@ public:
 	double roll;
 	double dip;
 	
-private:
+public:
 	int tempRate;//Relative rate at which the temperature should increase.
 	unsigned long prevTime;
 	int temp;
