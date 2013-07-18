@@ -14,8 +14,10 @@ public:
 	int requestVariables(const std::string &source, 
 					const std::string &labels, 
 					std::string &vars);
+	int setHeading(int direction);
 private:
-
+	void raiseInterrupt();
+	int waitForResponse();
 
 int interruptPin;
 };
