@@ -194,10 +194,11 @@ int dispatchRequest(int argc, char* argv[]) {
 	return 0;
 }
 
-int updateDirection(int argc, char*argv[]) {
+int updateDirection(int argc, char* argv[]) {
 	//argv[1] is the new sail direction
 
 	dir = atoi(argv[1]);
+  Serial.println("OK");
 	return 0;
 
 

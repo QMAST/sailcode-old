@@ -30,16 +30,56 @@ int ArduinoCom::requestVariables(const std::string &source ,
 		Ex: 
 		requestVariables("airmar","lat lon heading",vars);
 	*/
-
-	std::string resp = "";
+	int stat;
+	std::string vars="";
 	//First, raise an interrupt, and wait for a '>' from the arduino.
+	this->raiseInterrupt();
+
+
+	if(this->waitForResponse()!=0) {
+		//Error occured.
+		Logging::error(__func__, "Wait for response failed.");
+		return -1;
+	}
+	
+
+	stat = this->sendCommand("req "+source+" "+labels+"\n", vars);
+	if(stat!=0) {
+		Logging::error(__func__,"Variables not returned. Response: "+resp+", Variables:"+vars);
+		return -1;
+	}
+	
+	return 0;
+}
+
+int ArduinoCom::setHeading(int direction) {
+	std::string vars = "";
+	this->raiseInterrupt();
+
+	if(this->waitForResponse()!=0) {
+		//Error occured.
+		Logging::error(__func__, "Wait for response failed.");
+		return -1;
+	}
+	//Convert direction to string, send it to arduino
+
+	int stat = this->sendCommand("dir "+std::to_string(direction)+"\n", vars);
+	if(stat!=0) {
+		Logging::error(__func__, "Response not received: "+vars);
+	}
+
+	return 0;
+}
+
+void ArduinoCom::raiseInterrupt() {
 	GPIO::digitalWrite(this->interruptPin, HIGH);
 	usleep(10*100);
 	GPIO::digitalWrite(this->interruptPin, LOW);
 	usleep(10*100);
 	GPIO::digitalWrite(this->interruptPin, HIGH);
+}
 
-
+int ArduinoCom::waitForResponse() {
 	/*
 	Want to wait for response for Arduino, but not get thrown 
 	off by any leftover debugging statements in the arduino code.
@@ -50,6 +90,8 @@ int ArduinoCom::requestVariables(const std::string &source ,
 	A couple of times when tested, readBlcok would return an error immediately, and go into a crazy fast loop.
 	Want to avoid that by limiting the "frame rate"
 	*/
+	std::string resp = "";
+
 	time_t startTime = time(NULL);
 	time_t frameBegin;
 	int stat = 1;
@@ -74,13 +116,6 @@ int ArduinoCom::requestVariables(const std::string &source ,
 		Logging::error(__func__,"Arduino not responsive to interrupt - timeout occured.");
 		return -1;
 	}
-	usleep(10*1000);
 
-	stat = this->sendCommand("req "+source+" "+labels+"\n", vars);
-	if(stat!=0) {
-		Logging::error(__func__,"Variables not returned. Response: "+resp+", Variables:"+vars);
-		return -1;
-	}
-	
 	return 0;
 }
