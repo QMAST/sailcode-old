@@ -35,9 +35,6 @@ int main(int argc, char* argv[]) {
 	float *compassPitch = new float;
 	float *compassRoll = new float;
 	float *compassDip = new float;
-	int *motor1Angle = new int;
-	int *motor2Angle = new int;
-	int *mastAngle = new int;
 	string resp;
 	
 	
@@ -52,10 +49,6 @@ int main(int argc, char* argv[]) {
 	Logging::addDataSource(FLOAT, "compassPitch", compassPitch);
 	Logging::addDataSource(FLOAT, "compassRoll", compassRoll);
 	Logging::addDataSource(FLOAT, "compassDip", compassDip);
-	Logging::addDataSource(INT, "motor1Angle", motor1Angle);
-	Logging::addDataSource(INT, "motor2Angle", motor2Angle);
-	Logging::addDataSource(INT, "mastAngle", mastAngle);
-
 
 	while(true) {
 		
@@ -65,7 +58,6 @@ int main(int argc, char* argv[]) {
 
 		compass.getValues(compassHeading, compassPitch, compassRoll, compassDip);
 
-		angles.getAngles(motor1Angle, motor2Angle, mastAngle);
 
 		Logging::log();
 
