@@ -1,6 +1,5 @@
 /*
-  This is the main sketch which contains our most up-to-date sailcode and
-  accurate steps
+  This is a test for data logging, it includes everything from the main sketch without RC
 */
 
 
@@ -29,14 +28,14 @@ Airmar* airmar;
 Compass* compass;
 ashcon* Console;
 
-SensorLink* sensorList;
-
+SensorLink* sensorList = (SensorLink*)malloc(sizeof(SensorLink));
 
 //Function prototypes
 void addToList(Sensor* item);
 int dispatchRequest(int argc, char* argv[]);
 Sensor* getHottestSensor();
 void piInterrupt();
+
 
 void setup() {
 	//Initialize console
@@ -46,11 +45,13 @@ void setup() {
     Console = new ashcon(&Serial);
     Console->user_function_register("req", &dispatchRequest);
     
-    sensorList = NULL;
     
     //Initialize multiplexor
     pinMode(MULTIPLEX_PIN1, OUTPUT);
     pinMode(MULTIPLEX_PIN2, OUTPUT);
+    
+sensorList->s = NULL;
+sensorList->next = NULL;
 
     //Initialize sensors
     Serial2.begin(9600);
@@ -106,21 +107,21 @@ void addToList(Sensor* item) {
 }
 
 int dispatchRequest(int argc, char* argv[]) {
-        digitalWrite(13, HIGH);
-	//Need to search through a list of sensors, 
-	//and find one that matches argv[1] - 
-	//this should be the sensor name. 
-	//All following args are variables that are requested.
-	SensorLink* link = sensorList;
+    
+    //Need to search through a list of sensors, 
+    //and find one that matches argv[1] - 
+    //this should be the sensor name. 
+    //All following args are variables that are requested.
+    SensorLink* link = sensorList;
         //Serial.print("Loooking for sensor ");
         //Serial.println(argv[1]);
-	while(link!=NULL) {
-		if(strcmp(link->s->id, argv[1])==0){
+    while(link!=NULL) {
+        if(strcmp(link->s->id, argv[1])==0){
                         //Serial.println("Found Sensor!");
-			break;
-		}
-		link = link->next;
-	}
+            break;
+        }
+        link = link->next;
+    }
         
         if(link==NULL){
              //Didn't find a match
@@ -128,27 +129,26 @@ int dispatchRequest(int argc, char* argv[]) {
         }
 
         
-	char** variables = link->s->getVariables(argc-2, &(argv[2]));
-	for(int i=0; i<(argc-2); i++) {//Print out all the variables.
-		if(variables[i]!=NULL) {
-			Serial.print(variables[i]);
+    char** variables = link->s->getVariables(argc-2, &(argv[2]));
+    for(int i=0; i<(argc-2); i++) {//Print out all the variables.
+        if(variables[i]!=NULL) {
+            Serial.print(variables[i]);
                         
-		} else {
-			Serial.print("*");
-		}
-		Serial.print(",");
-		Serial.flush();
-                
-	}
-	Serial.print("\n\r");
-
-        //Serial.println("Exiting request");
-        for(int i=0; i<(argc-2); i++){
-             free(variables[i]);   
+        } else {
+            Serial.print("*");
         }
-        free(variables);
-        digitalWrite(13, LOW);
-	return 0;
+        Serial.print(",");
+        Serial.flush();
+                
+    }
+    Serial.print("\n\r");
+
+    //Serial.println("Exiting request");
+    for(int i=0; i<(argc-2); i++){
+         free(variables[i]);   
+    }
+    free(variables);
+    return 0;
 }
 
 void clearBuffer(){
@@ -182,5 +182,5 @@ Sensor* getHottestSensor() {
 }
 
 void piInterrupt() {
-	mode =1;
+	mode = 1;
 }

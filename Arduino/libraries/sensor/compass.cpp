@@ -12,26 +12,27 @@ Compass::Compass(const char* id, Stream* lineIn) {
 	this->varList = NULL;
 	addVar(DOUBLE, "compassHeading", &compassHeading);
 	addVar(CHAR, "compassStatus", &compassStatus);
-	addVar(DOUBLE, "pitch", &pitchAngle);
-	addVar(DOUBLE, "roll", &rollAngle);
-	addVar(DOUBLE, "dip", &dipAngle);
+	addVar(DOUBLE, "pitch", &pitch);
+	addVar(DOUBLE, "roll", &roll);
+	addVar(DOUBLE, "dip", &dip);
 
 	this->compassHeading = 0;
 	this->compassStatus = 0;
-	this->pitchAngle = 0;
-	this->rollAngle = 0;
-	this->dipAngle = 0;
+	this->pitch = 0;
+	this->roll = 0;
+	this->dip = 0;
 
 	this->update();
 }
 
 int Compass::update() {
-	//Get the data from the sensor, parse it properly, do anything else necessary.
-	this->lineIn->println("$PTNT,HTM*63");
+
+	digitalWrite(MULTIPLEX_PIN1, LOW);
+	digitalWrite(MULTIPLEX_PIN2, LOW);
 	
-	//digitalWrite(MULTIPLEX_PIN1, LOW);
-	//digitalWrite(MULTIPLEX_PIN2, LOW);
-	//delay(20);
+	//Get the data from the sensor, parse it properly, do anything else necessary.
+	this->lineIn->print("$PTNT,HTM*63");
+
 		
 		
 	//Read line, place into a buffer.
@@ -48,8 +49,9 @@ int Compass::update() {
 		}
 		if(this->lineIn->available() >0){
 			this->lineIn->read();
+			break;
 		}
-		if(abs(millis()-st) > 500) {
+		if(abs(millis()-st) > 1000) {
 			if(DEBUG) {
 			 	Serial.println("Timeout waiting for $");
 			}
@@ -104,9 +106,9 @@ int Compass::update() {
 		case PTNTHTM:
 			this->compassHeading = atof(nmea->data[0]);
 			this->compassStatus = atof(nmea->data[1]);
-			this->pitchAngle = atof(nmea->data[2]);
-			this->rollAngle = atof(nmea->data[4]);
-			this->dipAngle = atof(nmea->data[6]);
+			this->pitch = atof(nmea->data[2]);
+			this->roll = atof(nmea->data[4]);
+			this->dip = atof(nmea->data[6]);
 		break;
 		default:
 			if(DEBUG) {

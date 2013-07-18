@@ -19,16 +19,17 @@ void Motor::setMotorParams(int min, int max) {
 
 double Motor::getAngle() {
 	int val = analogRead(this->anglePin);
-	//Convert the raw number into an angle between 0 and 360.
-	//In this case, an angle of 0 corresponds to a reading of -180 by the sensor.
-	//This makes it clearer to show the relationship between the amount of rope out and the angle.
-	if(val<100) {
-		//Value is in LOW
-		return -1.0;
-	}
-	else {
-		return ((val-102)/2.275);//Converts from value to angle.
-	}
+	//Serial.print("Val from angle sensor: ");
+	//Serial.println(val);
+	//1023=5V, 0=0V. Need to map 0.5V to -180, and 4.5V to 180
+	//204.6 points per Volt
+	//90 degrees per Volt.
+	//So we have 204.6/90 points per degree.
+	//or 90/204.6 degrees per point.
+	//This means that at 2.5 volts, we are getting 225 degrees. 
+	//We want that to be 0
+	val = int((double(val)*0.4399) - 225);
+	return val;
 }
 
 void Motor::reset(){
@@ -99,7 +100,11 @@ int Motor::setLength(int position) {
 }
 
 int Motor::setMotorSpeed(int speed) {
-	// Adjust the motor speed, to the specified value between -3600 and 3600
+
+	int currAngle = this->getAngle();
+	if (currAngle >= maxAngle || currAngle <= zeroAngle)
+		return 0;
+	
 	if(speed!=this->currentSpeed) {
 		this->serialCom->write(0xAA);
 		this->serialCom->write(this->controllerID);

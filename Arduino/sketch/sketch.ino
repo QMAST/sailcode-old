@@ -12,8 +12,9 @@
 #include <pololu_servo.h>
 #include <motor.h>
 
-#define MULTIPLEX_PIN1 28
-#define MULTIPLEX_PIN2 29
+#define MULTIPLEX_PIN1 30
+#define MULTIPLEX_PIN2 31
+#define ENABLE_PIN 50
 #define SERVO_RESET_PIN 40
 #define MOTOR_1_ANGLEPIN A0
 #define MOTOR_2_ANGLEPIN A1
@@ -59,6 +60,8 @@ void setup() {
     //Initialize multiplexor
     pinMode(MULTIPLEX_PIN1, OUTPUT);
     pinMode(MULTIPLEX_PIN2, OUTPUT);
+	pinMode(ENABLE_PIN, OUTPUT);
+	digitalWrite(ENABLE_PIN, HIGH);
     
 	
     //Initialize Servos
@@ -70,8 +73,8 @@ void setup() {
 
     //Initialize motors
     Serial1.begin(38400);
-    motor1 = new Motor(&Serial1, MOTOR_1_ANGLEPIN, '\x0D');
-    motor2 = new Motor(&Serial1, MOTOR_2_ANGLEPIN, '\x0E');
+    motor1 = new Motor(&Serial1, MOTOR_1_ANGLEPIN, '\x0D', -180, 180);
+    motor2 = new Motor(&Serial1, MOTOR_2_ANGLEPIN, '\x0E', -180, 180);
 
     //Initialize sensors
     Serial2.begin(9600);
@@ -250,7 +253,7 @@ void setMotorSpeed(int speed)
 }
 
 void SailAutonomous(){
-        //Serial.println("Sailing Autonomously");
+        Serial.println("Sailing Autonomously");
 	int diff = abs(airmar->heading - dir);
 	//Set rudder 
 	if (diff < 10){
@@ -298,7 +301,7 @@ void HandleRC() {
   if(control->getValueLV() > 0) {//If the left stick is set more than halfway up...
     //Enter motor configuration mode, to set the motor parameters.
     //This will take complete control of the program until the mode is disabled, regardless of gearswitch position
-    //Serial.println("Calibrating...");
+    Serial.println("Calibrating...");
     getMotorParams();
   }
   else {//If the left stick is less than halfway up...
@@ -312,10 +315,36 @@ void HandleRC() {
       motor2->setMotorSpeed(temp);
     }
     temp = control->getValueRH();
-    temp = map(temp, -100,100, 0,254);
+    Serial.println(temp);
+    /*temp = map(temp, 100,-100, 1,254);
     if(abs(temp)<254) {
+      Serial.print("Servo Setting: ");
+      Serial.println(temp);
+      servo->restart();
       servo->setPosition(0, temp);
       servo->setPosition(1, temp);
+    }*/
+    if (temp < -500 || temp > 500) {
+       servo->setPosition(0,127);
+       servo->setPosition(1,127);
+       //Serial.println("NEUTRAL");
+    }
+    else if (temp < -20){
+       servo->restart();
+       servo->setPosition(0, 1);
+       servo->setPosition(1, 1);
+       //Serial.println("RIGHT");
+    }
+    else if (temp > 20) {
+       servo->restart();
+       servo->setPosition(0,254);
+       servo->setPosition(1,254);
+       //Serial.println("LEFT");
+    }
+    else{
+       servo->setPosition(0,127);
+       servo->setPosition(1,127);
+       //Serial.println("NEUTRAL");
     }
   }
 
@@ -366,15 +395,15 @@ void getMotorParams() {
 
   motor1->setMotorParams(min1, max1);
   motor2->setMotorParams(min2, max2);
-//  //Serial.print("Max winch 1: ");
-//  Serial.print(max1);
-//  Serial.print("Min winch 1: ");
-//  Serial.print(min1);
-//  
-//  Serial.print("   Max winch 2: ");
-//  Serial.print(max2);
-//  Serial.print("Min winch 2: ");
-//  Serial.print(min2);
-//  
+  Serial.print("Max winch 1: ");
+  Serial.print(max1);
+  Serial.print("Min winch 1: ");
+  Serial.print(min1);
+  
+  Serial.print("   Max winch 2: ");
+  Serial.print(max2);
+  Serial.print("Min winch 2: ");
+  Serial.print(min2); 
+  
   return;
 }
