@@ -17,11 +17,11 @@ using namespace std;
 int main(int argc, char* argv[]) {
 	Logging::init();
 	int pin =2;
-	ArduinoCom ard("/dev/ttyACM0",pin);
+	ArduinoCom* ard = new ArduinoCom("/dev/ttyACM0", pin);
 	
-	Airmar airmar(&ard);
-	Compass compass(&ard);
-	AngleSensor angles(&ard);
+	Airmar airmar(ard);
+	Compass compass(ard);
+	AngleSensor angles(ard);
 	
 	//Simple data logging test.
 	float *lat = new float;
@@ -54,7 +54,7 @@ int main(int argc, char* argv[]) {
 
 	std::cout << "Entering main loop...\n";
 
-	ard.setHeading(90); //East
+	ard->setHeading(90); //East
 	while(true) {
 
 
