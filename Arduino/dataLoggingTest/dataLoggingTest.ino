@@ -62,7 +62,7 @@ void setup() {
     addToList(compass);
 
     //Setup interrupts
-    attachInterrupt(0, piInterrupt, RISING);
+    attachInterrupt(0, piInterrupt, FALLING);
 }
 
 void loop() {
@@ -92,6 +92,7 @@ void loop() {
         {
             Console->command_prompt();
             mode=0;
+            digitalWrite(13, LOW);
         }
         break;
     }
@@ -183,5 +184,6 @@ Sensor* getHottestSensor() {
 }
 
 void piInterrupt() {
+    digitalWrite(13, HIGH);
 	mode = 1;
 }
