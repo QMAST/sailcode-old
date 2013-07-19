@@ -13,6 +13,9 @@
 
 using namespace std;
 
+#define waypointTest1 0;
+#define waypointTest2 0;
+
 int main(int argc, char* argv[]) {
 	Logging::init();
 	int pin =2;
@@ -60,11 +63,13 @@ int main(int argc, char* argv[]) {
 
 	ard.setHeading(90); //East
 
+	if(waypointTest2){
 	//Parkinglot testing BOTH WAYS
 	GPSPoint first = (4413.4334, 7629.3137);
 	GPSPoint second = (4413.4225, 7629.2946);
 	bool success = false;
 	bool first = true;
+	}
 
 	while(true) {
 
@@ -73,27 +78,30 @@ int main(int argc, char* argv[]) {
 		airmar.getGPS(lat, lon);
 		GPSPoint here = (airmar->gLat, airmar->gLon);
 
+		if(waypointTest1){
 		//for Parkinglot testing ONE WAY
-		/*
 		GPSPoint there = (4413.4225, 7629.2946);
 		int dir = getBearing(here, there);
-		ard.setHeading(dir);*/
+		ard.setHeading(dir);
+		}
 
 
 		//Parkinglot testing BOTH WAYS - back and forth between 2 waypoint
-		success = false;
-		if(first == true){
-			int dir = getBearing(here, first);
-			ard.setHeading(dir);
-			success = withinRange(here, first);
-			if(success){ first= false; }
-		}
-		else{
-			int dir = getBearing(here, second);
-			ard.setHeading(dir);
-			success = withinRamge(here, second);
-			if(success) {first = true;}
+		if(waypointTest2){
+			success = false;
+			if(first == true){
+				int dir = getBearing(here, first);
+				ard.setHeading(dir);
+				success = withinRange(here, first);
+				if(success){ first= false; }
+			}
+			else{
+				int dir = getBearing(here, second);
+				ard.setHeading(dir);
+				success = withinRamge(here, second);
+				if(success) {first = true;}
 
+			}
 		}
 
 
