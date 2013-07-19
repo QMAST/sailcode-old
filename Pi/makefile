@@ -29,7 +29,7 @@ comtest: comtest.o arduinoCom.o gpio.o serial.o logging.o
 serialtest: serialtest.o arduinoCom.o serial.o gpio.o logging.o
 	$(CXX) $^ -o $@
 
-serialtest.o: serialtest.cpp
+serialtest.o: serialTest.cpp
 	$(CXX) $(CFLAGS) $< -o $@
 
 anglesensor.o: angleSensor.cpp buffer.h logging.h

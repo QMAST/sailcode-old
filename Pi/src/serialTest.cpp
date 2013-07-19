@@ -4,7 +4,7 @@
 //This does not test interrupts!
 
 #include <string>
-#include <stdlib>
+#include <stdlib.h>
 #include <iostream>
 
 #include "arduinoCom.h"
@@ -12,18 +12,18 @@
 int main(int argc, char* argv[]) {
 	
 	Logging::init();
-	ArduinoCom ard = new ArduinoCom("/dev/ttyACM0", 2);
+	ArduinoCom* ard = new ArduinoCom("/dev/ttyACM0", 2);
 	std::string msg="";
 	int stat;
 
 
 	while(true) {
-		stat=ard.readBlock(msg);
+		stat=ard->readBlock(msg);
 		if(stat==0) {
-			std::cout<<msg<<endl;
+			std::cout<<msg<<std::endl;
 		}
 		else {
-			std::cout<<"Read failed"<<endl;
+			std::cout<<"Read failed"<<std::endl;
 		}
 		usleep(1000*1000);
 	}
