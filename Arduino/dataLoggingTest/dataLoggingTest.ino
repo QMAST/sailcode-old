@@ -15,6 +15,7 @@
 #define MULTIPLEX_PIN1 30
 #define MULTIPLEX_PIN2 31
 #define SERVO_RESET_PIN 40
+#define ENABLE 50
 
 typedef struct SensorLink {
 	struct SensorLink* next;
@@ -28,7 +29,7 @@ Airmar* airmar;
 Compass* compass;
 ashcon* Console;
 
-SensorLink* sensorList = (SensorLink*)malloc(sizeof(SensorLink));
+SensorLink* sensorList;
 
 //Function prototypes
 void addToList(Sensor* item);
@@ -49,10 +50,10 @@ void setup() {
     //Initialize multiplexor
     pinMode(MULTIPLEX_PIN1, OUTPUT);
     pinMode(MULTIPLEX_PIN2, OUTPUT);
+    pinMode(ENABLE, OUTPUT);
     
-sensorList->s = NULL;
-sensorList->next = NULL;
-
+    digitalWrite(ENABLE, HIGH);
+    sensorList=NULL;
     //Initialize sensors
     Serial2.begin(9600);
     //airmar = new Airmar("airmar",&Serial2);

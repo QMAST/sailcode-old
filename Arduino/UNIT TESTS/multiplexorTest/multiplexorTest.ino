@@ -4,6 +4,7 @@
 //Need to test that the multiplexor is working, and switching between the two sensors works as excpected.
 #define MULTIPLEX_PIN1 30
 #define MULTIPLEX_PIN2 31
+#define ENABLE 50
 
 Compass* c;
 Airmar* a;
@@ -17,6 +18,12 @@ void setup() {
          pinMode(MULTIPLEX_PIN2, OUTPUT);
 	c = new Compass("compass", &Serial2);
 	a = new Airmar("airmar", &Serial2);
+
+    pinMode(30, OUTPUT);
+    pinMode(31, OUTPUT);
+    pinMode(ENABLE, OUTPUT);
+    
+    digitalWrite(ENABLE, HIGH);
 
 	delay(1000);
 	Serial.println("Initializing...");

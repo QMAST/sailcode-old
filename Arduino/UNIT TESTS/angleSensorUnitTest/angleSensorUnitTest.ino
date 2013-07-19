@@ -26,6 +26,13 @@ void setup() {
 	Serial.print("Winch is at: ");
 	Serial.println(temp);
 	motor->setMotorParams(temp-10, temp+10);
+        
+           //Initialize Servos
+    Serial3.begin(9600);
+    servo = new PololuMSC(&Serial3, 40);
+    servo->setPosition(0, 127);
+    servo->setPosition(1, 127);
+
 }
 
 void loop() {

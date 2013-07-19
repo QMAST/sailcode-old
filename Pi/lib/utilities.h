@@ -14,7 +14,7 @@
 
 class Utilities {
 public:
-	static int getBearing(float start, float end);
+	static int getBearing(GPSPoint* start, GPSPoint* end);
 };
 
 #endif
