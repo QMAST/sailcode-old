@@ -55,7 +55,7 @@ int Airmar::update() {
 		if(this->lineIn->available() >0){
 			this->lineIn->read();
 		}
-		if(abs(millis()-st) > 500) {
+		if(abs(millis()-st) > 1000) {
 			if(DEBUG) {
 			 	Serial.println("Early Timeout.");
 			}
@@ -77,10 +77,12 @@ int Airmar::update() {
 			buf[i] = charIn;
 			i++;//Should never reach a 255 character line, especially from the airmar.
 		}
-		if(abs(millis()-st) > 500) {
+		if(abs(millis()-st) > 2000) {
 
 			if(DEBUG) {
-			 	Serial.println("Timeout.");
+				buf[i]='\0';
+			 	Serial.print("Timeout.");
+			 	Serial.println(buf);
 			}
 			free(buf);
 			return -1;//Timeout

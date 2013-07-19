@@ -12,8 +12,8 @@
 #include <pololu_servo.h>
 #include <motor.h>
 
-#define MULTIPLEX_PIN1 28
-#define MULTIPLEX_PIN2 29
+#define MULTIPLEX_PIN1 30
+#define MULTIPLEX_PIN2 31
 #define SERVO_RESET_PIN 40
 
 typedef struct SensorLink {
@@ -75,13 +75,13 @@ void loop() {
             clearBuffer();
             if(strcmp(sens->id, "compass")){
               Serial2.begin(9600);
-              delay(100);
+              delay(500);
             }
             else 
             {
               Serial2.begin(4800);
-                delay(100);    
-        }
+                delay(500);    
+            }
             
             sens->update();
             //digitalWrite(13,LOW);

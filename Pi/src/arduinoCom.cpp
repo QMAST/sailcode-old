@@ -31,7 +31,7 @@ int ArduinoCom::requestVariables(const std::string &source ,
 		requestVariables("airmar","lat lon heading",vars);
 	*/
 	int stat;
-	std::string vars="";
+	
 	//First, raise an interrupt, and wait for a '>' from the arduino.
 	this->raiseInterrupt();
 
@@ -45,7 +45,7 @@ int ArduinoCom::requestVariables(const std::string &source ,
 
 	stat = this->sendCommand("req "+source+" "+labels+"\n", vars);
 	if(stat!=0) {
-		Logging::error(__func__,"Variables not returned. Response: "+resp+", Variables:"+vars);
+		Logging::error(__func__,"Variables not returned. Variables:"+vars);
 		return -1;
 	}
 	

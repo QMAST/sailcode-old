@@ -6,6 +6,7 @@
 #include "arduinoCom.h"
 #include "compass.h"
 #include "angleSensor.h"
+#include <iostream>
 
 //#include "gaelforce.h"
 //#include "environment.h"
@@ -49,15 +50,20 @@ int main(int argc, char* argv[]) {
 	Logging::addDataSource(FLOAT, "compassPitch", compassPitch);
 	Logging::addDataSource(FLOAT, "compassRoll", compassRoll);
 	Logging::addDataSource(FLOAT, "compassDip", compassDip);
-
+	std::cout << "Entering main loop...\n";
 	while(true) {
 		
 		airmar.getGPS(lat, lon);
+		std::cout<<"lat="<<*lat<<", lon="<<*lon<<"\n";
+
 		airmar.getWind(windSpeed, windDirection);
+		std::cout<<"windSpeed="<<*windSpeed<<", windDirection="<<*windDirection<<"\n";
+		
 		airmar.getCompass(airmarHeading, airmarVar, airmarDev);
+		std::cout<<"airmarHeading="<<*airmarHeading<<", airmarVar="<<*airmarVar<<", airmarDev="<<*airmarDev<<"\n";
 
 		compass.getValues(compassHeading, compassPitch, compassRoll, compassDip);
-
+		std::cout<<"compass Heading="<<*compassHeading<<", pitch="<<*compassPitch<<", roll="<<*compassRoll<<", compassDip="<<*compassDip<<"\n";
 
 		Logging::log();
 
