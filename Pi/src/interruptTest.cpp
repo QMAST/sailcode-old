@@ -1,8 +1,3 @@
-//A simple test to see if I can just get a serial echo from the Arduino onto standard output.
-//This will help test and debug the serial communications stuff. 
-//The arduino will just spit out a line of text every once in a while, and the Pi will attempt to read it.
-//This does not test interrupts!
-
 #include <string>
 #include <stdlib.h>
 #include <iostream>
@@ -15,13 +10,15 @@ int main(int argc, char* argv[]) {
 	ArduinoCom* ard = new ArduinoCom("/dev/ttyACM0", 2);
 	std::string msg="";
 	int stat;
-
 	int i=0;
 
 	while(i<10) {
+		ard->raiseInterrupt();
+		usleep(1000*10);
+
 		stat=ard->readBlock(msg);
 		if(stat==0) {
-			std::cout<<msg<<std::endl;
+			std::cout<<msg;
 		}
 		else {
 			std::cout<<"Read failed"<<std::endl;
@@ -30,4 +27,3 @@ int main(int argc, char* argv[]) {
 		i++;
 	}
 }
-

@@ -8,7 +8,7 @@ void setup() {
 
 void loop() {
 	if(mode==0){
-		Serial.println("Waiting...");
+		delay(250);
 	} else{
 		Serial.println("Interrupt Received!!");
 		mode=0;
