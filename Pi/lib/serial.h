@@ -13,7 +13,7 @@
 #include <string>
 #include <string.h>
 #include "logging.h"
-
+#include <time.h>
 
 #define BAUDRATE B115200
 #define TIMEOUT 30
