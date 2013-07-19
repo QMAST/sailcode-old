@@ -6,7 +6,7 @@
 #define DELTA 5
 #define PI 3.14159265
 
-#typedef struct GPSPoint
+typedef struct GPSPoint
 {
 	float lat;
 	float lon;

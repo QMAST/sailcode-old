@@ -62,7 +62,7 @@ void setup() {
     addToList(compass);
 
     //Setup interrupts
-    attachInterrupt(0, piInterrupt, FALLING);
+    attachInterrupt(0, piInterrupt, RISING);
 }
 
 void loop() {

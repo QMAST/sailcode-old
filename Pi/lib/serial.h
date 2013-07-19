@@ -19,14 +19,12 @@
 #define TIMEOUT 30
 class Serial {
 
-protected:
+public:
 
 int fildes;
 int openPort(const std::string &path);
 int readBlock(std::string &msg);
 int sendCommand(const std::string &cmd, std::string &msg);
-
-public:
 Serial();
 bool isValid();
 
