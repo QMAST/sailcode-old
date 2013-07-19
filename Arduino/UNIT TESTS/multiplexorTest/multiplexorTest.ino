@@ -2,8 +2,9 @@
 #include <compass.h>
 #include <airmar.h>
 //Need to test that the multiplexor is working, and switching between the two sensors works as excpected.
-#define MULTIPLEX_PIN1 28
-#define MULTIPLEX_PIN2 29
+#define MULTIPLEX_PIN1 30
+#define MULTIPLEX_PIN2 31
+#define ENABLE 50
 
 Compass* c;
 Airmar* a;
@@ -16,6 +17,11 @@ void setup() {
 
 	c = new Compass("compass", &Serial2);
 	a = new Airmar("airmar", &Serial2);
+
+        pinMode(30, OUTPUT);
+        pinMode(31, OUTPUT);
+        pinMode(ENABLE, OUTPUT);
+        digitalWrite(ENABLE, HIGH);
 
 	delay(1000);
 	Serial.println("Initializing...");
@@ -57,11 +63,11 @@ void loop () {
 		Serial.print(" heading-");
 		Serial.print(c->compassHeading);
 		Serial.print(" pitch-");
-		Serial.print(c->pitchAngle);
+		Serial.print(c->pitch);
 		Serial.print(" roll-");
-		Serial.print(c->rollAngle);
+		Serial.print(c->roll);
 		Serial.print(" dip-");
-		Serial.println(c->dipAngle);
+		Serial.println(c->dip);
 	} else {
 		Serial.println("Compass failed to update");
 	}

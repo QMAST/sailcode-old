@@ -6,7 +6,7 @@
 RC* control;
 
 void setup() {
-   Serial.bring(115200);
+   Serial.begin(115200);
   
    
   

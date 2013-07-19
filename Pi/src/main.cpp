@@ -6,6 +6,7 @@
 #include "arduinoCom.h"
 #include "compass.h"
 #include "angleSensor.h"
+#include "utilities.h"
 
 //#include "gaelforce.h"
 //#include "environment.h"
@@ -57,9 +58,21 @@ int main(int argc, char* argv[]) {
 	Logging::addDataSource(INT, "mastAngle", mastAngle);
 
 
+	ard.setHeading(90); //East
+
 	while(true) {
+
+
 		
 		airmar.getGPS(lat, lon);
+		
+		//for Parkinglot testing
+		/*GPSPoint here = (airmar->gLat, airmar->gLon);
+		GPSPoint there = (4413.4225, 7629.2946);
+		int dir = getBearing(here, there);
+		ard.setHeading(dir);*/
+
+
 		airmar.getWind(windSpeed, windDirection);
 		airmar.getCompass(airmarHeading, airmarVar, airmarDev);
 
@@ -67,10 +80,13 @@ int main(int argc, char* argv[]) {
 
 		angles.getAngles(motor1Angle, motor2Angle, mastAngle);
 
+
 		Logging::log();
 
 		usleep(1000*5000);
 	}
+
+
 }
 
 
