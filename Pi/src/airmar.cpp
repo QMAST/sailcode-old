@@ -1,6 +1,6 @@
 #include "airmar.h"
 
-Airmar::Airmar(const ArduinoCom &lineIn) {
+Airmar::Airmar(ArduinoCom* lineIn){
 	this->ard = lineIn;
 	//GPS information buffers
 	gLat = new Buffer<float>(BUFFER_SIZE);
@@ -26,7 +26,7 @@ float Airmar::getGPS(float* lat, float* lon) {
 
 	//First, get the variables from the arduino.
 	std::string vars = "";
-	int stat = this->ard.requestVariables("airmar", "lat lon", vars);
+	int stat = this->ard->requestVariables("airmar", "lat lon", vars);
 	if(stat!=0) {
 		Logging::error(__func__, "Error while getting variables");
 	}
@@ -59,7 +59,7 @@ float Airmar::getGPS(float* lat, float* lon) {
 
 float Airmar::getWind(float* speed, float* heading) {
 	std::string vars = "";
-	int stat = this->ard.requestVariables("airmar", "windSpeed windDirection", vars);
+	int stat = this->ard->requestVariables("airmar", "windSpeed windDirection", vars);
 	if(stat!=0) {
 		Logging::error(__func__, "Error while getting variables");
 	}
@@ -87,7 +87,7 @@ float Airmar::getWind(float* speed, float* heading) {
 float Airmar::getCompass(float* heading, float* variation, float* deviation) {
 
 	std::string vars = "";
-	int stat = this->ard.requestVariables("airmar", "heading var dev", vars);
+	int stat = this->ard->requestVariables("airmar", "heading var dev", vars);
 	if(stat!=0) {
 		Logging::error(__func__, "Error while getting variables");
 	}

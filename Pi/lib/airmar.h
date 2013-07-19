@@ -11,13 +11,13 @@
 
 class Airmar {
 public:
-	Airmar(const ArduinoCom &lineIn);
+	Airmar(ArduinoCom* lineIn);
 	float getGPS(float* lat, float* lon);
 	float getWind(float* speed, float* heading);
 	float getCompass(float* heading, float* variation, float* deviation);
 private:
 	//Arduino connection
-	ArduinoCom ard;
+	ArduinoCom* ard;
 	
 	//GPS information buffers
 	Buffer<float> *gLat;

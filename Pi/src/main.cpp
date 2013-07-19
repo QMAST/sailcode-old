@@ -37,7 +37,8 @@ int main(int argc, char* argv[]) {
 	float *compassPitch = new float;
 	float *compassRoll = new float;
 	float *compassDip = new float;
-	string resp;
+	int stat=0;
+	string resp="";
 	
 	
 	Logging::addDataSource(FLOAT, "lat", lat);
@@ -54,15 +55,12 @@ int main(int argc, char* argv[]) {
 
 	std::cout << "Entering main loop...\n";
 
-	ard->setHeading(90); //East
+	//ard->setHeading(90); //East
 	while(true) {
-
-
 		
 		airmar.getGPS(lat, lon);
 		std::cout<<"lat="<<*lat<<", lon="<<*lon<<"\n";
 
-		
 		//for Parkinglot testing
 		/*GPSPoint here = (airmar->gLat, airmar->gLon);
 		GPSPoint there = (4413.4225, 7629.2946);
@@ -77,6 +75,14 @@ int main(int argc, char* argv[]) {
 
 		compass.getValues(compassHeading, compassPitch, compassRoll, compassDip);
 		std::cout<<"compass Heading="<<*compassHeading<<", pitch="<<*compassPitch<<", roll="<<*compassRoll<<", compassDip="<<*compassDip<<"\n";
+
+		stat = ac->requestVariables("compass","compassHeading pitch", str);
+		if(stat==0) {
+			cout<<str<<endl;
+		}
+		else {
+			cout<<"Request failed."<<endl;
+		}
 
 		Logging::log();
 
