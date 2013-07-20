@@ -6,6 +6,8 @@
 #define DELTA 5
 #define PI 3.14159265
 
+#define waypointRadius 1 //acceptable radius around waypoint
+
 typedef struct GPSPoint
 {
 	float lat;
@@ -14,7 +16,8 @@ typedef struct GPSPoint
 
 class Utilities {
 public:
-	static int getBearing(GPSPoint* start, GPSPoint* end);
+	static int getBearing(GPSPoint* start, GPSPoint* end); // returns direction to get to end from start
+	static bool withinRange(GPSPoint* current, GPSPoint* waypoint); //returns whether you are within range of waypoint
 };
 
 #endif

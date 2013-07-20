@@ -55,17 +55,33 @@ int main(int argc, char* argv[]) {
 
 	std::cout << "Entering main loop...\n";
 
-	//ard->setHeading(90); //East
+	ard.setHeading(90); //East
+
+	//Parkinglot testing BOTH WAYS
+	GPSPoint first = (4413.4334, 7629.3137);
+	GPSPoint second = (4413.4225, 7629.2946);
+	bool success = false;
+	bool first = true;
+
 	while(true) {
 		
 		airmar.getGPS(lat, lon);
 		std::cout<<"lat="<<*lat<<", lon="<<*lon<<"\n";
 
-		//for Parkinglot testing
-		/*GPSPoint here = (airmar->gLat, airmar->gLon);
-		GPSPoint there = (4413.4225, 7629.2946);
-		int dir = getBearing(here, there);
-		ard.setHeading(dir);*/
+		success = false;
+		if(first == true){
+			int dir = getBearing(here, first);
+			ard.setHeading(dir);
+			success = withinRange(here, first);
+			if(success){ first= false; }
+		}
+		else{
+			int dir = getBearing(here, second);
+			ard.setHeading(dir);
+			success = withinRamge(here, second);
+			if(success) {first = true;}
+
+		}
 
 		airmar.getWind(windSpeed, windDirection);
 		std::cout<<"windSpeed="<<*windSpeed<<", windDirection="<<*windDirection<<"\n";

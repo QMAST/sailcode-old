@@ -138,7 +138,7 @@ int Airmar::update() {
 			this->speedOverGround = atof(nmea->data[4]);
 		}
 		break;
-		case GPGLL:
+		/*case GPGLL:
 		if(strcmp(nmea->data[6],"N")!=0){//If the data is valid
 			this->lat = atof(nmea->data[0]);
 			if(strcmp(nmea->data[1], "S")==0) {
@@ -160,7 +160,7 @@ int Airmar::update() {
 				this->lon *=-1;
 			}
 			
-		break;
+		break;*/
 		case GPGGA:
 			this->lat = atof(nmea->data[1]);
 			if(strcmp(nmea->data[2], "S")==0) {

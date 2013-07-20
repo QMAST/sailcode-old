@@ -1,3 +1,6 @@
+
+#include <utilities.h>
+
 int Utilities::getBearing(GPSPoint* start, GPSPoint* end){
 	float dLon = (start->lon) - (start->lat);
 	//Convert to radians.
@@ -10,3 +13,15 @@ int Utilities::getBearing(GPSPoint* start, GPSPoint* end){
 	float brng = atan2(y, x);
 	return (int) brng*180.f/PI;
 }
+
+bool Utilities::withinRange(GPSPoint* current, GPSPoint* waypoint){
+	float lat = (current->lat) - (waypoint->lat);
+	float lon = (current->lon) - (waypoint->lon);
+	float dist = sqrt(lat*lat + lon*lon);
+
+	if(dist < waypointRadius)
+		return true;
+
+	return false;
+}
+
