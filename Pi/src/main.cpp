@@ -6,6 +6,7 @@
 #include "arduinoCom.h"
 #include "compass.h"
 #include "angleSensor.h"
+#include <iostream>
 #include "utilities.h"
 
 //#include "gaelforce.h"
@@ -21,11 +22,11 @@ bool nextWaypoint(GPSPoint* waypoint); //sail to next waypoint
 int main(int argc, char* argv[]) {
 	Logging::init();
 	int pin =2;
-	ArduinoCom ard("/dev/ttyACM0",pin);
+	ArduinoCom* ard = new ArduinoCom("/dev/ttyACM0", pin);
 	
-	Airmar airmar(&ard);
-	Compass compass(&ard);
-	AngleSensor angles(&ard);
+	Airmar airmar(ard);
+	Compass compass(ard);
+	AngleSensor angles(ard);
 	
 	//Simple data logging test.
 	float *lat = new float;
@@ -41,10 +42,8 @@ int main(int argc, char* argv[]) {
 	float *compassPitch = new float;
 	float *compassRoll = new float;
 	float *compassDip = new float;
-	int *motor1Angle = new int;
-	int *motor2Angle = new int;
-	int *mastAngle = new int;
-	string resp;
+	int stat=0;
+	string resp="";
 	
 	
 	Logging::addDataSource(FLOAT, "lat", lat);
@@ -58,10 +57,8 @@ int main(int argc, char* argv[]) {
 	Logging::addDataSource(FLOAT, "compassPitch", compassPitch);
 	Logging::addDataSource(FLOAT, "compassRoll", compassRoll);
 	Logging::addDataSource(FLOAT, "compassDip", compassDip);
-	Logging::addDataSource(INT, "motor1Angle", motor1Angle);
-	Logging::addDataSource(INT, "motor2Angle", motor2Angle);
-	Logging::addDataSource(INT, "mastAngle", mastAngle);
 
+	std::cout << "Entering main loop...\n";
 
 	ard.setHeading(90); //East
 
@@ -74,10 +71,11 @@ int main(int argc, char* argv[]) {
 	}
 
 	while(true) {
-
-
 		
 		airmar.getGPS(lat, lon);
+		std::cout<<"lat="<<*lat<<", lon="<<*lon<<"\n";
+
+
 		GPSPoint here = (airmar->gLat, airmar->gLon);
 
 		if(waypointTest1){
@@ -106,16 +104,22 @@ int main(int argc, char* argv[]) {
 			}
 		}
 
-
-
-
 		airmar.getWind(windSpeed, windDirection);
+		std::cout<<"windSpeed="<<*windSpeed<<", windDirection="<<*windDirection<<"\n";
+		
 		airmar.getCompass(airmarHeading, airmarVar, airmarDev);
+		std::cout<<"airmarHeading="<<*airmarHeading<<", airmarVar="<<*airmarVar<<", airmarDev="<<*airmarDev<<"\n";
 
 		compass.getValues(compassHeading, compassPitch, compassRoll, compassDip);
+		std::cout<<"compass Heading="<<*compassHeading<<", pitch="<<*compassPitch<<", roll="<<*compassRoll<<", compassDip="<<*compassDip<<"\n";
 
-		angles.getAngles(motor1Angle, motor2Angle, mastAngle);
-
+		stat = ard->requestVariables("compass","compassHeading pitch", resp);
+		if(stat==0) {
+			cout<<resp<<endl;
+		}
+		else {
+			cout<<"Request failed."<<endl;
+		}
 
 		Logging::log();
 

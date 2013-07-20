@@ -1,6 +1,6 @@
 #include "airmar.h"
 
-Airmar::Airmar(ArduinoCom* lineIn) {
+Airmar::Airmar(ArduinoCom* lineIn){
 	this->ard = lineIn;
 	//GPS information buffers
 	gLat = new Buffer<float>(BUFFER_SIZE);

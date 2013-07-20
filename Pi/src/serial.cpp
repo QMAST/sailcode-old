@@ -65,6 +65,8 @@ int Serial::openPort(const std::string &path) {
 }
 
 int Serial::readBlock(std::string &msg) {
+	time_t entranceTime = time(NULL);
+
 	if(!this->isValid()) {
 		Logging::error(__func__, "Serial port not initialized properly.");
 		return -1;
@@ -76,7 +78,6 @@ int Serial::readBlock(std::string &msg) {
 
 	buf[0]='\0';
 	num=1;
-
 	while((num>0) && buf[0]!='\n' && buf[0]!='\r') {
 		num = read(this->fildes, buf, 1);
 		buf[num] = '\0';
@@ -93,7 +94,9 @@ int Serial::readBlock(std::string &msg) {
 		return -1;
 	} else if(num==0) {
 		std::string errString = strerror(errno);
-		Logging::error(__func__, "Didn't read anything from file. Timeout likely occured. " + errString);
+		double length = difftime(time(NULL), entranceTime);
+		Logging::error(__func__, "Didn't read anything from file. Timeout likely occured: "+std::to_string(length)+" seconds passed. " + errString);
+		//If timeout occurred, we'd know how long it took.
 		delete[] buf;
 		return -1;
 	}
