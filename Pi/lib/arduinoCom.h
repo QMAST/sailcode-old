@@ -15,7 +15,7 @@ public:
 					const std::string &labels, 
 					std::string &vars);
 	int setHeading(int direction);
-private:
+public:
 	void raiseInterrupt();
 	int waitForResponse();
 

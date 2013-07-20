@@ -9,7 +9,7 @@
 
 #define WAYPOINT_RADIUS 1 //acceptable radius around waypoint
 
-#typedef struct GPSPoint
+typedef struct GPSPoint
 {
 	float lat;
 	float lon;

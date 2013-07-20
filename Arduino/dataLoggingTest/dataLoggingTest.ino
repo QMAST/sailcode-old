@@ -12,9 +12,10 @@
 #include <pololu_servo.h>
 #include <motor.h>
 
-#define MULTIPLEX_PIN1 28
-#define MULTIPLEX_PIN2 29
+#define MULTIPLEX_PIN1 30
+#define MULTIPLEX_PIN2 31
 #define SERVO_RESET_PIN 40
+#define ENABLE 50
 
 typedef struct SensorLink {
 	struct SensorLink* next;
@@ -28,7 +29,7 @@ Airmar* airmar;
 Compass* compass;
 ashcon* Console;
 
-SensorLink* sensorList = (SensorLink*)malloc(sizeof(SensorLink));
+SensorLink* sensorList;
 
 //Function prototypes
 void addToList(Sensor* item);
@@ -49,15 +50,15 @@ void setup() {
     //Initialize multiplexor
     pinMode(MULTIPLEX_PIN1, OUTPUT);
     pinMode(MULTIPLEX_PIN2, OUTPUT);
+    pinMode(ENABLE, OUTPUT);
     
-sensorList->s = NULL;
-sensorList->next = NULL;
-
+    digitalWrite(ENABLE, HIGH);
+    sensorList=NULL;
     //Initialize sensors
     Serial2.begin(9600);
-    //airmar = new Airmar("airmar",&Serial2);
+    airmar = new Airmar("airmar",&Serial2);
     compass = new Compass("compass",&Serial2);
-    //addToList(airmar);
+    addToList(airmar);
     addToList(compass);
 
     //Setup interrupts
@@ -75,13 +76,13 @@ void loop() {
             clearBuffer();
             if(strcmp(sens->id, "compass")){
               Serial2.begin(9600);
-              delay(100);
+              delay(500);
             }
             else 
             {
               Serial2.begin(4800);
-                delay(100);    
-        }
+                delay(500);    
+            }
             
             sens->update();
             //digitalWrite(13,LOW);
@@ -91,6 +92,7 @@ void loop() {
         {
             Console->command_prompt();
             mode=0;
+            digitalWrite(13, LOW);
         }
         break;
     }
@@ -107,7 +109,7 @@ void addToList(Sensor* item) {
 }
 
 int dispatchRequest(int argc, char* argv[]) {
-    
+    digitalWrite(13, HIGH);
     //Need to search through a list of sensors, 
     //and find one that matches argv[1] - 
     //this should be the sensor name. 
