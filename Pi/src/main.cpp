@@ -76,9 +76,9 @@ int main(int argc, char* argv[]) {
 		compass.getValues(compassHeading, compassPitch, compassRoll, compassDip);
 		std::cout<<"compass Heading="<<*compassHeading<<", pitch="<<*compassPitch<<", roll="<<*compassRoll<<", compassDip="<<*compassDip<<"\n";
 
-		stat = ac->requestVariables("compass","compassHeading pitch", str);
+		stat = ard->requestVariables("compass","compassHeading pitch", resp);
 		if(stat==0) {
-			cout<<str<<endl;
+			cout<<resp<<endl;
 		}
 		else {
 			cout<<"Request failed."<<endl;

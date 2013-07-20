@@ -56,9 +56,9 @@ void setup() {
     sensorList=NULL;
     //Initialize sensors
     Serial2.begin(9600);
-    //airmar = new Airmar("airmar",&Serial2);
+    airmar = new Airmar("airmar",&Serial2);
     compass = new Compass("compass",&Serial2);
-    //addToList(airmar);
+    addToList(airmar);
     addToList(compass);
 
     //Setup interrupts
@@ -109,7 +109,7 @@ void addToList(Sensor* item) {
 }
 
 int dispatchRequest(int argc, char* argv[]) {
-    
+    digitalWrite(13, HIGH);
     //Need to search through a list of sensors, 
     //and find one that matches argv[1] - 
     //this should be the sensor name. 
@@ -184,6 +184,5 @@ Sensor* getHottestSensor() {
 }
 
 void piInterrupt() {
-    digitalWrite(13, HIGH);
 	mode = 1;
 }
