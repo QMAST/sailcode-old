@@ -14,6 +14,11 @@
 
 using namespace std;
 
+#define waypointTest1 0;
+#define waypointTest2 0;
+
+bool nextWaypoint(GPSPoint* waypoint); //sail to next waypoint
+
 int main(int argc, char* argv[]) {
 	Logging::init();
 	int pin =2;
@@ -57,30 +62,46 @@ int main(int argc, char* argv[]) {
 
 	ard.setHeading(90); //East
 
+	if(waypointTest2){
 	//Parkinglot testing BOTH WAYS
 	GPSPoint first = (4413.4334, 7629.3137);
 	GPSPoint second = (4413.4225, 7629.2946);
 	bool success = false;
 	bool first = true;
+	}
 
 	while(true) {
 		
 		airmar.getGPS(lat, lon);
 		std::cout<<"lat="<<*lat<<", lon="<<*lon<<"\n";
 
-		success = false;
-		if(first == true){
-			int dir = getBearing(here, first);
-			ard.setHeading(dir);
-			success = withinRange(here, first);
-			if(success){ first= false; }
-		}
-		else{
-			int dir = getBearing(here, second);
-			ard.setHeading(dir);
-			success = withinRamge(here, second);
-			if(success) {first = true;}
 
+		GPSPoint here = (airmar->gLat, airmar->gLon);
+
+		if(waypointTest1){
+		//for Parkinglot testing ONE WAY
+		GPSPoint there = (4413.4225, 7629.2946);
+		int dir = getBearing(here, there);
+		ard.setHeading(dir);
+		}
+
+
+		//Parkinglot testing BOTH WAYS - back and forth between 2 waypoint
+		if(waypointTest2){
+			success = false;
+			if(first == true){
+				int dir = getBearing(here, first);
+				ard.setHeading(dir);
+				success = withinRange(here, first);
+				if(success){ first= false; }
+			}
+			else{
+				int dir = getBearing(here, second);
+				ard.setHeading(dir);
+				success = withinRamge(here, second);
+				if(success) {first = true;}
+
+			}
 		}
 
 		airmar.getWind(windSpeed, windDirection);
@@ -104,6 +125,16 @@ int main(int argc, char* argv[]) {
 
 		usleep(1000*5000);
 	}
+
+
+}
+
+bool nextWaypoint(GPSPoint* waypoint){
+
+	GPSPoint current = (airmar->gLat, airmar->gLon);
+	int dir = getBearing(here, waypoint);
+	ard.setHeading(dir);
+	return(withinRange(current, waypoint));
 
 
 }
