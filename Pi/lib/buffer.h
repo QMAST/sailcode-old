@@ -16,9 +16,11 @@ public:
 	T* get();
 	T peek();
 	int peek(T* item);
+	T average();
 private:
 	T* buf;
 	int n;//Index
+	T average; //buffer average
 };
 
 #endif

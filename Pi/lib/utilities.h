@@ -25,7 +25,7 @@ class Utilities {
 public:
 	static int getBearing(GPSPoint* start, GPSPoint* end); // returns direction to get to end from start
 	static bool withinRange(GPSPoint* current, GPSPoint* waypoint); //returns whether you are within range of waypoint
-	static void navScore(Score navScore[360/NAV_DEGREES]);
+	void navScore(Score navScore[360/NAV_DEGREES]); //updates array containing nacScore
 };
 
 #endif
