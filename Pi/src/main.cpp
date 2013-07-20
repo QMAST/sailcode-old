@@ -16,6 +16,8 @@ using namespace std;
 #define waypointTest1 0;
 #define waypointTest2 0;
 
+bool nextWaypoint(GPSPoint* waypoint); //sail to next waypoint
+
 int main(int argc, char* argv[]) {
 	Logging::init();
 	int pin =2;
@@ -119,6 +121,16 @@ int main(int argc, char* argv[]) {
 
 		usleep(1000*5000);
 	}
+
+
+}
+
+bool nextWaypoint(GPSPoint* waypoint){
+
+	GPSPoint current = (airmar->gLat, airmar->gLon);
+	int dir = getBearing(here, waypoint);
+	ard.setHeading(dir);
+	return(withinRange(current, waypoint));
 
 
 }
