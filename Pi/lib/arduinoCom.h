@@ -20,6 +20,7 @@ public:
 	int waitForResponse();
 
 int interruptPin;
+int prevDir;
 };
 
 

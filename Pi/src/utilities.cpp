@@ -20,7 +20,7 @@ bool Utilities::withinRange(GPSPoint* current, GPSPoint* waypoint){
 	float lon = (current->lon) - (waypoint->lon);
 	float dist = sqrt(lat*lat + lon*lon);
 
-	if(dist < waypointRadius)
+	if(dist < WAYPOINT_RADIUS)
 		return true;
 
 	return false;
