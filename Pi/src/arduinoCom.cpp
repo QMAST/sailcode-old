@@ -13,6 +13,7 @@ ArduinoCom::ArduinoCom(const std::string &path, int pin){
 	}
 	GPIO::setPin(pin, OUTPUT);
 	this->interruptPin = pin;
+	this->prevDir = 90;
 
 	stat = this->openPort(path);
 	if(stat!=0) {
@@ -53,21 +54,24 @@ int ArduinoCom::requestVariables(const std::string &source ,
 }
 
 int ArduinoCom::setHeading(int direction) {
-	std::string vars = "";
-	this->raiseInterrupt();
 
-	if(this->waitForResponse()!=0) {
-		//Error occured.
-		Logging::error(__func__, "Wait for response failed.");
-		return -1;
+	if (this->prevDir != direction){
+		this->prevDir = direction;
+		std::string vars = "";
+		this->raiseInterrupt();
+
+		if(this->waitForResponse()!=0) {
+			//Error occured.
+			Logging::error(__func__, "Wait for response failed.");
+			return -1;
+		}
+		//Convert direction to string, send it to arduino
+
+		int stat = this->sendCommand("dir "+std::to_string(direction)+"\n", vars);
+		if(stat!=0) {
+			Logging::error(__func__, "Response not received: "+vars);
+		}
 	}
-	//Convert direction to string, send it to arduino
-
-	int stat = this->sendCommand("dir "+std::to_string(direction)+"\n", vars);
-	if(stat!=0) {
-		Logging::error(__func__, "Response not received: "+vars);
-	}
-
 	return 0;
 }
 

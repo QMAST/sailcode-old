@@ -7,7 +7,7 @@
 #define PI 3.14159265
 #define NAV_DEGREES 5
 
-#define waypointRadius 1 //acceptable radius around waypoint
+#define WAYPOINT_RADIUS 1 //acceptable radius around waypoint
 
 typedef struct GPSPoint
 {
@@ -25,7 +25,7 @@ class Utilities {
 public:
 	static int getBearing(GPSPoint* start, GPSPoint* end); // returns direction to get to end from start
 	static bool withinRange(GPSPoint* current, GPSPoint* waypoint); //returns whether you are within range of waypoint
-	static void navScore()
+	void navScore(Score navScore[360/NAV_DEGREES]); //updates array containing nacScore
 };
 
 #endif
