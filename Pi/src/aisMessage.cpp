@@ -103,7 +103,7 @@ unsigned int AISMessage::getUInt(int start, int length) {
 	return num;
 }
 
-char* aisMessage::getString(int start, int length) {
+std::string AISMessage::getString(int start, int length) {
 	if(length%6 !=0) {
 		return NULL;
 	}
@@ -129,11 +129,12 @@ char* aisMessage::getString(int start, int length) {
 		} else {
 			str[i] += ' ';
 		}
-
 	}
 
-
 	delete[] raw;
-	return str;
+
+	std::string returnVal(str);
+	delete[] str;
+	return returnVal;
 }
 
