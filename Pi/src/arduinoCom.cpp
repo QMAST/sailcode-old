@@ -15,7 +15,7 @@ ArduinoCom::ArduinoCom(const std::string &path, int pin){
 	this->interruptPin = pin;
 	this->prevDir = 90;
 
-	stat = this->openPort(path);
+	stat = this->openPort(path, B115200);
 	if(stat!=0) {
 		Logging::error(__func__, "Error setting up the arduino.");
 	}

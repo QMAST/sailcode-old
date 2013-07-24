@@ -6,7 +6,7 @@
 #include "gpio.h"
 #include <string>
 #include <time.h>
-
+#include <termios.h>
 
 class ArduinoCom : public Serial {
 public:
