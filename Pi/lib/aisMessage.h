@@ -9,7 +9,7 @@ public:
 
 	unsigned char* getBits(int start, int length);
 	int getInt(int start, int length);
-	int getUInt(int start, int length);
+	unsigned int getUInt(int start, int length);
 	std::string getString();
 private:
 	unsigned char* bitstream;

@@ -7,10 +7,10 @@ AISMessage::AISMessage(const std::string &rawString) {
 	int offset=0;
 	this->streamSize = (len*3)/4 + 1;
 	unsigned char pkg;
-	const char tmpPkg;
+	char tmpPkg;
 
 	int mod;
-	this->bitstream = new char[streamSize];
+	this->bitstream = new unsigned char[streamSize];
 	
 	for(int i=0; i<(this->streamSize); i++) {
 		this->bitstream[i] = 0;
@@ -28,7 +28,7 @@ AISMessage::AISMessage(const std::string &rawString) {
 		mod = offset%8;
 
 		this->bitstream[offset/8] |= pkg >> mod;
-		this->bitstream[offset/8 + 1] |= pkg << 8-mod;
+		this->bitstream[offset/8 + 1] |= pkg << (8-mod);
 		offset += 6;
 	}
 }
@@ -49,7 +49,7 @@ unsigned char* AISMessage::getBits(int start, int length) {
 		data[i] = bitstream[j] << mod;
 
 		if((j+1) < this->streamSize) {
-			data[i] |= ((bitstream[j+1] >> 8-mod) & ~mask);
+			data[i] |= ((bitstream[j+1] >> (8-mod)) & ~mask);
 		}
 	}
 
