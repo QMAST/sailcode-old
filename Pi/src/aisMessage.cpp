@@ -42,7 +42,6 @@ unsigned char* AISMessage::getBits(int start, int length) {
 	unsigned char* data = new unsigned char[num];
 	int mod = start%8;
 	unsigned char mask = 0xFF << mod;
-	int j;
 
 	for(int i = 0, j=start/8; i<num; j++, i++) {
 		//Fills up the entire byte - it will be masked off later
