@@ -33,19 +33,20 @@ interrupttest: interrupttest.o arduinoCom.o serial.o gpio.o logging.o
 	$(CXX) $^ -o $@
 
 aistest: aistest.o aismessage.o aismanager.o utilities.o
+	$(CXX) $^ -o $@
 
 aistest.o: aisTest.cpp
-	$(CXX) $^ -o $@
+	$(CXX) $(CFLAGS) $< -o $@
 
 aismessage.o: aisMessage.cpp
-	$(CXX) $^ -o $@
+	$(CXX) $(CFLAGS) $< -o $@
 
 aismanager.o: aisManager.cpp
-	$(CXX) $^ -o $@
+	$(CXX) $(CFLAGS) $< -o $@
 
 utilities.o: utilities.cpp
-	$(CXX) $^ -o $@
-
+	$(CXX) $(CFLAGS) $< -o $@
+	
 interrupttest.o: interruptTest.cpp
 	$(CXX) $(CFLAGS) $< -o $@
 
