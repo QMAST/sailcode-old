@@ -8,7 +8,7 @@ bool Serial::isValid() {
 	return (this->fildes==-1) ? false : true;
 }
 
-int Serial::openPort(const std::string &path) {
+int Serial::openPort(const std::string &path, speed_t rate) {
 	int fd, stat;
 	struct termios tio;
 	fd = open(path.c_str(), O_RDWR | O_NOCTTY);
@@ -25,7 +25,7 @@ int Serial::openPort(const std::string &path) {
 		return -1;
 	}
 
-	stat = cfsetspeed(&tio, BAUDRATE);
+	stat = cfsetspeed(&tio, rate);
 	if(stat!=0) {
 		//Another error!
 		std::string errString = strerror(errno);

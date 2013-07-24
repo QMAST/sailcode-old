@@ -3,6 +3,7 @@
 //and do the necessary steps with them - either creating Ship objects or whatever.
 #include <list>
 #include <string>
+#include <termios.h>
 #include "serial.h"
 #include "ship.h"
 #include "utilities.h"

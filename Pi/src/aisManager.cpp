@@ -3,7 +3,7 @@
 AISManager::AISManager(constd std::string &path) {
 	//Initialize the AISManager object, opening the serial port.
 	this->fildes=-1;
-	stat = this->openPort(path);
+	stat = this->openPort(path, B9600);//Need to check the baud rate on this.
 	if(stat!=0) {
 		Logging::error(__func__, "Unable to set up the AIS.");
 	}

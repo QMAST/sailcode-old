@@ -3,8 +3,11 @@
 #endif
 
 #include <string>
+#include <path>
+#include <termios.h>
 
-
-class Satellite {
-	static int sendMessage(const std::string &msg);
+class Satellite : public Serial{
+	public:
+	Satellite(const std::string& path);
+	int sendMessage(const std::string &msg);
 };

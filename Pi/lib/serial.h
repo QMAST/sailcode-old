@@ -15,19 +15,17 @@
 #include "logging.h"
 #include <time.h>
 
-#define BAUDRATE B115200
 #define TIMEOUT 30
 class Serial {
 
 public:
 
 int fildes;
-int openPort(const std::string &path);
+int openPort(const std::string &path, speed_t rate);
 int readBlock(std::string &msg);
 int sendCommand(const std::string &cmd, std::string &msg);
 Serial();
 bool isValid();
-
 };
 
 #endif
