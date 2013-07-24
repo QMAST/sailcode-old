@@ -8,7 +8,7 @@
 #include "ship.h"
 #include "utilities.h"
 #include "logging.h"
-
+#include "aisMessage.h"
 class AISManager : public Serial {
 	public:
 		AISManager(const std::string &path);

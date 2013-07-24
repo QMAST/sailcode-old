@@ -15,7 +15,7 @@ typedef struct GPSPoint
 	float lon;
 } GPSPoint;  
 
-#typedef struct Score
+typedef struct Score
 {
 	int direction;
 	int score;
