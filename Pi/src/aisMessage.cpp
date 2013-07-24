@@ -27,8 +27,8 @@ AISMessage::AISMessage(const std::string &rawString) {
 		pkg = pkg << 2;
 		mod = offset%8;
 
-		this->bitstream[offset/8] |= pkg >> mod;
-		this->bitstream[offset/8 + 1] |= pkg << (8-mod);
+		this->bitstream[offset/8] |= (pkg >> mod);
+		this->bitstream[offset/8 + 1] |= (pkg << (8-mod));
 		offset += 6;
 	}
 }

@@ -7,6 +7,11 @@ int main(int argc, char* argv[]) {
 	string testMsg = "35Mva0POhoG?Wj6EdWkQ9Aeb023@";
 	AISMessage* msg = new AISMessage(testMsg);
 	cout<<"Testing string 1:\n";
+	cout<<"Printing out bytestream:\n";
+	for(int i=0; i<msg->streamSize; i++) {
+		cout<<msg->bitstream[i];
+	}
+	cout<<"\n";
 	cout<<"Message type: "<< msg->getUInt(8, 30)<<"\n";
 	cout<<"Longitude: "<< msg->getInt(61, 28) / 600000.0f <<"\n";
 	cout<<"Latitude: "<< msg->getInt(89, 27) / 600000.0f <<"\n";

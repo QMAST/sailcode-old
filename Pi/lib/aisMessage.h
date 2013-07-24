@@ -11,7 +11,7 @@ public:
 	int getInt(int start, int length);
 	unsigned int getUInt(int start, int length);
 	std::string getString(int start, int length);
-private:
+public:
 	unsigned char* bitstream;
 	int streamSize;
 };

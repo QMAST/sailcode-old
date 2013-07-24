@@ -32,7 +32,7 @@ serialtest: serialtest.o arduinoCom.o serial.o gpio.o logging.o
 interrupttest: interrupttest.o arduinoCom.o serial.o gpio.o logging.o
 	$(CXX) $^ -o $@
 
-aistest: aistest.o aismessage.o aismanager.o utilities.o buffer.o
+aistest: aistest.o aismessage.o aismanager.o utilities.o buffer.o serial.o logging.o
 	$(CXX) $^ -o $@
 
 aistest.o: aisTest.cpp

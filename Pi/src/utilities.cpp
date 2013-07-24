@@ -27,11 +27,11 @@ bool Utilities::withinRange(GPSPoint* current, GPSPoint* waypoint){
 }
 
 void Utilities::navScore(Score navScore[360/NAV_DEGREES]){
-
+/*
 	for(int i = 0; i < navScore->size(); i++){
 		navScore[i].score = 0;
 	}
-
+*/
 	
 	//check wind direction
 	//update Scores accordingly - directly downwind (and 1 fraction to either side): +20
