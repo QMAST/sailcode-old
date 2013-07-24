@@ -10,7 +10,7 @@ public:
 	unsigned char* getBits(int start, int length);
 	int getInt(int start, int length);
 	unsigned int getUInt(int start, int length);
-	std::string getString();
+	std::string getString(int start, int length);
 private:
 	unsigned char* bitstream;
 	int streamSize;
