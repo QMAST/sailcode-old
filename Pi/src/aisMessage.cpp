@@ -115,13 +115,13 @@ std::string AISMessage::getString(int start, int length) {
 
 	int bytePos =0;//Position within an individual byte.
 	unsigned char mask=0;
-	for(int i=0, int j=0; i<num; i++) {
+	for(int i=0, j=0; i<num; i++) {
 		str[i] = 0;
 		mask = 0xFC >> bytePos; 
-		str[i] |= (raw[j] & mask)<<bytepos;
+		str[i] |= (raw[j] & mask)<<bytePos;
 		if(bytePos>2) {
 			mask = 0xFF << (6 - bytePos);//Mask off the number of bits that are needed from the 2nd byte
-			str[i] | = (raw[j+1] & mask) >> 8-bytePos;
+			str[i] |= (raw[j+1] & mask) >> (8-bytePos);
 		}
 		str[i] = (str[i]>>2) & 0x3F;
 		if(i<31) {
