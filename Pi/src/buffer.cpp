@@ -80,7 +80,8 @@ T Buffer<T>::average(){
 		}
 
 	}
-	this->average = sum/num;
+	this->avg = sum/num;
+	return avg;
 }
 
 

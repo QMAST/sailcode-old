@@ -32,7 +32,7 @@ serialtest: serialtest.o arduinoCom.o serial.o gpio.o logging.o
 interrupttest: interrupttest.o arduinoCom.o serial.o gpio.o logging.o
 	$(CXX) $^ -o $@
 
-aistest: aistest.o aismessage.o aismanager.o utilities.o
+aistest: aistest.o aismessage.o aismanager.o utilities.o buffer.o
 	$(CXX) $^ -o $@
 
 aistest.o: aisTest.cpp
@@ -46,7 +46,7 @@ aismanager.o: aisManager.cpp
 
 utilities.o: utilities.cpp
 	$(CXX) $(CFLAGS) $< -o $@
-	
+
 interrupttest.o: interruptTest.cpp
 	$(CXX) $(CFLAGS) $< -o $@
 

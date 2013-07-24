@@ -144,6 +144,8 @@ bool AISManager::parse(AISMessage* msg){
 			Logging::error(__func__, "Unsupported AIS message type: "+std::to_string(type));
 		break;
 	}
+
+	return true;
 }
 
 void AISManager::parseType1(AISMessage* msg) {
