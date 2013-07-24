@@ -12,6 +12,12 @@ int main(int argc, char* argv[]) {
 	cout<<"Latitude: "<< msg->getInt(89, 27) / 600000.0f <<"\n";
 	cout<<"Raw test - get first 16 bits individually from the string.\n";
 	for(int i = 0; i<16; i++){
-		cout<< std::hex << msg->getBits(i, 1);
+		cout<< std::hex << msg->getBits(i, 1)<<"\n";
 	}
+
+	cout<<"Raw test 2 - get first 16 bits in 4 bit chunks \n";
+	for(int i = 0; i<16; i++) {
+		cout<<std::hex<< msg->getBits(i, 4)<<"\n";
+	}
+	cout<<"End of tests.\n";
 }
