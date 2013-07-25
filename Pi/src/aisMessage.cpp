@@ -43,7 +43,7 @@ unsigned char* AISMessage::getBits(int start, int length) {
 
 	//this will be returned as a left-aligned number. I.e. there will be unwritten bits in data[num-1]
 	int end = start+length;
-	int shift = 8 - (end % 8);
+	int shift = 7 - ((end-1)%8)
 	unsigned char mask = 0xFF << (length%8);//Mask is only for the final byte.
 	int j = (end-1)/8;//Last indexed element of bitstream
 
@@ -60,7 +60,7 @@ unsigned char* AISMessage::getBits(int start, int length) {
 		j--;
 	}
 
-	data[num-1] = data[num-1] & mask;
+	data[num-1] = data[num-1] & ~mask;
 
 	return data;
 }
