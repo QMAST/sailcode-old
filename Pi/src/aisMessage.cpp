@@ -72,22 +72,30 @@ int AISMessage::getInt(int start, int length) {
 	unsigned char* raw = this->getBits(start, length);
 	//first, extract the sign bit - this is the most significant bit in the bitstream.
 	//This will need to be written to the most significant bit of the int.
-	//The rest of the bits are just written to the least significant bits
-	//of the int num. Write from least sig to most sig.
-	//There is going to be an offset in each byte, which makes sense. 
-	int offset = 8 - (length%8);
-	int shift = 0;
-	for(int i = maxInd; i>=0; i--) {
-		num |= (raw[i] >> offset) <<shift;
-		shift+=8;
-	}
-	//Now, mask off the raw sign bit in num, and set the sign bit in the int.
-	int mask = 1 <<(length-1);
-	if((num & mask)>0) {
-		num &= (~mask);
-		num |= 0x80000000;//Set the sign bit.
+	int ind = (length-1)/8;
+	int pos = (length-1)%8;
+	int sign = (raw[ind] >> pos) & 0xFE;
+
+	//If the sign is positive, treat it normally.
+	//If the sign is negative, invert the number and add one, to get the positive value, then multiply by -1.
+	if(sign==1) {
+		for(int i=0; i<maxInd; i++) {
+			raw[i] = ~raw[i];
+		}
 	}
 
+	int shift =0;
+	for(int i=0; i<maxInd; i++) {
+		num |= (raw[i]) << shift;
+		shift+=8;
+	}
+
+	//mask off everything past the sign bit;
+	int mask = 0xFFFFFFFF << (length-1);
+	num = num & (~mask);
+	if(sign==1) {
+		num *= -1;
+	}
 	delete[] raw; 
 	return num;
 }
@@ -98,10 +106,9 @@ unsigned int AISMessage::getUInt(int start, int length) {
 	unsigned int num = 0;
 	unsigned char* raw = this->getBits(start, length);
 
-	int offset = 8 - (length%8);
 	int shift = 0;
-	for(int i = maxInd; i>=0; i--) {
-		num |= (raw[i] >> offset) <<shift;
+	for(int i = 0; i<maxInd; i++) {
+		num |= (raw[i]) << shift;
 		shift+=8;
 	}
 
