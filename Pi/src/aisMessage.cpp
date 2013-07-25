@@ -79,13 +79,13 @@ int AISMessage::getInt(int start, int length) {
 	//If the sign is positive, treat it normally.
 	//If the sign is negative, invert the number and add one, to get the positive value, then multiply by -1.
 	if(sign==1) {
-		for(int i=0; i<maxInd; i++) {
+		for(int i=0; i<=maxInd; i++) {
 			raw[i] = ~raw[i];
 		}
 	}
 
 	int shift =0;
-	for(int i=0; i<maxInd; i++) {
+	for(int i=0; i<=maxInd; i++) {
 		num |= (raw[i]) << shift;
 		shift+=8;
 	}
@@ -107,7 +107,7 @@ unsigned int AISMessage::getUInt(int start, int length) {
 	unsigned char* raw = this->getBits(start, length);
 
 	int shift = 0;
-	for(int i = 0; i<maxInd; i++) {
+	for(int i = 0; i<=maxInd; i++) {
 		num |= (raw[i]) << shift;
 		shift+=8;
 	}
