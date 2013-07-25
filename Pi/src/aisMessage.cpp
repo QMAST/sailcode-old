@@ -40,21 +40,28 @@ unsigned char* AISMessage::getBits(int start, int length) {
 	*/
 	int num = ((length-1)/8) + 1;
 	unsigned char* data = new unsigned char[num];
-	int mod = start%8;
-	unsigned char mask = 0xFF << mod;
 
-	for(int i = 0, j=start/8; i<num; j++, i++) {
-		//Fills up the entire byte - it will be masked off later
-		data[i] = bitstream[j] << mod;
+	//this will be returned as a left-aligned number. I.e. there will be unwritten bits in data[num-1]
+	int end = start+length;
+	int shift = 8 - (end % 8);
+	unsigned char mask = 0xFF << (length%8);//Mask is only for the final byte.
+	int j = (end-1)/8;//Last indexed element of bitstream
 
-		if((j+1) < this->streamSize) {
-			data[i] |= ((bitstream[j+1] >> (8-mod)) & ~mask);
-		}
+	for(int i = 0; i<num; i++) { //Zero out the data.
+		data[i]=0;
 	}
 
-	//now just mask off the end, so its zeros beyond the length.
-	mask = 0xFF << (length%8);
-	data[num-1] &= mask;
+	for(int i =0; i<num; i++) {
+		data[i] |= (this->bitstream[j] >> shift);
+
+		if(i>0) {
+			data[i-1] |= (this->bitstream[j] << (8-shift));
+		}
+		j--;
+	}
+
+	data[num-1] = data[num-1] & mask;
+
 	return data;
 }
 
