@@ -29,7 +29,7 @@ comtest: comtest.o arduinoCom.o gpio.o serial.o logging.o
 serialtest: serialtest.o arduinoCom.o serial.o gpio.o logging.o
 	$(CXX) $^ -o $@
 
-waypointtest: utilities.h utilities.cpp waypoint.o waypointtest.o
+waypointtest: utilities.o waypoint.o waypointtest.o
 	$(CXX) $^ -o $@
 
 interrupttest: interrupttest.o arduinoCom.o serial.o gpio.o logging.o
@@ -45,6 +45,9 @@ serialtest.o: serialTest.cpp
 	$(CXX) $(CFLAGS) $< -o $@
 
 anglesensor.o: angleSensor.cpp buffer.h logging.h
+	$(CXX) $(CFLAGS) $< -o $@
+
+utilities.o: utilities.h utilities.cpp
 	$(CXX) $(CFLAGS) $< -o $@
 
 compass.o: compass.cpp buffer.h logging.h
