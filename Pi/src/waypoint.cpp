@@ -3,7 +3,7 @@
 waypoint::waypoint(){
 
 	//this->points = list<GPSPoint> pointList(points, points + sizeof(points)/sizeof(GPSPoint));
-	list<GPSPoint> pointList;
+	std::list<GPSPoint> pointList;
 	this->numWaypoints = 0;
 
 }
@@ -18,10 +18,10 @@ waypoint::waypoint(){
 
 }*/
 
-void waypoint::addPointFront(GPSPoint* newPoint){
+void waypoint::addPointFront(GPSPoint newPoint){
 
 	this->points.push_front(newPoint);
-	this->size++;
+	this->numWaypoints++;
 	this->nextPoint = newPoint;
 
 }
@@ -29,6 +29,6 @@ void waypoint::addPointFront(GPSPoint* newPoint){
 void waypoint::removeWaypoint(){
 
 	this->points.pop_front();
-	this->size--;
+	this->numWaypoints--;
 	this->nextPoint = points.front();
 }
