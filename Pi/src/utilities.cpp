@@ -26,15 +26,15 @@ bool Utilities::withinRange(GPSPoint* current, GPSPoint* waypoint){
 	return false;
 }
 
-void Utilities::navScore(Score navScore[NAV_ELEMENTS]){
+void Utilities::navScore(Score navScore[NAV_ELEMENTS], Airmar* windSensor){
 
 	//reset to zero
-	for(i = 0; i < navScore.size(); i++){
+	for(int i = 0; i < NAV_ELEMENTS; i++){
 		navScore[i]->score = 0;
 	}
 
 	//get wind average
-	int windDir = airmar->wHeading->average();
+	int windDir = windSensor->wHeading->average();
 
 	//set navScore based on windDir
 	for(i = 0; i< navScore.size();i++){
