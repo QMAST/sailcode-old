@@ -2,7 +2,8 @@
 
 waypoint::waypoint(){
 
-	this->points = list<GPSPoint> pointList(points, points + sizeof(points)/sizeof(GPSPoint));
+	//this->points = list<GPSPoint> pointList(points, points + sizeof(points)/sizeof(GPSPoint));
+	list<GPSPoint> pointList;
 	this->numWaypoints = 0;
 
 }
