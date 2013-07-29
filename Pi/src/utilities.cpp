@@ -1,6 +1,6 @@
 
 #include "utilities.h"
-#include <airmar.h>
+#include "airmar.h"
 
 int Utilities::getBearing(GPSPoint* start, GPSPoint* end){
 	float dLon = (start->lon) - (start->lat);
