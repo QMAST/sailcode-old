@@ -15,6 +15,8 @@ public:
 	float getGPS(float* lat, float* lon);
 	float getWind(float* speed, float* heading);
 	float getCompass(float* heading, float* variation, float* deviation);
+
+	Buffer<float> *wHeading; //public so navScore can use average
 private:
 	//Arduino connection
 	ArduinoCom* ard;
@@ -26,7 +28,6 @@ private:
 
 	//Wind information buffers
 	Buffer<float> *wSpeed;
-	Buffer<float> *wHeading;
 	Buffer<time_t> *wTime;
 
 	//Compass information buffers
