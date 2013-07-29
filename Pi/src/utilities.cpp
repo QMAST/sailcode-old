@@ -1,5 +1,5 @@
 
-#include <utilities.h>
+#include "utilities.h"
 #include <airmar.h>
 
 int Utilities::getBearing(GPSPoint* start, GPSPoint* end){
