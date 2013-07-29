@@ -14,8 +14,9 @@
 
 using namespace std;
 
-#define waypointTest1 0;
-#define waypointTest2 0;
+#define waypointTest1 0
+#define waypointTest2 0
+#define using_Navscore 0
 
 bool nextWaypoint(GPSPoint* waypoint); //sail to next waypoint
 
@@ -69,6 +70,16 @@ int main(int argc, char* argv[]) {
 	bool success = false;
 	bool first = true;
 	}
+
+
+	//for navScore
+	if(using_Navscore){
+
+		Score * navScore;
+		navScore = new Score [NAV_ELEMENTS];
+
+	}
+
 
 	while(true) {
 		

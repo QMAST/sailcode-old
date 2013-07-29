@@ -28,13 +28,25 @@ bool Utilities::withinRange(GPSPoint* current, GPSPoint* waypoint){
 
 void Utilities::navScore(Score navScore[360/NAV_DEGREES]){
 
+	//reset to zero
 	for(i = 0; i < navScore.size(); i++){
 		navScore[i]->score = 0;
 	}
 
-	
-	-check wind direction
-	-update Scores accordingly - directly downwind (and 1 fraction to either side): +20
-								- 
+	//get wind average
+	int windDir = airmar->wHeading->average();
+
+	//set navScore based on windDir
+	for(i = 0; i< navScore.size();i++){
+		int diff = abs(windDir- navScore->direction);
+		if (diff > 180)
+			diff = 360 - diff;
+		if(diff >= 170)
+			navScore[i]->score+= 20;
+		else if(diff >=135)
+			navScore[i]->score+=10;
+		else if(diff >=90)
+			navScore[i]->score+=5;
+	}
 
 }
