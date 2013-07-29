@@ -5,19 +5,19 @@
 #define RT2PI 2.5066282746310005 //Square root of 2Pi
 #define DELTA 5
 #define PI 3.14159265
-<<<<<<< HEAD
+
 #define NAV_DEGREES 5 //degree increments used for nav_score
 #define NAV_ELEMENTS 360/NAV_DEGREES
 
 #define WAYPOINT_RADIUS 1 //acceptable radius around waypoint
 
-typedef struct GPSPoint
+typedef struct
 {
 	float lat;
 	float lon;
 } GPSPoint;  
 
-typedef struct Score
+typedef struct
 {
 	int direction;
 	int score;

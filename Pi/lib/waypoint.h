@@ -15,7 +15,7 @@ public:
 	waypoint();
 
 	void addPointFront(GPSPoint* newPoint); //add a single waypoint to front of list
-	void addPoints(int size, GPSPoint* newPoints[size]); //add an array of points in order
+	//void addPoints(int size, GPSPoint* newPoints[size]); //add an array of points in order
 	void removeWaypoint();
 
 	int numWaypoints;
