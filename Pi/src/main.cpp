@@ -140,6 +140,7 @@ int main(int argc, char* argv[]) {
 
 }
 
+//can now be rewrittent to take nextPoint from waypoint class 
 bool nextWaypoint(GPSPoint* waypoint){
 
 	GPSPoint current = (airmar->gLat, airmar->gLon);
