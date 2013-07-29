@@ -35,7 +35,7 @@ void Utilities::navScore(Score navScore[NAV_ELEMENTS], Airmar* windSensor){
 	}
 
 	//get wind average
-	int windDir = windSensor->wHeading->average();
+	int windDir = windSensor->wHeading->avg;
 
 	//set navScore based on windDir
 	for(int i = 0; i< NAV_ELEMENTS;i++){

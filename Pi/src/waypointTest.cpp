@@ -12,8 +12,12 @@ int main(int argc, char* argv[]) {
 	GPSPoint second = {413.4225, 7629.2946};
 
 	waypoint* test = new waypoint();
+	test.addPointFront(second);
+	test.addPointFront(first);
+
+	GPSPoint next = test->nextPoint;
 
 	cout<<"Testing GPSPoint"<<endl;
-	cout<< "Lat: " <<first.lat<< " Lon: " << first.lon<<endl;
+	cout<< "Lat: " <<next.lat<< " Lon: " << next.lon<<endl;
 
 }
