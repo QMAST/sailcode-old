@@ -8,8 +8,7 @@ waypoint::waypoint(){
 
 }
 
-void waypoint::addPoints(int size, GPSPoint newPoints[size]){
-
+/*
 	for(int i = size-1; i => 0; i--)
 	{
 		this->points.push_front(newPoints[i]);
@@ -17,7 +16,7 @@ void waypoint::addPoints(int size, GPSPoint newPoints[size]){
 	this->numWaypoints = numWaypoints + size;
 	this->nextPoint = points.front();
 
-}
+}*/
 
 void waypoint::addPointFront(GPSPoint* newPoint){
 

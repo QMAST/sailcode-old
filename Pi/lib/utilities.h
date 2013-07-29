@@ -10,14 +10,14 @@
 
 #define WAYPOINT_RADIUS 1 //acceptable radius around waypoint
 
-typedef struct 
+typedef struct
 {
 	float lat;
 	float lon;
 } GPSPoint;  
 
-typedef struct 
 
+typedef struct
 {
 	int direction;
 	int score;
