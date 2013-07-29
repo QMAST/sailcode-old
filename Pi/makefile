@@ -47,7 +47,7 @@ serialtest.o: serialTest.cpp
 anglesensor.o: angleSensor.cpp buffer.h logging.h
 	$(CXX) $(CFLAGS) $< -o $@
 
-utilities.o: utilities.h utilities.cpp
+utilities.o: utilities.cpp utilities.h 
 	$(CXX) $(CFLAGS) $< -o $@
 
 compass.o: compass.cpp buffer.h logging.h
@@ -83,7 +83,7 @@ serial.o: serial.cpp serial.h logging.o
 logging.o: logging.cpp logging.h
 	$(CXX) $(CFLAGS) $< -o $@
 
-waypoint.o: waypoint.h waypoint.cpp
+waypoint.o: waypoint.cpp waypoint.h
 	$(CXX) $(CFLAGS) $< -o $@
 
 #Clean up everything.
