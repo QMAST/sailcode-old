@@ -20,7 +20,7 @@ public:
 
 	int numWaypoints;
 	GPSPoint nextPoint;
-	list<GPSPoint> points;
+	std::list<GPSPoint> points;
 
 };
 
