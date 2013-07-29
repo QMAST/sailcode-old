@@ -16,6 +16,8 @@ int main(int argc, char* argv[]) {
 	test->addPointFront(first);
 
 	test->removeWaypoint();
+	test->removeWaypoint();
+	test->removeWaypoint();
 	GPSPoint next = test->nextPoint;
 	//test->removeWayPoint();
 
