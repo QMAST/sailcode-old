@@ -48,5 +48,4 @@ void Utilities::NavScore(Score navScore[360/NAV_DEGREES]){
 		else if(diff >=90)
 			navScore[i]->score+=5;
 	}
-
 }

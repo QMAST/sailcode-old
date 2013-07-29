@@ -1,9 +1,9 @@
 #include "aisManager.h"
 
-AISManager::AISManager(constd std::string &path) {
+AISManager::AISManager(const std::string &path) {
 	//Initialize the AISManager object, opening the serial port.
 	this->fildes=-1;
-	stat = this->openPort(path, B9600);//Need to check the baud rate on this.
+	int stat = this->openPort(path, B9600);//Need to check the baud rate on this.
 	if(stat!=0) {
 		Logging::error(__func__, "Unable to set up the AIS.");
 	}
@@ -34,6 +34,7 @@ int AISManager::update() {
 		}
 	}
 
+	return 0;
 }
 
 int AISManager::readSentence(std::string &payload) {
@@ -143,6 +144,8 @@ bool AISManager::parse(AISMessage* msg){
 			Logging::error(__func__, "Unsupported AIS message type: "+std::to_string(type));
 		break;
 	}
+
+	return true;
 }
 
 void AISManager::parseType1(AISMessage* msg) {
@@ -157,16 +160,16 @@ void AISManager::parseType1(AISMessage* msg) {
 
 	//Bits 38-41 are the navigation status. This is an enumerated type, from 0 to 15
 	//One 0 to 8 are actually relevant.
-	unsigned int navStatus = msg->getUInt(38, 4);
+	//unsigned int navStatus = msg->getUInt(38, 4);
 
 	//Bits 42-49 are the rate of turn, a float, derived from an integer.
-	float rot = msg->getInt(42, 8) / 1000.0f;
+	//float rot = msg->getInt(42, 8) / 1000.0f;
 
 	//Bits 50-59 are the speed over ground. This is really important. Pay lots of attention to this.
 	float sog = msg->getInt(50, 10) / 10.0f;
 
 	//Bit 60 is a position accuracy indicator. 1 indicated a fix with error of <10m. 0 indicates otherwise.
-	unsigned int positionAccuracy =  msg->getUInt(60, 1);
+	//unsigned int positionAccuracy =  msg->getUInt(60, 1);
 
 	//Bits 61-88 and 89-115 are longitude and latitude, respectively. They are divided by 60000 to convert to degrees.
 	float lon = msg->getInt(61, 28) / 600000.0f;
@@ -177,10 +180,10 @@ void AISManager::parseType1(AISMessage* msg) {
 	float cog = msg->getInt(116, 12) / 10.0f;
 
 	//Bits 128-136 are heading, from 0-359.
-	int hdg = msg->getUInt(128, 9);
+	//int hdg = msg->getUInt(128, 9);
 
 	//Bits 137-142 are the time stamp. Probably will be unused
-	int second =  msg->getUInt(137, 6);//Second of UTC Timestamp
+	//int second =  msg->getUInt(137, 6);//Second of UTC Timestamp
 
 	//Bits 143-144 are the maneuver indicator. Unused right now.
 	//The rest is reserved or not useful to us. 

@@ -7,10 +7,10 @@ AISMessage::AISMessage(const std::string &rawString) {
 	int offset=0;
 	this->streamSize = (len*3)/4 + 1;
 	unsigned char pkg;
-	const char tmpPkg;
+	char tmpPkg;
 
 	int mod;
-	this->bitstream = new char[streamSize];
+	this->bitstream = new unsigned char[streamSize];
 	
 	for(int i=0; i<(this->streamSize); i++) {
 		this->bitstream[i] = 0;
@@ -27,8 +27,8 @@ AISMessage::AISMessage(const std::string &rawString) {
 		pkg = pkg << 2;
 		mod = offset%8;
 
-		this->bitstream[offset/8] |= pkg >> mod;
-		this->bitstream[offset/8 + 1] |= pkg << 8-mod;
+		this->bitstream[offset/8] |= (pkg >> mod);
+		this->bitstream[offset/8 + 1] |= (pkg << (8-mod));
 		offset += 6;
 	}
 }
@@ -40,22 +40,28 @@ unsigned char* AISMessage::getBits(int start, int length) {
 	*/
 	int num = ((length-1)/8) + 1;
 	unsigned char* data = new unsigned char[num];
-	int mod = start%8;
-	unsigned char mask = 0xFF << mod;
-	int j;
 
-	for(int i = 0, j=start/8; i<num; j++, i++) {
-		//Fills up the entire byte - it will be masked off later
-		data[i] = bitstream[j] << mod;
+	//this will be returned as a left-aligned number. I.e. there will be unwritten bits in data[num-1]
+	int end = start+length;
+	int shift = 7 - ((end-1)%8);
+	unsigned char mask = 0xFF << (length%8);//Mask is only for the final byte.
+	int j = (end-1)/8;//Last indexed element of bitstream
 
-		if((j+1) < this->streamSize) {
-			data[i] |= ((bitstream[j+1] >> 8-mod) & ~mask);
-		}
+	for(int i = 0; i<num; i++) { //Zero out the data.
+		data[i]=0;
 	}
 
-	//now just mask off the end, so its zeros beyond the length.
-	mask = 0xFF << (length%8);
-	data[num-1] &= mask;
+	for(int i =0; i<num; i++) {
+		data[i] |= (this->bitstream[j] >> shift);
+
+		if(j>0) {
+			data[i] |= (this->bitstream[j-1] << (8-shift));
+		}
+		j--;
+	}
+
+	data[num-1] = data[num-1] & ~mask;
+
 	return data;
 }
 
@@ -66,22 +72,30 @@ int AISMessage::getInt(int start, int length) {
 	unsigned char* raw = this->getBits(start, length);
 	//first, extract the sign bit - this is the most significant bit in the bitstream.
 	//This will need to be written to the most significant bit of the int.
-	//The rest of the bits are just written to the least significant bits
-	//of the int num. Write from least sig to most sig.
-	//There is going to be an offset in each byte, which makes sense. 
-	int offset = 8 - (length%8);
-	int shift = 0;
-	for(int i = maxInd; i>=0; i--) {
-		num |= (raw[i] >> offset) <<shift;
-		shift+=8;
-	}
-	//Now, mask off the raw sign bit in num, and set the sign bit in the int.
-	int mask = 1 <<(length-1);
-	if((num & mask)>0) {
-		num &= (~mask);
-		num |= 0x80000000;//Set the sign bit.
+	int ind = (length-1)/8;
+	int pos = (length-1)%8;
+	int sign = (raw[ind] >> pos) & 0xFE;
+
+	//If the sign is positive, treat it normally.
+	//If the sign is negative, invert the number and add one, to get the positive value, then multiply by -1.
+	if(sign==1) {
+		for(int i=0; i<=maxInd; i++) {
+			raw[i] = ~raw[i];
+		}
 	}
 
+	int shift =0;
+	for(int i=0; i<=maxInd; i++) {
+		num |= (raw[i]) << shift;
+		shift+=8;
+	}
+
+	//mask off everything past the sign bit;
+	int mask = 0xFFFFFFFF << (length-1);
+	num = num & (~mask);
+	if(sign==1) {
+		num *= -1;
+	}
 	delete[] raw; 
 	return num;
 }
@@ -92,10 +106,9 @@ unsigned int AISMessage::getUInt(int start, int length) {
 	unsigned int num = 0;
 	unsigned char* raw = this->getBits(start, length);
 
-	int offset = 8 - (length%8);
 	int shift = 0;
-	for(int i = maxInd; i>=0; i--) {
-		num |= (raw[i] >> offset) <<shift;
+	for(int i = 0; i<=maxInd; i++) {
+		num |= (raw[i]) << shift;
 		shift+=8;
 	}
 
@@ -115,13 +128,13 @@ std::string AISMessage::getString(int start, int length) {
 
 	int bytePos =0;//Position within an individual byte.
 	unsigned char mask=0;
-	for(int i=0, int j=0; i<num; i++) {
+	for(int i=0, j=0; i<num; i++) {
 		str[i] = 0;
 		mask = 0xFC >> bytePos; 
-		str[i] |= (raw[j] & mask)<<bytepos;
+		str[i] |= (raw[j] & mask)<<bytePos;
 		if(bytePos>2) {
 			mask = 0xFF << (6 - bytePos);//Mask off the number of bits that are needed from the 2nd byte
-			str[i] | = (raw[j+1] & mask) >> 8-bytePos;
+			str[i] |= (raw[j+1] & mask) >> (8-bytePos);
 		}
 		str[i] = (str[i]>>2) & 0x3F;
 		if(i<31) {
