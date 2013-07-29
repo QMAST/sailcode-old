@@ -29,7 +29,7 @@ comtest: comtest.o arduinoCom.o gpio.o serial.o logging.o
 serialtest: serialtest.o arduinoCom.o serial.o gpio.o logging.o
 	$(CXX) $^ -o $@
 
-waypointtest: waypoint.o utilities.o waypointtest.o
+waypointtest: utilities.o waypoint.o waypointtest.o
 	$(CXX) $^ -o $@
 
 interrupttest: interrupttest.o arduinoCom.o serial.o gpio.o logging.o
