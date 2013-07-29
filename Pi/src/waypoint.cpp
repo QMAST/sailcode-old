@@ -28,6 +28,9 @@ void waypoint::addPointFront(GPSPoint newPoint){
 
 void waypoint::removeWaypoint(){
 
+	if( this->numWaypoints == 1)
+		return;
+
 	this->points.pop_front();
 	this->numWaypoints--;
 	this->nextPoint = points.front();
