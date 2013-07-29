@@ -35,6 +35,21 @@ waypointtest: utilities.o waypoint.o waypointtest.o
 interrupttest: interrupttest.o arduinoCom.o serial.o gpio.o logging.o
 	$(CXX) $^ -o $@
 
+aistest: aistest.o aismessage.o aismanager.o utilities.o buffer.o serial.o logging.o
+	$(CXX) $^ -o $@
+
+aistest.o: aisTest.cpp
+	$(CXX) $(CFLAGS) $< -o $@
+
+aismessage.o: aisMessage.cpp
+	$(CXX) $(CFLAGS) $< -o $@
+
+aismanager.o: aisManager.cpp
+	$(CXX) $(CFLAGS) $< -o $@
+
+utilities.o: utilities.cpp
+	$(CXX) $(CFLAGS) $< -o $@
+
 interrupttest.o: interruptTest.cpp
 	$(CXX) $(CFLAGS) $< -o $@
 

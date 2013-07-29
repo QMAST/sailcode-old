@@ -20,7 +20,7 @@ public:
 private:
 	T* buf;
 	int n;//Index
-	T average; //buffer average
+	T avg; //buffer average
 };
 
 #endif

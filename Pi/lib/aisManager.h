@@ -8,7 +8,7 @@
 #include "ship.h"
 #include "utilities.h"
 #include "logging.h"
-
+#include "aisMessage.h"
 class AISManager : public Serial {
 	public:
 		AISManager(const std::string &path);
@@ -21,7 +21,7 @@ class AISManager : public Serial {
 		int readSentence(std::string &payload);
 		bool validChecksum(const std::string &line);
 		unsigned char hexToDecimal(char hex);
-		bool parse();
+		bool parse(AISMessage*);
 		void parseType1(AISMessage*);
 		void parseType4(AISMessage*);
 };

@@ -48,5 +48,4 @@ void Utilities::NavScore(Score navScore[NAV_ELEMENTS]){
 		else if(diff >=90)
 			navScore[i]->score+=5;
 	}
-
 }

@@ -9,9 +9,9 @@ public:
 
 	unsigned char* getBits(int start, int length);
 	int getInt(int start, int length);
-	int getUInt(int start, int length);
-	std::string getString();
-private:
+	unsigned int getUInt(int start, int length);
+	std::string getString(int start, int length);
+public:
 	unsigned char* bitstream;
 	int streamSize;
 };
