@@ -47,9 +47,6 @@ aismessage.o: aisMessage.cpp
 aismanager.o: aisManager.cpp
 	$(CXX) $(CFLAGS) $< -o $@
 
-utilities.o: utilities.cpp
-	$(CXX) $(CFLAGS) $< -o $@
-
 interrupttest.o: interruptTest.cpp
 	$(CXX) $(CFLAGS) $< -o $@
 

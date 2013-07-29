@@ -26,7 +26,7 @@ bool Utilities::withinRange(GPSPoint* current, GPSPoint* waypoint){
 	return false;
 }
 
-void Utilities::NavScore(Score navScore[NAV_ELEMENTS]){
+void Utilities::navScore(Score navScore[NAV_ELEMENTS]){
 
 	//reset to zero
 	for(i = 0; i < navScore.size(); i++){
