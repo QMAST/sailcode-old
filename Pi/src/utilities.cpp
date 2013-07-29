@@ -42,10 +42,10 @@ void Utilities::navScore(Score navScore[NAV_ELEMENTS], Airmar* windSensor){
 		if (diff > 180)
 			diff = 360 - diff;
 		if(diff >= 170)
-			navScore[i]->score+= 20;
+			navScore[i].score+= 20;
 		else if(diff >=135)
-			navScore[i]->score+=10;
+			navScore[i].score+=10;
 		else if(diff >=90)
-			navScore[i]->score+=5;
+			navScore[i].score+=5;
 	}
 }
