@@ -20,7 +20,7 @@ navPoints::navPoints(){
 
 }*/
 
-void navPoints::addPointFront(waypoint newPoint){
+void navPoints::addPointFront(waypoint& newPoint){
 
 	this->points.push_front(newPoint);
 	this->numWaypoints++;
@@ -40,7 +40,7 @@ void navPoints::removeWaypoint(){
 	this->nextPoint = points.front();
 }
 
-void withinRange(GPSPoint current){
+void withinRange(GPSPoint& current){
 
 	float lat = (current.lat) - (nextPoint.lat);
 	float lon = (current.lon) - (nextPoint.lon);
@@ -109,9 +109,11 @@ void passedOutofRange(GPSPoint& current){
 		else
 		{
 			if((bearing > nextPoint.angle) || (bearing < (nextPoint.angle-180)))
+			{
 				removeWaypoint();
 				if(testing)
 					cout<<"Passed Waypoint - removed" <<endl;
+			}
 		}
 	}
 	if(testing)
