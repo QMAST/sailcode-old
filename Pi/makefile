@@ -29,7 +29,7 @@ comtest: comtest.o arduinoCom.o gpio.o serial.o logging.o
 serialtest: serialtest.o arduinoCom.o serial.o gpio.o logging.o
 	$(CXX) $^ -o $@
 
-waypointtest: utilities.o waypoint.o waypointtest.o
+waypointtest: utilities.o navpoints.o waypointtest.o
 	$(CXX) $^ -o $@
 
 interrupttest: interrupttest.o arduinoCom.o serial.o gpio.o logging.o
@@ -95,7 +95,7 @@ serial.o: serial.cpp serial.h logging.o
 logging.o: logging.cpp logging.h
 	$(CXX) $(CFLAGS) $< -o $@
 
-waypoint.o: waypoint.cpp waypoint.h
+navpoints.o: navpoints.cpp navpoints.h
 	$(CXX) $(CFLAGS) $< -o $@
 
 #Clean up everything.

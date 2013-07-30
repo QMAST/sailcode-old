@@ -1,4 +1,7 @@
 #include "waypoint.h"
+#include <string>
+#include <iostream>
+using namespace std;
 
 #define testing 1
 
