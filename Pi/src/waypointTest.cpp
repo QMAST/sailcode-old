@@ -21,16 +21,16 @@ int main(int argc, char* argv[]) {
 	test->addPointFront(firstW);
 
 	cout<< "Testing - should not be in range x2" <<endl;
-	withinRange(first);
-	withinRange(first);
+	test->withinRange(first);
+	test->withinRange(first);
 
 	cout << "Should not be passed:  "<<endl;
-	passedOutofRange(second);
+	test->passedOutofRange(second);
 	cout << "Should be in range: " <<endl;
-	withinRange(second);
+	test->withinRange(second);
 
 	cout << "Not in range: " << endl;
-	withinRange(third);
+	test->withinRange(third);
 	cout << "Should be passed" <<endl;
 
 	cout << "second waypoint should not be removed - waypoints should be 1: " <<endl;
