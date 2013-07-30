@@ -90,6 +90,7 @@ void navPoints::passedOutofRange(GPSPoint& current){
 		}
 	}
 	else if(this->nextPoint.angle == 270) //check if past north
+	{
 		if(current.lat >= this->nextPoint.lat){
 			this->removeWaypoint();
 			if(testing)
