@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
 	cout << "Should be passed" <<endl;
 
 	cout << "second waypoint should not be removed - waypoints should be 1: " <<endl;
-	cout<< test.numWaypoints <<endl;
+	cout<< test->numWaypoints <<endl;
 
 
 	
