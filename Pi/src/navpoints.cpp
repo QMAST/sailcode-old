@@ -43,7 +43,7 @@ void navPoints::removeWaypoint(){
 	this->nextPoint = points.front();
 }
 
-void withinRange(GPSPoint& current){
+void navPoints::withinRange(GPSPoint& current){
 
 	float lat = (current.lat) - (this->nextPoint.lat);
 	float lon = (current.lon) - (this->nextPoint.lon);
@@ -60,7 +60,7 @@ void withinRange(GPSPoint& current){
 
 }
 
-void passedOutofRange(GPSPoint& current){
+void navPoints::passedOutofRange(GPSPoint& current){
 
 	if(this->nextPoint.angle == 0) //check if past east
 	{
