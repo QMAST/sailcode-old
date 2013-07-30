@@ -1,6 +1,6 @@
 //waypoint class testing
 
-#include "waypoint.h"
+#include "navpoints.h"
 #include "utilities.h"
 #include <string>
 #include <iostream>
