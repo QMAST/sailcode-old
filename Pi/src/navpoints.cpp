@@ -45,13 +45,13 @@ void navPoints::removeWaypoint(){
 
 void withinRange(GPSPoint& current){
 
-	float lat = (current.lat) - (nextPoint.lat);
-	float lon = (current.lon) - (nextPoint.lon);
+	float lat = (current.lat) - (this->nextPoint.lat);
+	float lon = (current.lon) - (this->nextPoint.lon);
 	float dist = sqrt(lat*lat + lon*lon);
 
-	if(dist < nextPoint.radius)
+	if(dist < this->nextPoint.radius)
 	{
-		removeWaypoint();
+		this->removeWaypoint();
 		if(testing)
 				cout<<"Within range - waypoint removed" <<endl;
 	}
@@ -62,58 +62,58 @@ void withinRange(GPSPoint& current){
 
 void passedOutofRange(GPSPoint& current){
 
-	if(nextPoint.angle == 0) //check if past east
+	if(this->nextPoint.angle == 0) //check if past east
 	{
-		if(current.lon <= nextPoint.lon) //if we hit 0 we have gone past the Atlantic anyway =P
+		if(current.lon <= this->nextPoint.lon) //if we hit 0 we have gone past the Atlantic anyway =P
 		{
-			removeWaypoint();
+			this->removeWaypoint();
 			if(testing)
 				cout<<"Passed Waypoint - removed" <<endl;
 		}
 	}
-	else if(nextPoint.angle == 90) //check if past south
+	else if(this->nextPoint.angle == 90) //check if past south
 	{
-		if(current.lat <= nextPoint.lat) //for north atlantic - really shouldn't have to worry about the equator
+		if(current.lat <= this->nextPoint.lat) //for north atlantic - really shouldn't have to worry about the equator
 		{
-			removeWaypoint();
+			this->removeWaypoint();
 			if(testing)
 				cout<<"Passed Waypoint - removed" <<endl;
 		}
 	}
-	else if(nextPoint.angle == 180) //check if past west
+	else if(this->nextPoint.angle == 180) //check if past west
 	{
-		if(current.lon >= nextPoint.lon)
+		if(current.lon >= this->nextPoint.lon)
 		{
-			removeWaypoint();
+			this->removeWaypoint();
 			if(testing)
 				cout<<"Passed Waypoint - removed" <<endl;
 		}
 	}
-	else if(nextPoint.angle == 270) //check if past north
-		if(current.lat >= nextPoint.lat){
-			removeWaypoint();
+	else if(this->nextPoint.angle == 270) //check if past north
+		if(current.lat >= this->nextPoint.lat){
+			this->removeWaypoint();
 			if(testing)
 				cout<<"Passed Waypoint - removed" <<endl;
 		}
 	}
 	else
 	{
-		GPSPoint next = {nextPoint.lat, nextPoint.lon};
+		GPSPoint next = {this->nextPoint.lat, this->nextPoint.lon};
 		int bearing = getBearing(current, next);
-		if(nextPoint.angle < 180)
+		if(this->nextPoint.angle < 180)
 		{
-			if((bearing > nextPoint.angle) && (bearing < (nextPoint.angle+180)))
+			if((bearing > this->nextPoint.angle) && (bearing < (this->nextPoint.angle+180)))
 			{
-				removeWaypoint();
+				this->removeWaypoint();
 				if(testing)
 					cout<<"Passed Waypoint - removed" <<endl;
 			}
 		}
 		else
 		{
-			if((bearing > nextPoint.angle) || (bearing < (nextPoint.angle-180)))
+			if((bearing > this->nextPoint.angle) || (bearing < (this->nextPoint.angle-180)))
 			{
-				removeWaypoint();
+				this->removeWaypoint();
 				if(testing)
 					cout<<"Passed Waypoint - removed" <<endl;
 			}
