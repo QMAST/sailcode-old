@@ -18,6 +18,7 @@ typedef struct
 	float lon;
 } GPSPoint;  
 
+
 typedef struct Score
 {
 	int direction;
@@ -27,7 +28,7 @@ typedef struct Score
 class Utilities {
 public:
 	static int getBearing(GPSPoint* start, GPSPoint* end); // returns direction to get to end from start
-	static bool withinRange(GPSPoint* current, GPSPoint* waypoint); //returns whether you are within range of waypoint
+	//static bool withinRange(GPSPoint* current, GPSPoint* waypoint); //returns whether you are within range of waypoint
 	void navScore(Score navScore[NAV_ELEMENTS], Airmar* windSensor); //updates array containing nacScore
 
 };
