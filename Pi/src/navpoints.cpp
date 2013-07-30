@@ -1,4 +1,5 @@
 #include "navpoints.h"
+#include "utilities.h"
 #include <string>
 #include <iostream>
 using namespace std;
