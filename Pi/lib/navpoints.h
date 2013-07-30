@@ -29,6 +29,8 @@ public:
 	void passedOutofRange(GPSPoint& current); //check if we have gone based the waypoint (uses waypoint.angle)
 	void removeWaypoint();
 
+	int getBearing(GPSPoint& start, GPSPoint& end); // returns direction to get to end from start
+	
 	int numWaypoints;
 	waypoint nextPoint;
 	std::list<waypoint> points;
