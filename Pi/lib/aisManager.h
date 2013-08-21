@@ -13,9 +13,9 @@ class AISManager : public Serial {
 	public:
 		AISManager(const std::string &path);
 		int update();
-		void calculateNavScore(Score* scores, int num);
 
-	private:
+
+	public:
 		std::list<Ship*> ships;
 
 		int readSentence(std::string &payload);

@@ -142,6 +142,7 @@ bool AISManager::parse(AISMessage* msg){
 		break;
 		default:
 			Logging::error(__func__, "Unsupported AIS message type: "+std::to_string(type));
+			return false;
 		break;
 	}
 
