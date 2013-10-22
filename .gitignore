@@ -1,3 +1,4 @@
+arduino/.build
+*.o
 *.swp
 *.sw?
-.build/*
