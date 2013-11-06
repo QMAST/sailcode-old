@@ -21,7 +21,8 @@ RCAxisChannel* initRCAxisChannel( int pinIn, int highOffset, int lowOffset )
 }
 
 // Initiates a default RC Switch Channel
-RCSwitchChannel* initRCSwitchChannel( int pinIn, int highOffset, int lowOffset )
+RCSwitchChannel* 
+initRCSwitchChannel( int pinIn, int highOffset, int lowOffset )
 {
     RCSwitchChannel* ch;
 
@@ -135,13 +136,40 @@ int getBoundedOutput( RCAxisChannel* ch )
 void updateAxisPulse( RCAxisChannel* ch )
 {
     unsigned long pulseLength = pulseIn( ch->pin, HIGH, STD_TIMEOUT );
-    ch->outputLevel = map( pulseLength, ch->lowOffset, ch->highOffset, ch->lowOutput, ch->highOutput );
+    ch->outputLevel = map( 
+            pulseLength, ch->lowOffset, 
+            ch->highOffset, ch->lowOutput, ch->highOutput );
 }
 
 /* Updates switch channel from pulse */
 void updateSwitchPulse( RCSwitchChannel* ch )
 {
     unsigned long pulseLength = pulseIn( ch->pin, HIGH, STD_TIMEOUT );
-    ch->outputSelection = map( pulseLength, ch->lowOffset, ch->highOffset, 0, ch->numberOfOptions - 1 );
+    ch->outputSelection = map( 
+            pulseLength, ch->lowOffset, 
+            ch->highOffset, 0, ch->numberOfOptions - 1 );
 }
 
+//void printAll(RC *rc){
+  //printAll(rc->RSX,rc->RSY,rc->LSX,rc->LSY,rc->AUX,rc->gearSwitch);
+//}
+
+//void printAll(RCAxisChannel *RSX, RCAxisChannel *RSY, RCAxisChannel *LSX, RCAxisChannel *LSY, RCAxisChannel *AUX, RCSwitchChannel *gear){
+  //Serial.print("(");
+  //Serial.print(RSX->outputLevel);
+  //Serial.print(", ");
+  //Serial.print(RSY->outputLevel);
+  //Serial.print(")       (");
+  
+  //Serial.print(LSX->outputLevel);
+  //Serial.print(", ");
+  //Serial.print(LSY->outputLevel);
+  //Serial.print(")       (");
+  
+  //Serial.print(AUX->outputLevel);
+  //Serial.print(")\t");
+  
+  //Serial.print("[");
+  //Serial.print(gear->outputSelection);
+  //Serial.print("]\n");
+//}

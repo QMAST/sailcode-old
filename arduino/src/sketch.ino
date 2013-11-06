@@ -22,7 +22,8 @@ void setup() {
     pconInitialise( &motor, &Serial2, 13 );
 
     Console = new ashcon( &Serial );
-    Console->user_function_register( "about", &uabout );
+    Console->user_function_register( "about",   &uabout );
+    Console->user_function_register( "rc",      &urcpollall );
 }
 
 /* Main polling loop

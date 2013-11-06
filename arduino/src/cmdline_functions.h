@@ -15,4 +15,5 @@ extern RC* radio;
 // Prototype declarations for cmdline functions
 int uabout(char* argv[]);
 int urctest(char* argv[]);
+int urcpollall(char* argv[]);
 #endif
