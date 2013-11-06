@@ -1,4 +1,6 @@
 arduino/.build
+arduino/packaged
 *.o
 *.swp
 *.sw?
+.build

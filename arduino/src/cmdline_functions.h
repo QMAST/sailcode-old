@@ -13,4 +13,5 @@ extern polcore* motor;
 // Prototype declarations for cmdline functions
 int uabout(char* argv[]);
 int upol(char* argv[]);
+int ucommandprint(char* argv[]);
 #endif

@@ -31,3 +31,8 @@ int upol(char* argv[]) {
     pconGenMotorGo( motor, pcon_buffer_to_dev, value, PCON_FORWORD );
     pconSendCommandBuffer( motor );
 }
+
+int ucommandprint(char* argv[])
+{
+	Console->out->printf("ucommandprint");
+}
