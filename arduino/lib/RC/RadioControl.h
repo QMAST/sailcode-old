@@ -11,13 +11,13 @@
 #define LOOP_DELAY 500
 
 /*Default Pin Values*/
-#define RSX_PIN 12
-#define RSY_PIN 11
-#define LSX_PIN 9
-#define LSY_PIN 10
+#define RSX_PIN 12 // Channel 1
+#define RSY_PIN 11 // Channel 2
+#define LSY_PIN 10 // Channel 3
+#define LSX_PIN 9  // Channel 4
 
-#define GEAR_PIN 8
-#define AUX_PIN 7
+#define GEAR_PIN 8 // Channel 5
+#define AUX_PIN 7  // Channel 6
 
 /* Default output range for axis/knob output */
 #define STD_HIGH_OUTPUT 1000
@@ -28,7 +28,7 @@
 #define RSX_LOW_OFFSET 1842  // Full left
 #define RSX_HIGH_OFFSET 1074 // Full right
 
-                             // RSY Receiver ch 2
+// RSY Receiver ch 2
 #define RSY_HIGH_OFFSET 1855 // Full left
 #define RSY_LOW_OFFSET 1123  // Full right
 
@@ -137,7 +137,8 @@ void printStickCords( RCAxisChannel* X, RCAxisChannel* Y );
 void printSwitchState( RCSwitchChannel* ch );
 
 void printAll( RC* rc );
-void printAll( RCAxisChannel* RSX, RCAxisChannel* RSY, RCAxisChannel* LSX, RCAxisChannel* LSY, RCAxisChannel* AUX, RCSwitchChannel* gear );
-
+void printAll( 
+        RCAxisChannel* RSX, RCAxisChannel* RSY, RCAxisChannel* LSX, 
+        RCAxisChannel* LSY, RCAxisChannel* AUX, RCSwitchChannel* gear );
 #endif
 
