@@ -212,8 +212,10 @@ int ashcon::user_function_call(char* id) {
         if( strncmp(ufunc_list[i].id, id, FUNCTION_LIST_ID_MAX) == 0 ) {
             // Make the call
             (*ufunc_list[i].func)(this->command_arg_list);
+            return 0;
         }
     }        
+    this->out->printf("Command not found.\n");
 }
 
 void ashcon::ufunc_dump() {

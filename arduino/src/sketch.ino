@@ -25,6 +25,7 @@ void setup() {
     Console->user_function_register( "about",   &uabout );
     Console->user_function_register( "rc",      &urcpollall );
     Console->user_function_register( "mon",     &umon );
+    Console->user_function_register( "dia",     &uselfcheck );
 }
 
 /* Main polling loop

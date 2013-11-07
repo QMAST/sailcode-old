@@ -1,7 +1,10 @@
 #include "cmdline_functions.h"
 
 #define SERVO_MAX_ANGLE 250 // The minimum angle is assumed to be 0
-#define RC_MAX_MAGNITUDE 1000 // The minumum output and maximum output are assumed to be the same magnitude, just opposite signs.
+
+// The minimum output and maximum output are assumed to be the same magnitude,
+// just opposite signs.
+#define RC_MAX_MAGNITUDE 1000
 
 int uabout( char* argv[] )
 {
@@ -21,7 +24,9 @@ int uabout( char* argv[] )
 
     Console->out->printf( "AshCon Version 0.021 \n" );
 
-    Console->out->printf( "Compiled at __DATE__ __TIME__.\n" );
+    // Print the date and time of compilation
+    // These macros cannot be within the quotes
+    Console->out->printf( "Compiled on "__DATE__" "__TIME__ "\n" );
     Console->ufunc_dump();
 
     return 0;
@@ -77,3 +82,8 @@ int urcpollall( char* argv[] )
     }
 }
 
+int uselfcheck(char* argv[]) {
+    Console->out->printf("Available memory: %d\n", freeMemory() );
+
+    return 0;
+}
