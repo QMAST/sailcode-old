@@ -10,10 +10,15 @@
 // command line functions
 extern ashcon* Console;
 extern polcore* motor;
+extern polcore* sail;
+extern polcore* mast;
 extern RC* radio;
+extern PololuMSC* rudder;
 
 // Prototype declarations for cmdline functions
-int uabout(char* argv[]);
+int uabout(char* argv[]); // 
 int urctest(char* argv[]);
 int urcpollall(char* argv[]);
+int umotorGo(char* argv[]); // Sets the speed of a motor or the angle of a servomotor
+int ustartRCControl(char* argv[]); // Sets the rudder angle or sail motor speed by RC control
 #endif

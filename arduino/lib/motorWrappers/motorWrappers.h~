@@ -1,0 +1,4 @@
+#include <Arduino.h>
+
+void setMotorSpeed(polcore* motor, int speed);
+void setServoAngle(PololuMSC* pololu, int angle);

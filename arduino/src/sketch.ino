@@ -24,6 +24,9 @@ void setup() {
     Console = new ashcon( &Serial );
     Console->user_function_register( "about",   &uabout );
     Console->user_function_register( "rc",      &urcpollall );
+	Console->user_function_register( "motorgo", &umotorGo );
+	Console->user_function_register( "m", &umotorGo ); // For brevity
+	Console->user_function_register( "startrc", &ustartRCControl );
 }
 
 /* Main polling loop
