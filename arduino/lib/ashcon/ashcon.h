@@ -26,6 +26,9 @@ class ashcon {
 
         // Debugging purposes
         //char* get_command_buffer();
+        // Debug functions
+        void ufunc_dump();
+
 
     private:
         // Serial port used for communication
@@ -55,17 +58,13 @@ class ashcon {
         typedef struct {
             char* id;
             int (*func)(char* args[]);
+            char* desc;
         } user_function;
         
         static const int FUNCTION_LIST_MAX = 12;
         static const int FUNCTION_LIST_ID_MAX = 12;
         user_function ufunc_list[FUNCTION_LIST_MAX];
         int ufunc_list_idx;
-
-        // Debug functions
-        void ufunc_dump();
-
-
 };
 
 #endif

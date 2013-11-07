@@ -16,4 +16,5 @@ extern RC* radio;
 int uabout(char* argv[]);
 int urctest(char* argv[]);
 int urcpollall(char* argv[]);
+int umon(char* argv[]);
 #endif

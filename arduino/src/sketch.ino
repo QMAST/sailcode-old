@@ -24,6 +24,7 @@ void setup() {
     Console = new ashcon( &Serial );
     Console->user_function_register( "about",   &uabout );
     Console->user_function_register( "rc",      &urcpollall );
+    Console->user_function_register( "mon",     &umon );
 }
 
 /* Main polling loop
