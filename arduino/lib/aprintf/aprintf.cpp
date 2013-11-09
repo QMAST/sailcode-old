@@ -25,3 +25,7 @@ void aprintf::printf_P( const prog_uint8_t* fmt, ... ) {
 
     interface->print(tmp);
 }
+
+Stream* aprintf::getStream(  ) {
+    return this->interface;
+}

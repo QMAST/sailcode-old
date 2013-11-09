@@ -13,20 +13,22 @@ int uabout( char* argv[] )
 
     // Remember, printf has a 80 char limit at a time
     // This eats a tonne of sram, TODO switch this into a PROGMEM string
-    Console->out->printf( "  ___|    \\    ____| |     ____| _ \\   _  \\ "
-                          " ___| ____| \\ \\  / |     \n" );
-    Console->out->printf( " |       _ \\   __|   |     |    |   | |   | |"
-                          "     __|    \\  /  |     \n" );
-    Console->out->printf( " |   |  ___ \\  |     |     __|  |   | __ <  |"
-                          "     |         \\  |     \n" );
-    Console->out->printf( "\\____|_/    _\\_____|_____|_|   \\___/ _| \\_"
-                          "\\\\____|_____|  _/\\_\\_____| \n\n\n" );
+    static const unsigned char TEXT_LOGO_ARRAY[5][80] PROGMEM =
+        {
+"  ___|    \\    ____| |     ____| _ \\   _  \\  ___| ____| \\ \\  / |     \n",
+" |       _ \\   __|   |     |    |   | |   | |     __|    \\  /  |     \n",
+" |   |  ___ \\  |     |     __|  |   | __ <  |     |         \\  |     \n",
+"\\____|_/    _\\_____|_____|_|   \\___/ _| \\_\\\\____|_____|  _/\\_\\_____| \n\n\n",
+"AshCon Version 0.021 \n"
+        };
+    for( uint8_t i = 0; i < 5; i++ ) {
+        Console->out->printf_P(TEXT_LOGO_ARRAY[i]);
+    }
 
-    Console->out->printf( "AshCon Version 0.021 \n" );
-
+    P(COMPILED_TIME) = "Compiled on "__DATE__" "__TIME__ "\n";
     // Print the date and time of compilation
     // These macros cannot be within the quotes
-    Console->out->printf( "Compiled on "__DATE__" "__TIME__ "\n" );
+    Console->out->printf_P( COMPILED_TIME );
     Console->ufunc_dump();
 
     return 0;
@@ -34,6 +36,7 @@ int uabout( char* argv[] )
 
 int umon( char* argv[] )
 {
+    Stream* internal_line = Console->out->getStream();
     Stream* ser_line;
     uint8_t value;
     sscanf( argv[1], "%d", &value );
@@ -49,11 +52,11 @@ int umon( char* argv[] )
 
     while( c != 'q' ) {
         if( ser_line->available() > 0 ) {
-            Serial.print( ( char ) ser_line->read() );
+            internal_line->print( ( char ) ser_line->read() );
         }
 
-        if( Serial.available() )
-            c = Serial.read();
+        if( internal_line->available() )
+            c = internal_line->read();
     }
 }
 
@@ -65,11 +68,12 @@ int umon( char* argv[] )
  */
 int urcpollall( char* argv[] )
 {
+    P( MSG_FORMAT ) = "LS: (%d,%d) RS: (%d,%d) SW[%d] AUX[%d]\n";
     char c = '1';
 
     while( c != 'q' ) {
         updateControllerValues( radio );
-        Console->out->printf( "LS: (%d,%d) RS: (%d,%d) SW[%d] AUX[%d]\n",
+        Console->out->printf_P( MSG_FORMAT,
                               getAxisOutput( radio->LSX ),
                               getAxisOutput( radio->LSY ),
                               getAxisOutput( radio->RSX ),
@@ -78,12 +82,15 @@ int urcpollall( char* argv[] )
                               getAxisOutput( radio->AUX )
                             );
 
-        if( Serial.available() ) c = Serial.read();
+        if( Console->out->getStream()->available() ) {
+            c = Console->out->getStream()->read();
+        }
     }
 }
 
 int uselfcheck(char* argv[]) {
-    Console->out->printf("Available memory: %d\n", freeMemory() );
+    P(DIAG_MSG_0) = "Available memory: %d\n";
+    Console->out->printf_P( DIAG_MSG_0, freeMemory() );
 
     return 0;
 }

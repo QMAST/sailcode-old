@@ -22,6 +22,8 @@ class ashcon {
         int get_line_splitline();
 
         int user_function_register( char* id, int (*func)(char* args[]) );
+        //int user_function_register( char* id,
+                //int (*func)(char* args[]), const prog_uint8_t* str );
         int user_function_call( char* id );
 
         // Debugging purposes

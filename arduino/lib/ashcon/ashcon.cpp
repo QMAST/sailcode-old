@@ -195,8 +195,8 @@ int ashcon::user_function_register( char* id, int (*func)(char* args[]) ) {
 
     new_id_length = strnlen( id, FUNCTION_LIST_ID_MAX );
 
-    this->ufunc_list[ufunc_list_idx].id = (char*) 
-        malloc( sizeof(char) * (new_id_length + 1) );
+    this->ufunc_list[ufunc_list_idx].id = 
+        (char*) malloc( sizeof(char) * (new_id_length + 1) );
     strncpy((this->ufunc_list[ufunc_list_idx]).id, id, FUNCTION_LIST_ID_MAX );
 
     ufunc_list[ufunc_list_idx].id[new_id_length] = '\0';
@@ -206,6 +206,16 @@ int ashcon::user_function_register( char* id, int (*func)(char* args[]) ) {
 
     return this->SUCCESS;
 }
+
+//int 
+//ashcon::user_function_register( 
+    //char* id,
+    //int (*func)(char* args[]),
+    //const prog_uint8_t* str )
+//{
+    //user_function_register( id, func );
+
+//}
 
 int ashcon::user_function_call(char* id) {
     for( int i = 0; i < ufunc_list_idx; i++ ) {
@@ -219,16 +229,18 @@ int ashcon::user_function_call(char* id) {
 }
 
 void ashcon::ufunc_dump() {
+    P(FUNCTION_STRING) = "ID: %s, %04X, %s\n";
     for( int i = 0; i < FUNCTION_LIST_MAX; i++ ) {
         if( ufunc_list[i].id != NULL ) {
-            this->out->printf("ID: %s = %x \n\r", ufunc_list[i].id, 
+            this->out->printf_P(FUNCTION_STRING,
+                    ufunc_list[i].id,
                     ufunc_list[i].func );
         }
     }
 }
 
 int ashcon::command_prompt() {
-    this->out->printf("> ");
+    this->out->getStream()->print("> ");
     this->get_line();
     this->get_line_splitline();
     this->user_function_call(this->command_arg_list[0]);

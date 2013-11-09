@@ -17,5 +17,7 @@ class aprintf {
         aprintf( Stream* interface );
         void printf( char *fmt, ... );
         void printf_P( const prog_uint8_t* fmt, ... );
+
+        Stream* getStream();
 };
 #endif

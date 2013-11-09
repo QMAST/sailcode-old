@@ -18,7 +18,6 @@ void setup() {
     Serial3.begin(4800); // to AIRMAR receiver line
 
     radio = initRC();
-
     pconInitialise( &motor, &Serial2, 13 );
 
     Console = new ashcon( &Serial );
